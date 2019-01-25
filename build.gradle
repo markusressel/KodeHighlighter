@@ -1,0 +1,77 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext.kotlin_version = '1.3.20'
+
+    ext {
+        group = 'com.github.markusressel'
+
+        gradle_plugin_version = '3.3.0'
+
+        minSdkVersion = 16
+        versionName = "1.0.0"
+        versionCode = 1
+
+        compileSdkVersion = 28
+        targetSdkVersion = 28
+        buildToolsVersion = "28.0.3"
+
+        // DEPENDENCIES
+
+        androidKtxVersion = "0.3"
+        supportLibVersion = "28.0.0"
+
+        javaxAnnotationVersion = "10.0-b28"
+        aboutlibrariesVersion = "6.2.0"
+        materialdrawerVersion = "6.1.1"
+        iconicsVersion = "3.1.0"
+
+        rxKotlinVersion = "2.3.0"
+        rxBindingVersion = "2.1.1"
+        rxLifecycleVersion = "2.2.1"
+
+        timberKtVersion = "1.5.1"
+    }
+
+
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$gradle_plugin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+
+    configurations.all() {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+
+        resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+        resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+        resolutionStrategy.force "com.android.support:appcompat-v7:$supportLibVersion"
+        resolutionStrategy.force "com.android.support:design:$supportLibVersion"
+    }
+}
+
+apply plugin: 'kotlin'
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
