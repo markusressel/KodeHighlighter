@@ -10,14 +10,15 @@ import de.markusressel.kodehighlighter.core.SyntaxHighlighterRule
 import de.markusressel.kodehighlighter.language.markdown.rule.*
 
 /**
- * A dark color scheme for markdown text
+ * A dark color scheme for markdown
  */
 class DarkBackgroundColorScheme : SyntaxColorScheme {
 
     override fun getStyles(type: SyntaxHighlighterRule): Set<StyleFactory> {
         return when (type) {
             is BoldRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#0091EA")) }, { StyleSpan(Typeface.BOLD) })
+                setOf({ ForegroundColorSpan(Color.parseColor("#0091EA")) },
+                        { StyleSpan(Typeface.BOLD) })
             }
             is ItalicRule -> {
                 setOf({ ForegroundColorSpan(Color.parseColor("#0091EA")) }, { StyleSpan(Typeface.ITALIC) })

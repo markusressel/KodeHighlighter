@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">demo</string>
+
+    <string name="introduction">This is a demo for the KodeHighlighter library.\n\n
+    Highlighting can be applied to any Spannable so it can easily be used inside the standard TextView.</string>
+
+    <string name="markdown_light_header">Below you can see how a Markdown highlighted text would look like:</string>
+    <string name="markdown_dark_header">Here is a sample of a dark theme:</string>
 </resources>

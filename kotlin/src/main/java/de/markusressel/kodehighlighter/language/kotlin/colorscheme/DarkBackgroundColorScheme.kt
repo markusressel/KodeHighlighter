@@ -10,13 +10,20 @@ import de.markusressel.kodehighlighter.core.SyntaxHighlighterRule
 import java.util.*
 
 /**
- * A dark color scheme for markdown text
+ * A dark color scheme for kotlin
  */
 class DarkBackgroundColorScheme : SyntaxColorScheme {
 
     override fun getStyles(type: SyntaxHighlighterRule): Set<StyleFactory> {
         return when (type) {
-            is ImportKeywordRule, is PackageKeywordRule, is ClassKeywordRule, is OpenKeywordRule, is ReturnKeywordRule, is FunctionKeywordRule, is VisibilityKeywordRule, is VarKeywordRule -> {
+            is ImportKeywordRule,
+            is PackageKeywordRule,
+            is ClassKeywordRule,
+            is OpenKeywordRule,
+            is ReturnKeywordRule,
+            is FunctionKeywordRule,
+            is VisibilityKeywordRule,
+            is VarKeywordRule -> {
                 setOf({ ForegroundColorSpan(Color.parseColor("#FF6D00")) })
             }
             is AnnotationRule -> {

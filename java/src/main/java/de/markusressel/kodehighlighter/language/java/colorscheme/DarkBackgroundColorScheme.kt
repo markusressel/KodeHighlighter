@@ -9,13 +9,17 @@ import de.markusressel.kodehighlighter.language.java.rule.*
 import java.util.Collections.emptySet
 
 /**
- * A dark color scheme for markdown text
+ * A dark color scheme for java
  */
 class DarkBackgroundColorScheme : SyntaxColorScheme {
 
     override fun getStyles(type: SyntaxHighlighterRule): Set<StyleFactory> {
         return when (type) {
-            is ImportKeywordRule, is PackageKeywordRule, is ClassKeywordRule, is TypeKeywordRule, is VisibilityKeywordRule -> {
+            is ImportKeywordRule,
+            is PackageKeywordRule,
+            is ClassKeywordRule,
+            is TypeKeywordRule,
+            is VisibilityKeywordRule -> {
                 setOf({ ForegroundColorSpan(Color.parseColor("#FF6D00")) })
             }
             is AnnotationRule -> {
