@@ -4,14 +4,14 @@ import android.text.Spannable
 import android.text.style.CharacterStyle
 
 /**
- * Interface for a SyntaxHighlighter with basic logic for color schemes and applying styles
+ * A function that creates a [CharacterStyle] that can be applied to a [Spannable]
+ */
+typealias StyleFactory = () -> CharacterStyle
+
+/**
+ * Interface for a syntax highlighter with basic logic for color schemes and applying styles
  */
 interface SyntaxHighlighter {
-
-    /**
-     * A set of styles that are currently applied by this highlighter
-     */
-    val appliedStyles: MutableSet<CharacterStyle>
 
     /**
      * The currently active color scheme
@@ -35,14 +35,13 @@ interface SyntaxHighlighter {
      *       be sure to also create one highlighter instance for each spannable.
      *       Otherwise applied styles might not be cleared properly
      *       when refreshing highlighting of an already highlighted spannable.
+     *
+     * @param spannable the [Spannable] to apply highlighting to
+     * @return a list of all [CharacterStyle] instances that were applied
      */
-    fun highlight(spannable: Spannable) {
-        // cleanup previously applied styles
-        clearAppliedStyles(spannable)
-
-        // reapply
-        getRules().forEach { rule ->
-            rule.findMatches(spannable).forEach {
+    fun highlight(spannable: Spannable): List<CharacterStyle> {
+        return getRules().map { rule ->
+            rule.findMatches(spannable).map {
                 val start = it.range.start
                 val end = it.range.endInclusive + 1
 
@@ -51,36 +50,27 @@ interface SyntaxHighlighter {
                 val styles = colorScheme.getStyles(rule)
 
                 highlight(spannable, start, end, styles)
-            }
-        }
+            }.flatten()
+        }.flatten()
     }
 
     /**
-     * Apply a set of styles to a specific part of an spannable
+     * Apply a set of styleFactories to a specific part of an spannable
      *
      * @param spannable the spannable to highlight
      * @param start the starting position
      * @param end the end position (inclusive)
-     * @param styles the styles to apply
+     * @param styleFactories a set of the style factories to apply
+     * @return a list of all applied styles
      */
-    private fun highlight(spannable: Spannable, start: Int, end: Int, styles: Set<() -> CharacterStyle>) {
-        styles.forEach {
-            val style = it()
-            spannable.setSpan(style, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    private fun highlight(spannable: Spannable, start: Int, end: Int, styleFactories: Set<StyleFactory>): List<CharacterStyle> {
+        val stylesToApply = styleFactories.map { it() }
 
-            // remember which styles were applied
-            appliedStyles.add(style)
+        stylesToApply.forEach {
+            spannable.setSpan(it, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
-    }
 
-    /**
-     * Clear any modifications the syntax highlighter may have made to a given spannable
-     */
-    fun clearAppliedStyles(spannable: Spannable) {
-        appliedStyles.forEach {
-            spannable.removeSpan(it)
-        }
-        appliedStyles.clear()
+        return stylesToApply
     }
 
 }

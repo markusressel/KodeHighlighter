@@ -13,6 +13,6 @@ interface SyntaxHighlighterRule {
     /**
      * Find segments in the spannable that are affected by this rule
      */
-    fun findMatches(spannable: Spannable): Sequence<MatchResult>
+    fun findMatches(spannable: Spannable): List<MatchResult>
 
 }

@@ -5,8 +5,8 @@ import de.markusressel.kodehighlighter.core.SyntaxHighlighterRule
 
 class StrikeRule : SyntaxHighlighterRule {
 
-    override fun findMatches(spannable: Spannable): Sequence<MatchResult> {
-        return PATTERN.findAll(spannable)
+    override fun findMatches(spannable: Spannable): List<MatchResult> {
+        return PATTERN.findAll(spannable).toList()
     }
 
     companion object {

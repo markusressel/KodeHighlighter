@@ -11,6 +11,6 @@ interface SyntaxColorScheme {
     /**
      * Get a set of styles to apply for a specific text/section type
      */
-    fun getStyles(type: SyntaxHighlighterRule): Set<() -> CharacterStyle>
+    fun getStyles(type: SyntaxHighlighterRule): Set<StyleFactory>
 
 }
