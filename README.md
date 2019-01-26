@@ -40,7 +40,6 @@ in your desired module ```build.gradle``` file.
 ### Language Autodetection
 
 Currently there is no auto detection for the language used in a text.
-You have to manage the syntax highlighter yourself and call the `setSyntaxHighlighter` method when appropriate.
 
 ### Integrated syntax highlighters
 
@@ -64,7 +63,7 @@ dependencies {
 
 ### Writing a custom syntax highlighter
 
-Using your own rules to highlight text in the editor can be achieved by extending the `SyntaxHighlighterBase` class (which implements the `SyntaxHighlighter` interface):
+Using your own rules to highlight text in the editor can be achieved by extending the `StatefulSyntaxHighlighter` class (which implements the `SyntaxHighlighter` interface):
 
 ```kotlin
 class MarkdownSyntaxHighlighter : StatefulSyntaxHighlighter() {
