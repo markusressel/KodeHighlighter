@@ -11,7 +11,16 @@ class KotlinSyntaxHighlighter : SyntaxHighlighter {
     override var colorScheme: SyntaxColorScheme = DarkBackgroundColorScheme()
 
     override fun getRules(): Set<SyntaxHighlighterRule> {
-        return setOf(AnnotationRule(), ClassKeywordRule(), CommentRule(), ImportKeywordRule(), PackageKeywordRule(), ReturnKeywordRule(), FunctionKeywordRule(), VarKeywordRule(), NumberRule())
+        return setOf(
+                AnnotationRule(),
+                ClassKeywordRule(),
+                CommentRule(),
+                ImportKeywordRule(),
+                PackageKeywordRule(),
+                ReturnKeywordRule(),
+                FunctionKeywordRule(),
+                VarKeywordRule(),
+                NumberRule())
     }
 
 }

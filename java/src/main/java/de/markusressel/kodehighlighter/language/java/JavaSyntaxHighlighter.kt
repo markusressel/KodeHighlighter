@@ -14,7 +14,16 @@ class JavaSyntaxHighlighter : SyntaxHighlighter {
     override var colorScheme: SyntaxColorScheme = DarkBackgroundColorScheme()
 
     override fun getRules(): Set<SyntaxHighlighterRule> {
-        return setOf(PackageKeywordRule(), ImportKeywordRule(), ClassKeywordRule(), AnnotationRule(), TypeKeywordRule(), ReturnKeywordRule(), VisibilityKeywordRule(), CommentRule())
+        return setOf(
+                PackageKeywordRule(),
+                ImportKeywordRule(),
+                ClassKeywordRule(),
+                AnnotationRule(),
+                TypeKeywordRule(),
+                FinalKeywordRule(),
+                ReturnKeywordRule(),
+                VisibilityKeywordRule(),
+                CommentRule())
     }
 
 }

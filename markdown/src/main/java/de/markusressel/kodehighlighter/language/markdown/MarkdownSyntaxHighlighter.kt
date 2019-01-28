@@ -11,7 +11,15 @@ class MarkdownSyntaxHighlighter : SyntaxHighlighter {
     override var colorScheme: SyntaxColorScheme = DarkBackgroundColorScheme()
 
     override fun getRules(): Set<SyntaxHighlighterRule> {
-        return setOf(HeadingRule(), ItalicRule(), BoldRule(), CodeInlineRule(), CodeLineRule(), TextLinkRule(), ImageLinkRule(), StrikeRule())
+        return setOf(
+                HeadingRule(),
+                ItalicRule(),
+                BoldRule(),
+                CodeInlineRule(),
+                CodeLineRule(),
+                TextLinkRule(),
+                ImageLinkRule(),
+                StrikeRule())
     }
 
 }
