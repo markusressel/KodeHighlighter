@@ -23,7 +23,7 @@
             android:id="@+id/markdownLight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#22000000"/>
+            android:background="#22000000" />
 
         <TextView
             android:layout_width="match_parent"
@@ -36,6 +36,17 @@
             android:layout_height="wrap_content"
             android:background="#cc000000"
             android:textColor="@android:color/primary_text_dark" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/edittext_markdown_dark_header" />
+
+        <EditText
+            android:id="@+id/editTextMarkdownDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine|textNoSuggestions" />
 
     </LinearLayout>
 

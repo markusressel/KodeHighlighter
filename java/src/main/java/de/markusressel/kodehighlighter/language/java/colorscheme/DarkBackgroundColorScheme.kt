@@ -19,6 +19,8 @@ class DarkBackgroundColorScheme : SyntaxColorScheme {
             is PackageKeywordRule,
             is ClassKeywordRule,
             is TypeKeywordRule,
+            is StaticKeywordRule,
+            is FinalKeywordRule,
             is VisibilityKeywordRule -> {
                 setOf({ ForegroundColorSpan(Color.parseColor("#FF6D00")) })
             }
