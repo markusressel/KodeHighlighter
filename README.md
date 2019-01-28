@@ -27,7 +27,7 @@ in your project build.gradle file and
 dependencies {
     ...
 
-    def codeHighlighterVersion = "v1.2.1"
+    def codeHighlighterVersion = "v1.2.2"
     implementation("com.github.markusressel.KodeHighlighter:core:${codeHighlighterVersion}")
 }
 ```
