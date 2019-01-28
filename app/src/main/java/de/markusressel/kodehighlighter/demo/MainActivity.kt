@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.SpannableString
 import android.text.TextWatcher
-import de.markusressel.kodehighlighter.core.StatefulSyntaxHighlighter
+import de.markusressel.kodehighlighter.core.EditTextSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.java.JavaSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.markdown.MarkdownSyntaxHighlighter
 import kotlinx.android.synthetic.main.activity_main.*
@@ -42,14 +42,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initEditTextSample() {
-        val javaHighlighter = StatefulSyntaxHighlighter(JavaSyntaxHighlighter())
+        val javaHighlighter = EditTextSyntaxHighlighter(
+                target = editTextMarkdownDark,
+                syntaxHighlighter = JavaSyntaxHighlighter())
+
         editTextMarkdownDark.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
             override fun afterTextChanged(editable: Editable) {
-                javaHighlighter.highlight(editable)
+                javaHighlighter.refreshHighlighting()
             }
         })
 

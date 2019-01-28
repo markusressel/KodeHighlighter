@@ -4,39 +4,44 @@ import android.text.Spannable
 import android.text.style.CharacterStyle
 
 /**
- * A wrapper around a [SyntaxHighlighter] that adds a state so previous
+ * A wrapper around a [SyntaxHighlighter] that adds a state to it so previous
  * highlighting states can be cleared before applying a new one.
- *
- * This can be used when using a [SyntaxHighlighter] with f.ex. an [android.text.Editable].
  */
-open class StatefulSyntaxHighlighter(syntaxHighlighter: SyntaxHighlighter) : SyntaxHighlighter by syntaxHighlighter {
+open class StatefulSyntaxHighlighter(syntaxHighlighter: SyntaxHighlighter)
+    : SyntaxHighlighter by syntaxHighlighter {
 
     /**
      * A set containing all currently applied styles to the [Spannable]
      */
-    internal val appliedStyles: MutableSet<CharacterStyle> = mutableSetOf()
+    open val appliedStyles: MutableSet<CharacterStyle> = mutableSetOf()
 
     override fun highlight(spannable: Spannable): List<CharacterStyle> {
-        clearAppliedStyles(spannable)
-
         val addedStyles = super.highlight(spannable)
-
-        // remember what styles were applied
         appliedStyles.addAll(addedStyles)
-
         return addedStyles
     }
 
     /**
-     * Clear any style modifications the syntax highlighter may have made to the [spannable].
+     * Clear any style modifications the syntax highlighter may have made to the [spannable] based
+     * on the current set of [appliedStyles].
      *
      * @param spannable the spannable [Spannable] to clear
+     * @param resetState true to reset [appliedStyles] state afterwards, false otherwise
      */
-    internal fun clearAppliedStyles(spannable: Spannable) {
+    open fun clearAppliedStyles(spannable: Spannable, resetState: Boolean = true) {
         appliedStyles.forEach {
             spannable.removeSpan(it)
         }
 
+        if (resetState) {
+            resetState()
+        }
+    }
+
+    /**
+     * Resets the internal state of [appliedStyles].
+     */
+    open fun resetState() {
         appliedStyles.clear()
     }
 
