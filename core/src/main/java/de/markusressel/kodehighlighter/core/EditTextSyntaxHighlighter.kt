@@ -39,4 +39,11 @@ open class EditTextSyntaxHighlighter(
         highlight(target.text)
     }
 
+    /**
+     * Clear all currently applied styles
+     */
+    fun clearAppliedStyles() {
+        clearAppliedStyles(target.text)
+    }
+
 }
