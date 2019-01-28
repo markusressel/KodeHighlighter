@@ -9,7 +9,7 @@
     <string name="library_kodehighlighter_libraryName">KodeHighlighter</string>
     <string name="library_kodehighlighter_libraryDescription">Simple, extendable code highlighting for Spannables on Android.</string>
     <string name="library_kodehighlighter_libraryWebsite">@string/library_kodehighlighter_repositoryLink</string>
-    <string name="library_kodehighlighter_libraryVersion">1.1.0</string>
+    <string name="library_kodehighlighter_libraryVersion">1.2.0</string>
     <!-- OpenSource section -->
     <string name="library_kodehighlighter_isOpenSource">true</string>
     <string name="library_kodehighlighter_repositoryLink">https://github.com/markusressel/KodeHighlighter</string>
