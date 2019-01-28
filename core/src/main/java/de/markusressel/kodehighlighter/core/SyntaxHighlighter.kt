@@ -24,11 +24,6 @@ interface SyntaxHighlighter {
     fun getRules(): Set<SyntaxHighlighterRule>
 
     /**
-     * Get the default color scheme to use for this highlighter
-     */
-    fun getDefaultColorScheme(): SyntaxColorScheme
-
-    /**
      * Highlight the given text
      *
      * Note: If you need to highlight multiple spannables at the same time

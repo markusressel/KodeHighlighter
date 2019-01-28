@@ -66,14 +66,12 @@ dependencies {
 Using your own rules to highlight text in the editor can be achieved by extending the `StatefulSyntaxHighlighter` class (which implements the `SyntaxHighlighter` interface):
 
 ```kotlin
-class MarkdownSyntaxHighlighter : StatefulSyntaxHighlighter() {
+class MarkdownSyntaxHighlighter : SyntaxHighlighter {
+
+    override var colorScheme: SyntaxColorScheme = DarkBackgroundColorScheme()
 
     override fun getRules(): Set<SyntaxHighlighterRule> {
         return setOf(HeadingRule(), ItalicRule(), BoldRule(), CodeInlineRule(), CodeLineRule(), TextLinkRule(), ImageLinkRule(), StrikeRule())
-    }
-
-    override fun getDefaultColorScheme(): SyntaxColorScheme {
-        return DarkBackgroundColorScheme()
     }
 
 }

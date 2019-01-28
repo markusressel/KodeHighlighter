@@ -4,17 +4,17 @@ import android.text.Spannable
 import android.text.style.CharacterStyle
 
 /**
- * Implements the [SyntaxHighlighter] interface and adds a state so previous
+ * A wrapper around a [SyntaxHighlighter] that adds a state so previous
  * highlighting states can be cleared before applying a new one.
+ *
+ * This can be used when using a [SyntaxHighlighter] with f.ex. an [android.text.Editable].
  */
-abstract class StatefulSyntaxHighlighter : SyntaxHighlighter {
+open class StatefulSyntaxHighlighter(syntaxHighlighter: SyntaxHighlighter) : SyntaxHighlighter by syntaxHighlighter {
 
     /**
-     * A set containing all currently applied styles to the [target]
+     * A set containing all currently applied styles to the [Spannable]
      */
     internal val appliedStyles: MutableSet<CharacterStyle> = mutableSetOf()
-
-    override var colorScheme: SyntaxColorScheme = getDefaultColorScheme()
 
     override fun highlight(spannable: Spannable): List<CharacterStyle> {
         clearAppliedStyles(spannable)
@@ -28,13 +28,13 @@ abstract class StatefulSyntaxHighlighter : SyntaxHighlighter {
     }
 
     /**
-     * Clear any style modifications the syntax highlighter may have made to the [target]
+     * Clear any style modifications the syntax highlighter may have made to the [spannable].
      *
-     * @param target the target [Spannable] to clear
+     * @param spannable the spannable [Spannable] to clear
      */
-    fun clearAppliedStyles(target: Spannable) {
+    internal fun clearAppliedStyles(spannable: Spannable) {
         appliedStyles.forEach {
-            target.removeSpan(it)
+            spannable.removeSpan(it)
         }
 
         appliedStyles.clear()

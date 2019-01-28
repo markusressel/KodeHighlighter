@@ -6,4 +6,6 @@
 
     <string name="markdown_light_header">Below you can see how a Markdown highlighted text would look like:</string>
     <string name="markdown_dark_header">Here is a sample of a dark theme:</string>
+
+    <string name="edittext_markdown_dark_header">You can also use this in an EditText:</string>
 </resources>
