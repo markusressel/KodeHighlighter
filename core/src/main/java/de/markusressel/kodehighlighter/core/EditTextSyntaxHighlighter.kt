@@ -22,11 +22,17 @@ open class EditTextSyntaxHighlighter(
     : StatefulSyntaxHighlighter(syntaxHighlighter) {
 
     /**
+     * The [Editable] to work with
+     */
+    val editable
+        get() = target.text
+
+    /**
      * The target [EditText] syntax highlighting is applied to
      */
     var target: EditText = target
         set(value) {
-            clearAppliedStyles(field.text)
+            clearAppliedStyles()
             field = value
             refreshHighlighting()
         }
@@ -35,15 +41,15 @@ open class EditTextSyntaxHighlighter(
      * (Re-)Highlight the content of the [target]
      */
     open fun refreshHighlighting() {
-        target.text?.let { clearAppliedStyles(it) }
-        highlight(target.text)
+        editable?.let { clearAppliedStyles(it) }
+        highlight(editable)
     }
 
     /**
      * Clear all currently applied styles
      */
     fun clearAppliedStyles() {
-        clearAppliedStyles(target.text)
+        clearAppliedStyles(editable)
     }
 
 }
