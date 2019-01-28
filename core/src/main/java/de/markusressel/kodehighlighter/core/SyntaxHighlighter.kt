@@ -26,11 +26,6 @@ interface SyntaxHighlighter {
     /**
      * Highlight the given text
      *
-     * Note: If you need to refreshHighlighting multiple spannables at the same time
-     *       be sure to also create one highlighter instance for each spannable.
-     *       Otherwise applied styles might not be cleared properly
-     *       when refreshing highlighting of an already highlighted spannable.
-     *
      * @param spannable the [Spannable] to apply highlighting to
      * @return a list of all [CharacterStyle] instances that were applied
      */
@@ -52,7 +47,7 @@ interface SyntaxHighlighter {
     /**
      * Apply a set of styleFactories to a specific part of an spannable
      *
-     * @param spannable the spannable to refreshHighlighting
+     * @param spannable the spannable to highlighting
      * @param start the starting position
      * @param end the end position (inclusive)
      * @param styleFactories a set of the style factories to apply

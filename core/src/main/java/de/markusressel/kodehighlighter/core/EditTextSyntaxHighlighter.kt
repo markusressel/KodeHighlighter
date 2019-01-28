@@ -4,6 +4,11 @@ import android.widget.EditText
 
 /**
  * Convenience class for using a [SyntaxHighlighter] in an [EditText]
+ *
+ * Note: If you need to highlight multiple [EditText] objects at the same time
+ * be sure to also create one [EditTextSyntaxHighlighter] instance for each [EditText].
+ * Otherwise applied styles might not be cleared properly when refreshing highlighting
+ * of an already highlighted [EditText].
  */
 open class EditTextSyntaxHighlighter(
         /**
