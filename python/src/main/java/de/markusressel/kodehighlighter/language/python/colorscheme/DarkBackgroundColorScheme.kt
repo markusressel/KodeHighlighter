@@ -30,6 +30,9 @@ class DarkBackgroundColorScheme : SyntaxColorScheme {
             is CommentRule -> {
                 setOf({ ForegroundColorSpan(Color.parseColor("#33691E")) })
             }
+            is MagicRule -> {
+                setOf({ ForegroundColorSpan(Color.parseColor("#7C4DFF")) })
+            }
             else -> emptySet()
         }
     }

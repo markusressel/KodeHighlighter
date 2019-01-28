@@ -21,6 +21,7 @@ class PythonSyntaxHighlighter : SyntaxHighlighter {
                 DefKeyword(),
                 ExceptRule(),
                 InternalFunctionsRule(),
+                MagicRule(),
                 OtherKeywordsRule(),
                 ReturnKeywordRule(),
                 SelfKeywordRule(),
