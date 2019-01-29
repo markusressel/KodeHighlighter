@@ -117,6 +117,25 @@ class DarkBackgroundColorScheme : SyntaxColorScheme {
 }
 ```
 
+## Working with `EditText`
+When using this library with an `EditText` view`before applying styles to the changed text you need to clear any previously applied styles to not apply duplicate styling or have leftovers of old stylings. To deal with this the `EditTextSyntaxHighlighter` class is included in this library:
+
+```kotlin
+val javaHighlighter = EditTextSyntaxHighlighter(
+                        target = editTextMarkdownDark,
+                        syntaxHighlighter = JavaSyntaxHighlighter())
+
+editTextMarkdownDark.addTextChangedListener(object : TextWatcher {
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+    override fun afterTextChanged(editable: Editable) {
+        javaHighlighter.refreshHighlighting()
+    }
+})
+```
+
+You can then set or edit any text you like and highlighting will automatically refresh.
+
 # Contributing
 
 GitHub is for social coding: if you want to write code, I encourage contributions through pull requests from forks
