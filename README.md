@@ -118,7 +118,7 @@ class DarkBackgroundColorScheme : SyntaxColorScheme {
 ```
 
 ## Working with `EditText`
-When using this library with an `EditText` view`before applying styles to the changed text you need to clear any previously applied styles to not apply duplicate styling or have leftovers of old stylings. To deal with this the `EditTextSyntaxHighlighter` class is included in this library:
+When using this library with an `EditText` view before applying styles to the changed text you need to clear any previously applied styles to not apply duplicate styling or have leftovers of old stylings. To deal with this the `EditTextSyntaxHighlighter` class is included in this library:
 
 ```kotlin
 val javaHighlighter = EditTextSyntaxHighlighter(
