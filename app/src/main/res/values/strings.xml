@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">demo</string>
+    <string name="app_name">KodeHighlighter</string>
 
     <string name="introduction">This is a demo for the KodeHighlighter library.\n\n
     Highlighting can be applied to any Spannable so it can easily be used inside the standard TextView.</string>
