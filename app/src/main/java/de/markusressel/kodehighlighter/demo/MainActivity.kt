@@ -8,6 +8,7 @@ import android.text.SpannableString
 import android.text.TextWatcher
 import de.markusressel.kodehighlighter.core.EditTextSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.java.JavaSyntaxHighlighter
+import de.markusressel.kodehighlighter.language.json.JsonSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.markdown.MarkdownSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.python.PythonSyntaxHighlighter
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,22 +25,26 @@ class MainActivity : AppCompatActivity() {
 
     private fun initTextViewSamples() {
         val markdownText = readResourceFileAsText(R.raw.markdown_sample)
+        val markdownHighlighter = MarkdownSyntaxHighlighter()
         createSpannable(markdownText).apply {
-            MarkdownSyntaxHighlighter().highlight(this)
+            markdownHighlighter.highlight(this)
             markdownLight.text = this
         }
-
         createSpannable(markdownText).apply {
-            MarkdownSyntaxHighlighter().apply {
-            }.highlight(this)
+            markdownHighlighter.highlight(this)
             markdownDark.text = this
         }
 
         val pythonText = readResourceFileAsText(R.raw.python_example)
         createSpannable(pythonText).apply {
-            PythonSyntaxHighlighter().apply {
-            }.highlight(this)
+            PythonSyntaxHighlighter().highlight(this)
             pythonDark.text = this
+        }
+
+        val json = readResourceFileAsText(R.raw.json_example)
+        createSpannable(json).apply {
+            JsonSyntaxHighlighter().highlight(this)
+            jsonDark.text = this
         }
     }
 

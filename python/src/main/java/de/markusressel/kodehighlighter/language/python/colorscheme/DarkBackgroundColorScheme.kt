@@ -15,12 +15,13 @@ class DarkBackgroundColorScheme : SyntaxColorScheme {
 
     override fun getStyles(type: SyntaxHighlighterRule): Set<StyleFactory> {
         return when (type) {
-            is DefKeyword,
             is ClassKeywordRule,
-            is TypeKeywordRule,
+            is DefKeyword,
             is InternalFunctionsRule,
-            is SelfKeywordRule,
             is OtherKeywordsRule,
+            is ReturnKeywordRule,
+            is SelfKeywordRule,
+            is TypeKeywordRule,
             is ExceptRule -> {
                 setOf({ ForegroundColorSpan(Color.parseColor("#FF6D00")) })
             }
