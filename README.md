@@ -46,18 +46,23 @@ Currently there is no auto detection for the language used in a text.
 This library includes a small set of highlighters for you to use right away without spending time to think about the right code highlighting.
 Here you can find a list of those items:
 
-* markdown
 * java
+* json
 * kotlin
+* markdown
+* python
 
 To include an existing language just pick the ones you would like to use and import them **in addition** to the `core` module:
 
 ```groovy
 dependencies {
     ...
-    implementation("com.github.markusressel.KodeHighlighter:markdown:${codeHighlighterVersion}")
+
     implementation("com.github.markusressel.KodeHighlighter:java:${codeHighlighterVersion}")
+    implementation("com.github.markusressel.KodeHighlighter:json:${codeHighlighterVersion}")
     implementation("com.github.markusressel.KodeHighlighter:kotlin:${codeHighlighterVersion}")
+    implementation("com.github.markusressel.KodeHighlighter:markdown:${codeHighlighterVersion}")
+    implementation("com.github.markusressel.KodeHighlighter:python:${codeHighlighterVersion}")
     [etc.]
 ```
 

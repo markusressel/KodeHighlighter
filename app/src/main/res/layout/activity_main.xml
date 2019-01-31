@@ -42,6 +42,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#cc000000"
+            android:paddingTop="16dp"
+            android:textColor="@android:color/primary_text_dark" />
+
+        <TextView
+            android:id="@+id/jsonDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#cc000000"
+            android:paddingTop="16dp"
             android:textColor="@android:color/primary_text_dark" />
 
         <TextView

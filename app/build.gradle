@@ -43,6 +43,7 @@ dependencies {
     implementation project(':kotlin')
     implementation project(':markdown')
     implementation project(':python')
+    implementation project(':json')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
