@@ -1,6 +1,7 @@
 package de.markusressel.kodehighlighter.demo
 
 import android.os.Bundle
+import android.support.annotation.RawRes
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.SpannableString
@@ -8,6 +9,7 @@ import android.text.TextWatcher
 import de.markusressel.kodehighlighter.core.EditTextSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.java.JavaSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.markdown.MarkdownSyntaxHighlighter
+import de.markusressel.kodehighlighter.language.python.PythonSyntaxHighlighter
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initTextViewSamples() {
-        val markdownText = "# Title\n\n## Subtitle\n\n```kotlin\nval sample = 5\n```"
+        val markdownText = readResourceFileAsText(R.raw.markdown_sample)
         createSpannable(markdownText).apply {
             MarkdownSyntaxHighlighter().highlight(this)
             markdownLight.text = this
@@ -32,6 +34,17 @@ class MainActivity : AppCompatActivity() {
             }.highlight(this)
             markdownDark.text = this
         }
+
+        val pythonText = readResourceFileAsText(R.raw.python_example)
+        createSpannable(pythonText).apply {
+            PythonSyntaxHighlighter().apply {
+            }.highlight(this)
+            pythonDark.text = this
+        }
+    }
+
+    private fun readResourceFileAsText(@RawRes resourceId: Int): String {
+        return resources.openRawResource(resourceId).bufferedReader().readText()
     }
 
     /**
@@ -54,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        val java = "class Test {\n\n  private final String text = \"Hallo!\";\n\n}"
+        val java = readResourceFileAsText(R.raw.java_sample)
         editTextMarkdownDark.setText(java)
     }
 }
