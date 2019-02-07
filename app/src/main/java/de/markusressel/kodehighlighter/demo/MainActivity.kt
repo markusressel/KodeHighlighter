@@ -6,11 +6,13 @@ import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.SpannableString
 import android.text.TextWatcher
+import android.util.Log
 import de.markusressel.kodehighlighter.core.EditTextSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.java.JavaSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.json.JsonSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.markdown.MarkdownSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.python.PythonSyntaxHighlighter
+import de.markusressel.kodehighlighter.language_detection.LanguageClassifier
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +23,11 @@ class MainActivity : AppCompatActivity() {
 
         initTextViewSamples()
         initEditTextSample()
+
+        val pythonText = readResourceFileAsText(R.raw.python_example)
+        val classifier = LanguageClassifier(this)
+        val result = classifier.recognizeLanguage(pythonText)
+        Log.d("BLA", result.joinToString(separator = "\n"))
     }
 
     private fun initTextViewSamples() {

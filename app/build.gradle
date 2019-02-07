@@ -39,6 +39,7 @@ android {
 
 dependencies {
     implementation project(':core')
+    implementation project(':language_detection')
     implementation project(':java')
     implementation project(':kotlin')
     implementation project(':markdown')
