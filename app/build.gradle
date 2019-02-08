@@ -35,6 +35,10 @@ android {
         exclude 'META-INF/LICENSE'
     }
 
+    aaptOptions {
+        noCompress "tflite"
+    }
+
 }
 
 dependencies {

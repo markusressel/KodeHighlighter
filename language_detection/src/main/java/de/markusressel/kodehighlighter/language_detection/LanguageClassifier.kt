@@ -25,7 +25,7 @@ import java.nio.channels.FileChannel
  * @throws IOException
  */
 class LanguageClassifier(context: Context,
-                         val modelFilename: String = DEFAULT_MODEL_ASSET_FILE_PATH,
+                         val modelFilename: String = DEFAULT_MODEL_ASSET_FILE_NAME,
                          val labelFilename: String = DEFAULT_LABEL_ASSET_FILE_NAME,
                          val inputName: String = INPUT_NAME,
                          val outputName: String = OUTPUT_NAME,
@@ -90,7 +90,7 @@ class LanguageClassifier(context: Context,
     }
 
     private fun getModelPath(): String {
-        return DEFAULT_MODEL_ASSET_FILE_PATH
+        return DEFAULT_MODEL_ASSET_FILE_NAME
     }
 
     /**
@@ -100,9 +100,10 @@ class LanguageClassifier(context: Context,
      * @return a list of [Recognition] objects
      */
     fun recognizeLanguage(snippet: String, confidenceThreshold: Float = Float.MIN_VALUE): List<Recognition> {
-        // TODO: input to ByteBuffer??
         val input: ByteArray = snippetToVector(snippet)
-        val inferenceResults: FloatArray = runInference(input)
+        // TODO:
+        val byteBuffer = ByteBuffer.wrap(input)
+        val inferenceResults: FloatArray = runInference(byteBuffer)
 
         return labelList.mapIndexed { index, label ->
             Recognition("$index", label, inferenceResults[index])
@@ -122,7 +123,7 @@ class LanguageClassifier(context: Context,
      *
      * @return: vector
      */
-    private fun snippetToVector(text: String, vectorSize: Int = 2 * 1024, normalizeWhitespace: Boolean = false): ByteArray {
+    private fun snippetToVector(text: String, vectorSize: Int = 2 * 1024, normalizeWhitespace: Boolean = true): ByteArray {
         val result = mutableListOf<Byte>()
 
         var inputText = text
@@ -131,12 +132,16 @@ class LanguageClassifier(context: Context,
         // NOTE: this could backfire due to whitespace significant languages
         // but allows for more code consumed
         if (normalizeWhitespace) {
-            listOf('\n', '\r', '\t').forEach {
-                inputText = inputText.replace(it, ' ')
-            }
+            inputText = inputText.map {
+                when (it) {
+                    '\n', '\r', '\t' -> ' '
+                    else -> it
+                }
+            }.joinToString(separator = "")
         }
 
-        inputText = inputText.replace("\\s+", " ")
+        // reduce multiple whitespaces to a single one to limit their impact
+        inputText = inputText.replace("\\s+".toRegex(), " ")
 
         inputText = inputText.take(vectorSize)
         inputText.forEach {
@@ -154,7 +159,7 @@ class LanguageClassifier(context: Context,
         return result.toByteArray()
     }
 
-    private fun runInference(input: ByteArray): FloatArray {
+    private fun runInference(input: ByteBuffer): FloatArray {
         tflite.run(input, outputs)
         return outputs
     }
@@ -175,8 +180,8 @@ class LanguageClassifier(context: Context,
             }.toMap(this)
         }
 
-        private const val DEFAULT_MODEL_ASSET_FILE_PATH = "file:///android_asset/model.tflite"
-        private const val DEFAULT_LABEL_ASSET_FILE_NAME = "file:///android_asset/labels.txt"
+        private const val DEFAULT_MODEL_ASSET_FILE_NAME = "model.tflite"
+        private const val DEFAULT_LABEL_ASSET_FILE_NAME = "labels.txt"
 
         private const val INPUT_NAME = "dropout_1_input"
         private const val OUTPUT_NAME = "activation_1/Softmax"
