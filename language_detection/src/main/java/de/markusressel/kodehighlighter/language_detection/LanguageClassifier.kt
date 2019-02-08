@@ -47,7 +47,7 @@ class LanguageClassifier(context: Context,
 
     // Pre-allocated buffers.
     private val labelList = loadLabelList()
-    private val outputs: FloatArray
+    private val outputs: Array<FloatArray>
 
     init {
         tfliteModel = loadModelFile()
@@ -60,7 +60,9 @@ class LanguageClassifier(context: Context,
         tflite = Interpreter(tfliteModel as ByteBuffer, tfliteOptions)
 
         // Pre-allocate buffers.
-        outputs = FloatArray(labelList.size)
+        outputs = Array(1) { index ->
+            FloatArray(labelList.size)
+        }
     }
 
     /**
@@ -102,7 +104,7 @@ class LanguageClassifier(context: Context,
     fun recognizeLanguage(snippet: String, confidenceThreshold: Float = Float.MIN_VALUE): List<Recognition> {
         val input: ByteArray = snippetToVector(snippet)
         val byteBuffer = ByteBuffer.wrap(input)
-        val inferenceResults: FloatArray = runInference(byteBuffer)
+        val inferenceResults: FloatArray = runInference(byteBuffer)[0]
 
         return labelList.mapIndexed { index, label ->
             Recognition("$index", label, inferenceResults[index])
@@ -154,7 +156,7 @@ class LanguageClassifier(context: Context,
         return resultVectorList.flatMap { it.toList() }.toByteArray()
     }
 
-    private fun runInference(input: ByteBuffer): FloatArray {
+    private fun runInference(input: ByteBuffer): Array<FloatArray> {
         tflite.run(input, outputs)
         return outputs
     }
