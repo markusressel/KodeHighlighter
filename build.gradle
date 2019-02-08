@@ -24,7 +24,7 @@ buildscript {
         javaxAnnotationVersion = "10.0-b28"
         aboutlibrariesVersion = "6.2.2"
         materialdrawerVersion = "6.1.2"
-        iconicsVersion = "3.2.0"
+        iconicsVersion = "3.2.1"
 
         rxKotlinVersion = "2.3.0"
         rxBindingVersion = "2.1.1"
