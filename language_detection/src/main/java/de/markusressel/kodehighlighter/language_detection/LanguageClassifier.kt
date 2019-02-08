@@ -101,7 +101,6 @@ class LanguageClassifier(context: Context,
      */
     fun recognizeLanguage(snippet: String, confidenceThreshold: Float = Float.MIN_VALUE): List<Recognition> {
         val input: ByteArray = snippetToVector(snippet)
-        // TODO:
         val byteBuffer = ByteBuffer.wrap(input)
         val inferenceResults: FloatArray = runInference(byteBuffer)
 
@@ -123,9 +122,7 @@ class LanguageClassifier(context: Context,
      *
      * @return: vector
      */
-    private fun snippetToVector(text: String, vectorSize: Int = 2 * 1024, normalizeWhitespace: Boolean = true): ByteArray {
-        val result = mutableListOf<Byte>()
-
+    private fun snippetToVector(text: String, vectorSize: Int = 8 * 1024, normalizeWhitespace: Boolean = true): ByteArray {
         var inputText = text
 
         // Normalising whitespace
@@ -143,20 +140,18 @@ class LanguageClassifier(context: Context,
         // reduce multiple whitespaces to a single one to limit their impact
         inputText = inputText.replace("\\s+".toRegex(), " ")
 
-        inputText = inputText.take(vectorSize)
-        inputText.forEach {
-            if (it in CHARACTER_TO_VECTOR_MAP) {
-                result.addAll(CHARACTER_TO_VECTOR_MAP[it]!!)
+        // map every character (up to the vector size)
+        val resultVectorList: MutableList<Array<Byte>> = inputText.take(vectorSize).map {
+            CHARACTER_TO_VECTOR_MAP[it]
+        }.filterNotNull().toMutableList()
+
+        if (resultVectorList.size < vectorSize) {
+            for (j in 0 until (vectorSize - resultVectorList.size)) {
+                resultVectorList.add(PAD_VECTOR)
             }
         }
 
-        if (result.size < vectorSize) {
-            for (j in 0..(vectorSize - result.size)) {
-                result.addAll(PAD_VECTOR)
-            }
-        }
-
-        return result.toByteArray()
+        return resultVectorList.flatMap { it.toList() }.toByteArray()
     }
 
     private fun runInference(input: ByteBuffer): FloatArray {
@@ -172,6 +167,8 @@ class LanguageClassifier(context: Context,
          */
         private const val SUPPORTED_CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789-,;.!?:'/\\|_@#$%^&*~`+-=<>()[]{}\" "
         private val PAD_VECTOR = ByteArray(SUPPORTED_CHARACTERS.length).toTypedArray()
+
+        /** Mapps supported charactors to their respective vector (used to improve performance) */
         private val CHARACTER_TO_VECTOR_MAP: MutableMap<Char, Array<Byte>> = mutableMapOf<Char, Array<Byte>>().apply {
             SUPPORTED_CHARACTERS.mapIndexed { index, c ->
                 val vector = PAD_VECTOR.clone()
