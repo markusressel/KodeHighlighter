@@ -19,18 +19,11 @@ import java.nio.channels.FileChannel
  * the placeholder node for input in the graphdef typically used does not specify a shape, so it
  * must be passed in as a parameter.
  *
- * @param modelFilename The filepath of the model GraphDef protocol buffer.
- * @param labelFilename The filepath of label file for classes.
- * @param inputName     The label of the image input node.
- * @param outputName    The label of the output node.
+ * @param context application context
  * @param useGpu        optional GPU acceleration. Be sure to [close] the [LanguageClassifier] after use otherwise GPU will be blocked!
  * @throws IOException
  */
 class LanguageClassifier(context: Context,
-                         val modelFilename: String = DEFAULT_MODEL_ASSET_FILE_NAME,
-                         val labelFilename: String = DEFAULT_LABEL_ASSET_FILE_NAME,
-                         val inputName: String = INPUT_NAME,
-                         val outputName: String = OUTPUT_NAME,
                          val useGpu: Boolean = true) : Closeable {
 
     private val assetManager: AssetManager = context.assets
@@ -57,9 +50,12 @@ class LanguageClassifier(context: Context,
         if (useGpu && gpuDelegate == null && GpuDelegateHelper.isGpuDelegateAvailable) {
             gpuDelegate = GpuDelegateHelper.createGpuDelegate()
             tfliteOptions.addDelegate(gpuDelegate)
+        } else {
+            // raises error: "NNAPI was requested, but dependent sized tensors being used."
+//            tfliteOptions.setUseNNAPI(true)
         }
 
-        tflite = Interpreter(tfliteModel as ByteBuffer, tfliteOptions)
+        tflite = Interpreter(tfliteModel, tfliteOptions)
 
         // Pre-allocate buffers.
         outputs = Array(1) { index ->
@@ -117,11 +113,8 @@ class LanguageClassifier(context: Context,
         // run tensorflow prediction
         tflite.run(byteBuffer, outputs)
 
-        // get results
-        val inferenceResults: FloatArray = outputs[0]
-
         return labelList.mapIndexed { index, label ->
-            RecognitionResult(index, label, inferenceResults[index])
+            RecognitionResult(index, label, outputs[0][index])
         }.filter {
             it.confidence >= confidenceThreshold
         }.sortedByDescending {
@@ -194,11 +187,11 @@ class LanguageClassifier(context: Context,
             }.toMap(this)
         }
 
-        private const val DEFAULT_MODEL_ASSET_FILE_NAME = "model3.tflite"
+        private const val DEFAULT_MODEL_ASSET_FILE_NAME = "model.tflite"
         private const val DEFAULT_LABEL_ASSET_FILE_NAME = "labels.txt"
 
-        private const val INPUT_NAME = "dropout_1_input"
-        private const val OUTPUT_NAME = "activation_1/Softmax"
+        private const val INPUT_NAME = "activation_1/Softmax"
+        private const val OUTPUT_NAME = "dropout_1_input"
         private const val RUN_STATS = true
     }
 

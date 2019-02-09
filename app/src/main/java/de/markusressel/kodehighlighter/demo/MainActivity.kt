@@ -52,10 +52,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun recognizeLanguageSample() {
-        val codeSample = readResourceFileAsText(R.raw.java_sample)
+        val javaSample = readResourceFileAsText(R.raw.java_sample)
+        val python2Sample = readResourceFileAsText(R.raw.python2_example)
+        val python3Sample = readResourceFileAsText(R.raw.python3_example)
         LanguageClassifier(this, useGpu = false).use {
-            val result = it.recognizeLanguage(codeSample, normalizeWhitespace = false)
-            Log.d(TAG, result.joinToString(separator = "\n"))
+            listOf(javaSample, python2Sample, python3Sample).forEachIndexed { index, text ->
+                val result = it.recognizeLanguage(text, normalizeWhitespace = false)
+                Log.d(TAG, "Sample $index: " + result.joinToString(separator = "\n"))
+            }
         }
     }
 
