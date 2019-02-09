@@ -31,12 +31,10 @@ android {
 dependencies {
     api project(':core')
 
-    // TODO: if tensorflow-lite can handle the model it should be the preferred option
-    // TODO: since tensorflow-android is deprecated
-//    implementation 'org.tensorflow:tensorflow-android:1.12.0'
     // Build off of nightly TensorFlow Lite
-    implementation 'org.tensorflow:tensorflow-lite:0.0.0-nightly'
-//    implementation 'org.tensorflow:tensorflow-lite:1.12.0'
+//    implementation 'org.tensorflow:tensorflow-lite:0.0.0-nightly'
+    // use gpu accelerated version
+    implementation 'org.tensorflow:tensorflow-lite:0.0.0-gpu-experimental'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }

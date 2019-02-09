@@ -2,8 +2,9 @@ package de.markusressel.kodehighlighter.language_detection
 
 import android.content.Context
 import android.content.res.AssetManager
-import org.tensorflow.lite.Delegate
 import org.tensorflow.lite.Interpreter
+import org.tensorflow.lite.experimental.GpuDelegate
+import java.io.Closeable
 import java.io.FileInputStream
 import java.io.IOException
 import java.nio.ByteBuffer
@@ -22,6 +23,7 @@ import java.nio.channels.FileChannel
  * @param labelFilename The filepath of label file for classes.
  * @param inputName     The label of the image input node.
  * @param outputName    The label of the output node.
+ * @param useGpu        optional GPU acceleration. Be sure to [close] the [LanguageClassifier] after use otherwise GPU will be blocked!
  * @throws IOException
  */
 class LanguageClassifier(context: Context,
@@ -29,7 +31,7 @@ class LanguageClassifier(context: Context,
                          val labelFilename: String = DEFAULT_LABEL_ASSET_FILE_NAME,
                          val inputName: String = INPUT_NAME,
                          val outputName: String = OUTPUT_NAME,
-                         val useGpu: Boolean = false) {
+                         val useGpu: Boolean = true) : Closeable {
 
     private val assetManager: AssetManager = context.assets
 
@@ -43,7 +45,7 @@ class LanguageClassifier(context: Context,
     private var tflite: Interpreter
 
     /** holds a gpu delegate */
-    private var gpuDelegate: Delegate? = null
+    private var gpuDelegate: GpuDelegate? = null
 
     // Pre-allocated buffers.
     private val labelList = loadLabelList()
@@ -96,23 +98,35 @@ class LanguageClassifier(context: Context,
     }
 
     /**
-     * Recognize the language of the given snippet
+     * Recognize the language of the given text
      *
-     * @param snippet the code snipped to analyze
-     * @return a list of [Recognition] objects
+     * @param text the code snipped to analyze
+     * @param confidenceThreshold minimum confidence level
+     * @param normalizeWhitespace when set to true all whitespace is is handled like a single space
+     * @return a list of [RecognitionResult] objects
      */
-    fun recognizeLanguage(snippet: String, confidenceThreshold: Float = Float.MIN_VALUE): List<Recognition> {
-        val input: ByteArray = snippetToVector(snippet)
+    fun recognizeLanguage(text: String,
+                          confidenceThreshold: Float = Float.MIN_VALUE,
+                          maxResults: Int = Int.MAX_VALUE,
+                          normalizeWhitespace: Boolean = false): List<RecognitionResult> {
+
+        // prepare text for tensorflow
+        val input: ByteArray = textToVector(text, normalizeWhitespace = normalizeWhitespace)
         val byteBuffer = ByteBuffer.wrap(input)
-        val inferenceResults: FloatArray = runInference(byteBuffer)[0]
+
+        // run tensorflow prediction
+        tflite.run(byteBuffer, outputs)
+
+        // get results
+        val inferenceResults: FloatArray = outputs[0]
 
         return labelList.mapIndexed { index, label ->
-            Recognition("$index", label, inferenceResults[index])
+            RecognitionResult(index, label, inferenceResults[index])
         }.filter {
             it.confidence >= confidenceThreshold
         }.sortedByDescending {
             it.confidence
-        }.take(MAX_RESULTS)
+        }.take(maxResults)
     }
 
     /**
@@ -124,7 +138,7 @@ class LanguageClassifier(context: Context,
      *
      * @return: vector
      */
-    private fun snippetToVector(text: String, vectorSize: Int = 8 * 1024, normalizeWhitespace: Boolean = true): ByteArray {
+    private fun textToVector(text: String, vectorSize: Int = 8 * 1024, normalizeWhitespace: Boolean): ByteArray {
         var inputText = text
 
         // Normalising whitespace
@@ -147,18 +161,19 @@ class LanguageClassifier(context: Context,
             CHARACTER_TO_VECTOR_MAP[it]
         }.filterNotNull().toMutableList()
 
+        // fill up the vector if necessary
         if (resultVectorList.size < vectorSize) {
             for (j in 0 until (vectorSize - resultVectorList.size)) {
                 resultVectorList.add(PAD_VECTOR)
             }
         }
 
+        // combine everything into a single bytearray
         return resultVectorList.flatMap { it.toList() }.toByteArray()
     }
 
-    private fun runInference(input: ByteBuffer): Array<FloatArray> {
-        tflite.run(input, outputs)
-        return outputs
+    override fun close() {
+        gpuDelegate?.close()
     }
 
     companion object {
@@ -179,12 +194,11 @@ class LanguageClassifier(context: Context,
             }.toMap(this)
         }
 
-        private const val DEFAULT_MODEL_ASSET_FILE_NAME = "model.tflite"
+        private const val DEFAULT_MODEL_ASSET_FILE_NAME = "model3.tflite"
         private const val DEFAULT_LABEL_ASSET_FILE_NAME = "labels.txt"
 
         private const val INPUT_NAME = "dropout_1_input"
         private const val OUTPUT_NAME = "activation_1/Softmax"
-        private const val MAX_RESULTS = 3
         private const val RUN_STATS = true
     }
 

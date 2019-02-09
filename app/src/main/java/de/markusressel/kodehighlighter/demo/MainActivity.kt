@@ -23,11 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         initTextViewSamples()
         initEditTextSample()
-
-        val pythonText = readResourceFileAsText(R.raw.python_example)
-        val classifier = LanguageClassifier(this)
-        val result = classifier.recognizeLanguage(pythonText)
-        Log.d("BLA", result.joinToString(separator = "\n"))
+        recognizeLanguageSample()
     }
 
     private fun initTextViewSamples() {
@@ -42,7 +38,7 @@ class MainActivity : AppCompatActivity() {
             markdownDark.text = this
         }
 
-        val pythonText = readResourceFileAsText(R.raw.python_example)
+        val pythonText = readResourceFileAsText(R.raw.python2_example)
         createSpannable(pythonText).apply {
             PythonSyntaxHighlighter().highlight(this)
             pythonDark.text = this
@@ -52,6 +48,14 @@ class MainActivity : AppCompatActivity() {
         createSpannable(json).apply {
             JsonSyntaxHighlighter().highlight(this)
             jsonDark.text = this
+        }
+    }
+
+    private fun recognizeLanguageSample() {
+        val codeSample = readResourceFileAsText(R.raw.java_sample)
+        LanguageClassifier(this, useGpu = false).use {
+            val result = it.recognizeLanguage(codeSample, normalizeWhitespace = false)
+            Log.d(TAG, result.joinToString(separator = "\n"))
         }
     }
 
@@ -81,5 +85,9 @@ class MainActivity : AppCompatActivity() {
 
         val java = readResourceFileAsText(R.raw.java_sample)
         editTextMarkdownDark.setText(java)
+    }
+
+    companion object {
+        const val TAG = "MainActivity"
     }
 }

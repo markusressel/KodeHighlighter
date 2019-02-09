@@ -1,6 +1,6 @@
 package de.markusressel.kodehighlighter.language_detection
 
-import org.tensorflow.lite.Delegate
+import org.tensorflow.lite.experimental.GpuDelegate
 
 object GpuDelegateHelper {
 
@@ -16,15 +16,15 @@ object GpuDelegateHelper {
         }
 
     /** Returns an instance of `GpuDelegate` if available. */
-    fun createGpuDelegate(): Delegate {
+    fun createGpuDelegate(): GpuDelegate {
         try {
             return Class.forName("org.tensorflow.lite.experimental.GpuDelegate")
-                    .asSubclass<Delegate>(Delegate::class.java)
+                    .asSubclass<GpuDelegate>(GpuDelegate::class.java)
                     .getDeclaredConstructor()
                     .newInstance()
         } catch (e: Exception) {
             throw IllegalStateException(e)
         }
-
     }
+
 }

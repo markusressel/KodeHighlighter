@@ -3,12 +3,12 @@ package de.markusressel.kodehighlighter.language_detection
 /**
  * An immutable result returned by a Classifier describing what was recognized.
  */
-data class Recognition(
+data class RecognitionResult(
         /**
          * A unique identifier for what has been recognized. Specific to the class, not the instance of
          * the object.
          */
-        val id: String,
+        val id: Int,
         /**
          * Display name for the recognition.
          */

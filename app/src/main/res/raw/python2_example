@@ -1,0 +1,110 @@
+#!/usr/bin/env python2
+
+#####################################################################################
+#
+#    Pipe something / send file to Pidgin.
+#    Copyright (C) 2013  Max Rosin  git@hackrid.de
+#    Copyright (C) 2013  Andrew Karpow  andy@karamel.overninethousand.de
+#    Copyright (C) 2013  Nico Suhl nico@overninethousand.de
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#####################################################################################
+
+import dbus
+import sys
+import os.path
+import readline
+import argparse
+
+PURPLE_CONV_TYPE_IM = 1
+
+def findBuddy(contact):
+    accounts = purple.PurpleAccountsGetAllActive()
+    for account in accounts:
+        buddies = purple.PurpleFindBuddies(account, '')
+        for buddy in buddies:
+            if (buddy != 0 and purple.PurpleBuddyIsOnline(buddy) and
+                    ( purple.PurpleBuddyGetAlias(buddy) == contact or
+                        purple.PurpleBuddyGetName(buddy) == contact )
+                    ):
+                return (purple.PurpleBuddyGetName(buddy), account)
+
+    return (None, None)
+
+def completer(text, state):
+    options = [buddy[0] for buddy in buddies if buddy[0].startswith(text)]
+    try:
+        return options[state]
+    except IndexError:
+        return None
+
+def getOnlineBuddies():
+    return [(purple.PurpleBuddyGetAlias(buddy),
+        purple.PurpleBuddyGetName(buddy), account)
+        for account in purple.PurpleAccountsGetAllActive()
+        for buddy in purple.PurpleFindBuddies(account, '')
+        if purple.PurpleBuddyIsOnline(buddy)]
+
+if __name__ == "__main__":
+    message = None
+    contact = None
+
+    parser = argparse.ArgumentParser(description='Pipe something or send file to pidgin recipients.')
+    parser.add_argument('-u', '--user', help = 'Send to specific Alias/IM ID.', )
+    parser.add_argument('file', nargs = '?', help = 'Specify file to send, else read from stdin.')
+    args = parser.parse_args()
+
+    if args.file is None:
+        message = sys.stdin.read()
+    else:
+        filepath = os.path.realpath(args.file)
+
+    bus = dbus.SessionBus()
+    obj = bus.get_object("im.pidgin.purple.PurpleService", "/im/pidgin/purple/PurpleObject")
+    purple = dbus.Interface(obj, "im.pidgin.purple.PurpleInterface")
+
+    if args.user is not None:
+        contact, account = findBuddy(args.user)
+
+    if contact is None:
+        print("Select user with <tab>")
+        buddies = getOnlineBuddies()
+        readline.set_completer_delims('')
+        readline.set_completer(completer)
+        readline.parse_and_bind("tab: complete")
+
+        # Reopen stdin if already used
+        if message is not None:
+            sys.stdin = open('/dev/tty')
+
+        while 1:
+            try:
+                line = raw_input(">> ")
+                contact, account = [(buddy[1], buddy[2])
+                        for buddy in buddies if buddy[0] == line][0]
+                if contact is not None:
+                    break
+            except EOFError:
+                line = 'EOF'
+            except IndexError:
+                print("User %s not found" % line)
+                continue
+
+    if message is None:
+        connection = purple.PurpleAccountGetConnection(account)
+        purple.ServSendFile(connection, contact, filepath)
+    else:
+        conversation = purple.PurpleConversationNew(PURPLE_CONV_TYPE_IM, account, contact)
+        purple.PurpleConvImSend(purple.PurpleConvIm(conversation), message)
