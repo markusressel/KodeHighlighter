@@ -3,15 +3,19 @@ package de.markusressel.kodehighlighter.demo
 import android.os.Bundle
 import android.support.annotation.RawRes
 import android.support.v7.app.AppCompatActivity
-import android.text.Editable
 import android.text.SpannableString
-import android.text.TextWatcher
+import android.widget.TextView
 import de.markusressel.kodehighlighter.core.EditTextSyntaxHighlighter
+import de.markusressel.kodehighlighter.core.SyntaxHighlighter
 import de.markusressel.kodehighlighter.language.java.JavaSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.json.JsonSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.markdown.MarkdownSyntaxHighlighter
+import de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgroundColorScheme
 import de.markusressel.kodehighlighter.language.python.PythonSyntaxHighlighter
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,25 +30,29 @@ class MainActivity : AppCompatActivity() {
     private fun initTextViewSamples() {
         val markdownText = readResourceFileAsText(R.raw.markdown_sample)
         val markdownHighlighter = MarkdownSyntaxHighlighter()
-        createSpannable(markdownText).apply {
-            markdownHighlighter.highlight(this)
-            markdownLight.text = this
-        }
-        createSpannable(markdownText).apply {
-            markdownHighlighter.highlight(this)
-            markdownDark.text = this
-        }
+        highlightInCoroutine(markdownText, markdownHighlighter, markdownLight)
+
+        markdownHighlighter.colorScheme = DarkBackgroundColorScheme()
+        highlightInCoroutine(markdownText, markdownHighlighter, markdownDark)
 
         val pythonText = readResourceFileAsText(R.raw.python_example)
-        createSpannable(pythonText).apply {
-            PythonSyntaxHighlighter().highlight(this)
-            pythonDark.text = this
-        }
+        val pythonSyntaxHighlighter = PythonSyntaxHighlighter()
+        highlightInCoroutine(pythonText, pythonSyntaxHighlighter, pythonDark)
 
-        val json = readResourceFileAsText(R.raw.json_example)
-        createSpannable(json).apply {
-            JsonSyntaxHighlighter().highlight(this)
-            jsonDark.text = this
+        val jsonText = readResourceFileAsText(R.raw.json_example)
+        val jsonSyntaxHighlighter = JsonSyntaxHighlighter()
+        jsonSyntaxHighlighter.colorScheme = de.markusressel.kodehighlighter.language.json.colorscheme.DarkBackgroundColorScheme()
+        highlightInCoroutine(jsonText, jsonSyntaxHighlighter, jsonDark)
+    }
+
+    /**
+     * Helper function to highlight something in a coroutine
+     */
+    private fun highlightInCoroutine(text: String, highlighter: SyntaxHighlighter, target: TextView) {
+        CoroutineScope(Dispatchers.Main).launch {
+            val spannable = createSpannable(text)
+            highlighter.highlight(spannable)
+            target.text = spannable
         }
     }
 
@@ -60,19 +68,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initEditTextSample() {
-        val javaHighlighter = EditTextSyntaxHighlighter(
+        val editTextSyntaxHighlighter = EditTextSyntaxHighlighter(
                 target = editTextMarkdownDark,
                 syntaxHighlighter = JavaSyntaxHighlighter())
-
-        editTextMarkdownDark.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(editable: Editable) {
-                javaHighlighter.refreshHighlighting()
-            }
-        })
+        editTextSyntaxHighlighter.start()
 
         val java = readResourceFileAsText(R.raw.java_sample)
-        editTextMarkdownDark.setText(java)
+        editTextMarkdownDark.setText(java.repeat(10))
     }
 }

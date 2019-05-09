@@ -15,8 +15,8 @@ open class StatefulSyntaxHighlighter(syntaxHighlighter: SyntaxHighlighter)
      */
     open val appliedStyles: MutableSet<CharacterStyle> = mutableSetOf()
 
-    override fun highlight(spannable: Spannable): List<CharacterStyle> {
-        val addedStyles = super.highlight(spannable)
+    override suspend fun highlight(spannable: Spannable, highlightEntities: List<HighlightEntity>): List<CharacterStyle> {
+        val addedStyles = super.highlight(spannable, highlightEntities)
         appliedStyles.addAll(addedStyles)
         return addedStyles
     }

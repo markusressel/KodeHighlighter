@@ -1,7 +1,5 @@
 package de.markusressel.kodehighlighter.core
 
-import android.text.Spannable
-
 /**
  * Interface for a single highlighter rule.
  *
@@ -13,6 +11,6 @@ interface SyntaxHighlighterRule {
     /**
      * Find segments in the spannable that are affected by this rule
      */
-    fun findMatches(spannable: Spannable): List<MatchResult>
+    fun findMatches(spannable: CharSequence): List<MatchResult>
 
 }

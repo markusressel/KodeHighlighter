@@ -2,6 +2,8 @@ package de.markusressel.kodehighlighter.core
 
 import android.text.Spannable
 import android.text.style.CharacterStyle
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * A function that creates a [CharacterStyle] that can be applied to a [Spannable]
@@ -24,23 +26,55 @@ interface SyntaxHighlighter {
     fun getRules(): Set<SyntaxHighlighterRule>
 
     /**
-     * Highlight the given text
+     * Analyzes the given text and creates a list of styles that would need to be applied
+     * to it
      *
-     * @param spannable the [Spannable] to apply highlighting to
-     * @return a list of all [CharacterStyle] instances that were applied
+     * @param charSequence the text to analyze
+     * @return list of highlighting entities
      */
-    fun highlight(spannable: Spannable): List<CharacterStyle> {
+    suspend fun createHighlighting(charSequence: CharSequence): List<HighlightEntity> {
         return getRules().map { rule ->
-            rule.findMatches(spannable).map {
+            rule.findMatches(charSequence).map {
                 val start = it.range.start
                 val end = it.range.endInclusive + 1
 
                 // needs to be called for each result
                 // so multiple spans are created and applied
-                val styles = colorScheme.getStyles(rule)
+                val styleFactories = colorScheme.getStyles(rule)
 
-                highlight(spannable, start, end, styles)
-            }.flatten()
+                HighlightEntity(
+                        start = start,
+                        end = end,
+                        styles = styleFactories
+                )
+            }
+        }.flatten()
+    }
+
+    /**
+     * Highlight the given text
+     *
+     * @param spannable the [Spannable] to apply highlighting to
+     * @return a list of all [CharacterStyle] instances that were applied
+     */
+    suspend fun highlight(spannable: Spannable): List<CharacterStyle> {
+        val highlightEntities = withContext(Dispatchers.Default) {
+            createHighlighting(spannable)
+        }
+
+        return highlight(spannable, highlightEntities)
+    }
+
+    /**
+     * Highlight the given text
+     *
+     * @param spannable the [Spannable] to apply highlighting to
+     * @param highlightEntities a list of [HighlightEntity] objects that hold the styles to apply
+     * @return a list of all [CharacterStyle] instances that were applied
+     */
+    suspend fun highlight(spannable: Spannable, highlightEntities: List<HighlightEntity>): List<CharacterStyle> {
+        return highlightEntities.map {
+            highlight(spannable, it.start, it.end, it.styles)
         }.flatten()
     }
 

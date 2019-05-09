@@ -1,6 +1,11 @@
 package de.markusressel.kodehighlighter.core
 
+import android.text.Editable
 import android.widget.EditText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Convenience class for using a [SyntaxHighlighter] in an [EditText]
@@ -18,8 +23,23 @@ open class EditTextSyntaxHighlighter(
         /**
          * The target [EditText] to apply syntax highlighting to
          */
-        target: EditText)
-    : StatefulSyntaxHighlighter(syntaxHighlighter) {
+        target: EditText) {
+
+    /**
+     * The [SyntaxHighlighter] to use
+     */
+    var syntaxHighlighter: SyntaxHighlighter = syntaxHighlighter
+        set(value) {
+            field = value
+            statefulSyntaxHighlighter = StatefulSyntaxHighlighter(value)
+        }
+
+    private var statefulSyntaxHighlighter = StatefulSyntaxHighlighter(syntaxHighlighter)
+        set(value) {
+            clearAppliedStyles()
+            field = value
+            refreshHighlighting()
+        }
 
     /**
      * The [Editable] to work with
@@ -37,19 +57,48 @@ open class EditTextSyntaxHighlighter(
             refreshHighlighting()
         }
 
+    private val textWatcher = DebouncedTextWatcher(
+            delayMs = 100,
+            action = {
+                refreshHighlighting()
+            })
+
     /**
      * (Re-)Highlight the content of the [target]
      */
     open fun refreshHighlighting() {
-        editable?.let { clearAppliedStyles(it) }
-        highlight(editable)
+        if (editable == null) {
+            return
+        }
+
+        CoroutineScope(Dispatchers.Main).launch {
+            val currentText = editable.toString()
+            val highlightEntities = withContext(Dispatchers.Default) {
+                statefulSyntaxHighlighter.createHighlighting(currentText)
+            }
+            clearAppliedStyles()
+            statefulSyntaxHighlighter.highlight(editable, highlightEntities)
+        }
     }
 
     /**
      * Clear all currently applied styles
      */
-    fun clearAppliedStyles() {
-        clearAppliedStyles(editable)
+    open fun clearAppliedStyles() {
+        statefulSyntaxHighlighter.clearAppliedStyles(editable)
     }
 
+    /**
+     * Start continuous highlighting
+     */
+    open fun start() {
+        target.addTextChangedListener(textWatcher)
+    }
+
+    /**
+     * Stop continuous highlighting
+     */
+    open fun cancel() {
+        target.removeTextChangedListener(textWatcher)
+    }
 }
