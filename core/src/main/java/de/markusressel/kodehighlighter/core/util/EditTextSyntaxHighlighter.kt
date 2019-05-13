@@ -1,7 +1,8 @@
-package de.markusressel.kodehighlighter.core
+package de.markusressel.kodehighlighter.core.util
 
 import android.text.Editable
 import android.widget.EditText
+import de.markusressel.kodehighlighter.core.SyntaxHighlighter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,7 +32,7 @@ open class EditTextSyntaxHighlighter(
     var syntaxHighlighter: SyntaxHighlighter = syntaxHighlighter
         set(value) {
             field = value
-            statefulSyntaxHighlighter = StatefulSyntaxHighlighter(value)
+            statefulSyntaxHighlighter = StatefulSyntaxHighlighter(field)
         }
 
     private var statefulSyntaxHighlighter = StatefulSyntaxHighlighter(syntaxHighlighter)

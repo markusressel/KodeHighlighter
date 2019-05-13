@@ -5,8 +5,8 @@ import android.support.annotation.RawRes
 import android.support.v7.app.AppCompatActivity
 import android.text.SpannableString
 import android.widget.TextView
-import de.markusressel.kodehighlighter.core.EditTextSyntaxHighlighter
 import de.markusressel.kodehighlighter.core.SyntaxHighlighter
+import de.markusressel.kodehighlighter.core.util.EditTextSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.java.JavaSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.json.JsonSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.markdown.MarkdownSyntaxHighlighter
@@ -70,10 +70,12 @@ class MainActivity : AppCompatActivity() {
     private fun initEditTextSample() {
         val editTextSyntaxHighlighter = EditTextSyntaxHighlighter(
                 target = editTextMarkdownDark,
-                syntaxHighlighter = JavaSyntaxHighlighter())
+                syntaxHighlighter = MarkdownSyntaxHighlighter())
         editTextSyntaxHighlighter.start()
 
         val java = readResourceFileAsText(R.raw.java_sample)
         editTextMarkdownDark.setText(java.repeat(10))
+
+        editTextSyntaxHighlighter.syntaxHighlighter = JavaSyntaxHighlighter()
     }
 }

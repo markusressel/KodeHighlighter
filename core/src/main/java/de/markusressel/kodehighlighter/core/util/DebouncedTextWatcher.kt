@@ -1,4 +1,4 @@
-package de.markusressel.kodehighlighter.core
+package de.markusressel.kodehighlighter.core.util
 
 import android.text.Editable
 import android.text.TextWatcher

@@ -1,8 +1,8 @@
 package de.markusressel.kodehighlighter.language.json
 
-import de.markusressel.kodehighlighter.core.SyntaxColorScheme
 import de.markusressel.kodehighlighter.core.SyntaxHighlighter
-import de.markusressel.kodehighlighter.core.SyntaxHighlighterRule
+import de.markusressel.kodehighlighter.core.colorscheme.SyntaxColorScheme
+import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
 import de.markusressel.kodehighlighter.language.json.colorscheme.DarkBackgroundColorScheme
 import de.markusressel.kodehighlighter.language.json.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.json.rule.NumericRule

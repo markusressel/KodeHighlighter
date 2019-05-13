@@ -1,4 +1,4 @@
-package de.markusressel.kodehighlighter.core
+package de.markusressel.kodehighlighter.core.rule
 
 /**
  * Interface for a single highlighter rule.
@@ -9,8 +9,11 @@ package de.markusressel.kodehighlighter.core
 interface SyntaxHighlighterRule {
 
     /**
-     * Find segments in the spannable that are affected by this rule
+     * Find segments in the text that are affected by this rule
+     *
+     * @param text the text
+     * @return a list of matching sections
      */
-    fun findMatches(spannable: CharSequence): List<MatchResult>
+    fun findMatches(text: CharSequence): List<RuleMatch>
 
 }

@@ -1,11 +1,13 @@
 package de.markusressel.kodehighlighter.language.python.rule
 
-import de.markusressel.kodehighlighter.core.SyntaxHighlighterRule
+import de.markusressel.kodehighlighter.core.rule.RuleHelper
+import de.markusressel.kodehighlighter.core.rule.RuleMatch
+import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
 
 class OtherKeywordsRule : SyntaxHighlighterRule {
 
-    override fun findMatches(spannable: CharSequence): List<MatchResult> {
-        return PATTERN.findAll(spannable).toList()
+    override fun findMatches(text: CharSequence): List<RuleMatch> {
+        return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
     companion object {

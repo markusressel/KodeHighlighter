@@ -1,8 +1,8 @@
 package de.markusressel.kodehighlighter.language.python
 
-import de.markusressel.kodehighlighter.core.SyntaxColorScheme
 import de.markusressel.kodehighlighter.core.SyntaxHighlighter
-import de.markusressel.kodehighlighter.core.SyntaxHighlighterRule
+import de.markusressel.kodehighlighter.core.colorscheme.SyntaxColorScheme
+import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
 import de.markusressel.kodehighlighter.language.python.colorscheme.DarkBackgroundColorScheme
 import de.markusressel.kodehighlighter.language.python.rule.*
 

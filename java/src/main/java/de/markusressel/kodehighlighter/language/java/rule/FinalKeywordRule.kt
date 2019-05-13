@@ -1,11 +1,13 @@
 package de.markusressel.kodehighlighter.language.java.rule
 
-import de.markusressel.kodehighlighter.core.SyntaxHighlighterRule
+import de.markusressel.kodehighlighter.core.rule.RuleHelper
+import de.markusressel.kodehighlighter.core.rule.RuleMatch
+import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
 
 class FinalKeywordRule : SyntaxHighlighterRule {
 
-    override fun findMatches(spannable: CharSequence): List<MatchResult> {
-        return PATTERN.findAll(spannable).toList()
+    override fun findMatches(text: CharSequence): List<RuleMatch> {
+        return RuleHelper.findRegexMatches(text, AnnotationRule.PATTERN)
     }
 
     companion object {

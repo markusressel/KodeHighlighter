@@ -5,8 +5,8 @@ import android.graphics.Typeface
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import de.markusressel.kodehighlighter.core.StyleFactory
-import de.markusressel.kodehighlighter.core.SyntaxColorScheme
-import de.markusressel.kodehighlighter.core.SyntaxHighlighterRule
+import de.markusressel.kodehighlighter.core.colorscheme.SyntaxColorScheme
+import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
 import de.markusressel.kodehighlighter.language.markdown.rule.*
 
 /**

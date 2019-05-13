@@ -1,7 +1,9 @@
-package de.markusressel.kodehighlighter.core
+package de.markusressel.kodehighlighter.core.util
 
 import android.text.Spannable
 import android.text.style.CharacterStyle
+import de.markusressel.kodehighlighter.core.HighlightEntity
+import de.markusressel.kodehighlighter.core.SyntaxHighlighter
 
 /**
  * A wrapper around a [SyntaxHighlighter] that adds a state to it so previous

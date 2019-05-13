@@ -2,6 +2,8 @@ package de.markusressel.kodehighlighter.core
 
 import android.text.Spannable
 import android.text.style.CharacterStyle
+import de.markusressel.kodehighlighter.core.colorscheme.SyntaxColorScheme
+import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -27,7 +29,9 @@ interface SyntaxHighlighter {
 
     /**
      * Analyzes the given text and creates a list of styles that would need to be applied
-     * to it
+     * to it.
+     *
+     * This combines the given set of rules with the currently set [colorScheme].
      *
      * @param charSequence the text to analyze
      * @return list of highlighting entities
@@ -35,8 +39,8 @@ interface SyntaxHighlighter {
     suspend fun createHighlighting(charSequence: CharSequence): List<HighlightEntity> {
         return getRules().map { rule ->
             rule.findMatches(charSequence).map {
-                val start = it.range.start
-                val end = it.range.endInclusive + 1
+                val start = it.startIndex
+                val end = it.endIndex
 
                 // needs to be called for each result
                 // so multiple spans are created and applied
@@ -83,7 +87,7 @@ interface SyntaxHighlighter {
      *
      * @param spannable the spannable to highlighting
      * @param start the starting position
-     * @param end the end position (inclusive)
+     * @param end the endIndex position (inclusive)
      * @param styleFactories a set of the style factories to apply
      * @return a list of all applied styles
      */
