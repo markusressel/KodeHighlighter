@@ -1,13 +1,11 @@
 package de.markusressel.kodehighlighter.language.kotlin.colorscheme
 
 import android.graphics.Color
-import android.text.style.CharacterStyle
 import android.text.style.ForegroundColorSpan
 import de.markusressel.kodehighlighter.core.StyleFactory
-import de.markusressel.kodehighlighter.language.kotlin.rule.*
 import de.markusressel.kodehighlighter.core.SyntaxColorScheme
 import de.markusressel.kodehighlighter.core.SyntaxHighlighterRule
-import java.util.*
+import de.markusressel.kodehighlighter.language.kotlin.rule.*
 
 /**
  * A dark color scheme for kotlin
@@ -24,18 +22,18 @@ class DarkBackgroundColorScheme : SyntaxColorScheme {
             is FunctionKeywordRule,
             is VisibilityKeywordRule,
             is VarKeywordRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#FF6D00")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }
             }
             is AnnotationRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#FF6D00")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }
             }
             is CommentRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#33691E")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#33691E")) }
             }
             is NumberRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#01579B")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#01579B")) }
             }
-            else -> Collections.emptySet()
+            else -> emptySet()
         }
     }
 

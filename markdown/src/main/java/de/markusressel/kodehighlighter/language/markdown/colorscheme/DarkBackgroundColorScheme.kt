@@ -24,16 +24,16 @@ class DarkBackgroundColorScheme : SyntaxColorScheme {
                 setOf({ ForegroundColorSpan(Color.parseColor("#0091EA")) }, { StyleSpan(Typeface.ITALIC) })
             }
             is CodeInlineRule, is CodeLineRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#00C853")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#00C853")) }
             }
             is HeadingRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#FF6D00")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }
             }
             is ImageLinkRule, is TextLinkRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#7C4DFF")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#7C4DFF")) }
             }
             is StrikeRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#5D4037")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#5D4037")) }
             }
             else -> emptySet()
         }

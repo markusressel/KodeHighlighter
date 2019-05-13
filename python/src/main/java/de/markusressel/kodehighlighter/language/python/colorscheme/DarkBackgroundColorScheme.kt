@@ -23,16 +23,16 @@ class DarkBackgroundColorScheme : SyntaxColorScheme {
             is SelfKeywordRule,
             is TypeKeywordRule,
             is ExceptRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#FF6D00")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }
             }
             is DecoratorRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#FBC02D")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#FBC02D")) }
             }
             is CommentRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#33691E")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#33691E")) }
             }
             is MagicRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#7C4DFF")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#7C4DFF")) }
             }
             else -> emptySet()
         }

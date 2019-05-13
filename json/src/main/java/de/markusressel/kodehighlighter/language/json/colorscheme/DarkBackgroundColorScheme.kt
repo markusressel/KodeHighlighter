@@ -18,13 +18,13 @@ class DarkBackgroundColorScheme : SyntaxColorScheme {
     override fun getStyles(type: SyntaxHighlighterRule): Set<StyleFactory> {
         return when (type) {
             is StringRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#6A8759")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#6A8759")) }
             }
             is NumericRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#7C4DFF")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#7C4DFF")) }
             }
             is LanguageRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#FF6D00")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }
             }
             else -> emptySet()
         }

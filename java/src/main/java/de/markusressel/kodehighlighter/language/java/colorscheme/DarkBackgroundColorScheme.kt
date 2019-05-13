@@ -22,13 +22,13 @@ class DarkBackgroundColorScheme : SyntaxColorScheme {
             is StaticKeywordRule,
             is FinalKeywordRule,
             is VisibilityKeywordRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#FF6D00")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }
             }
             is AnnotationRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#FBC02D")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#FBC02D")) }
             }
             is CommentRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#33691E")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#33691E")) }
             }
             else -> emptySet()
         }
