@@ -7,7 +7,7 @@ import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
 class CommentRule : SyntaxHighlighterRule {
 
     override fun findMatches(text: CharSequence): List<RuleMatch> {
-        return RuleHelper.findRegexMatches(text, AnnotationRule.PATTERN)
+        return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
     companion object {

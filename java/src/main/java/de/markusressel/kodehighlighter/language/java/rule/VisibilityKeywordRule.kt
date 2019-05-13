@@ -7,11 +7,11 @@ import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
 class VisibilityKeywordRule : SyntaxHighlighterRule {
 
     override fun findMatches(text: CharSequence): List<RuleMatch> {
-        return RuleHelper.findRegexMatches(text, AnnotationRule.PATTERN)
+        return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
     companion object {
-        val PATTERN = "public|protected|private".toRegex()
+        val PATTERN = "(public|protected|private)(?=\\s)".toRegex()
     }
 
 }
