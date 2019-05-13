@@ -11,7 +11,7 @@ class TypeKeywordRule : SyntaxHighlighterRule {
     }
 
     companion object {
-        val PATTERN = "(void|bool|int|float|double)(?=\\s)".toRegex()
+        val PATTERN = "(void|boolean|int|float|double)(?=\\s)".toRegex()
     }
 
 }

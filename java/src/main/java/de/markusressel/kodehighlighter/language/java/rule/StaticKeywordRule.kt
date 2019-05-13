@@ -11,7 +11,7 @@ class StaticKeywordRule : SyntaxHighlighterRule {
     }
 
     companion object {
-        val PATTERN = "static(?=\\s)".toRegex()
+        val PATTERN = "(static)(?=\\s)".toRegex()
     }
 
 }

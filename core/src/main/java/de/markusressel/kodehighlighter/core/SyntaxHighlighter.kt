@@ -38,18 +38,13 @@ interface SyntaxHighlighter {
      */
     suspend fun createHighlighting(charSequence: CharSequence): List<HighlightEntity> {
         return getRules().map { rule ->
-            rule.findMatches(charSequence).map {
-                val start = it.startIndex
-                val end = it.endIndex
+            val styleFactories = colorScheme.getStyles(rule)
 
-                // needs to be called for each result
-                // so multiple spans are created and applied
-                val styleFactories = colorScheme.getStyles(rule)
-
+            rule.findMatches(charSequence).map { ruleMatch ->
                 HighlightEntity(
-                        start = start,
-                        end = end,
-                        styles = styleFactories
+                        rule = rule,
+                        styles = styleFactories,
+                        match = ruleMatch
                 )
             }
         }.flatten()
@@ -78,7 +73,7 @@ interface SyntaxHighlighter {
      */
     suspend fun highlight(spannable: Spannable, highlightEntities: List<HighlightEntity>): List<CharacterStyle> {
         return highlightEntities.map {
-            highlight(spannable, it.start, it.end, it.styles)
+            highlight(spannable, it.match.startIndex, it.match.endIndex, it.styles)
         }.flatten()
     }
 

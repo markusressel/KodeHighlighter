@@ -11,7 +11,7 @@ class ReturnKeywordRule : SyntaxHighlighterRule {
     }
 
     companion object {
-        val PATTERN = "return(?=\\s)".toRegex()
+        val PATTERN = "(return)(?=\\s)".toRegex()
     }
 
 }

@@ -21,6 +21,7 @@ class JavaSyntaxHighlighter : SyntaxHighlighter {
                 AnnotationRule(),
                 TypeKeywordRule(),
                 FinalKeywordRule(),
+                StaticKeywordRule(),
                 ReturnKeywordRule(),
                 VisibilityKeywordRule(),
                 CommentRule())
