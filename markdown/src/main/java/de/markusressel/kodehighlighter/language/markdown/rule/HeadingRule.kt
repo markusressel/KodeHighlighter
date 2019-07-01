@@ -11,7 +11,7 @@ class HeadingRule : SyntaxHighlighterRule {
     }
 
     companion object {
-        val PATTERN = "#{1,6} .*".toRegex()
+        val PATTERN = "^\\s*#{1,6} .*".toRegex(RegexOption.MULTILINE)
     }
 
 }
