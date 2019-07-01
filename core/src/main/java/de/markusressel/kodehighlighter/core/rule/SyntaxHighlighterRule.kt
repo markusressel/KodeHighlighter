@@ -3,7 +3,7 @@ package de.markusressel.kodehighlighter.core.rule
 /**
  * Interface for a single highlighter rule.
  *
- * A rule is used to identify text passages that match the rule.
+ * A rule is used to identify text passages that matches the rule.
  * The styles that are applied to those passages are defined in a color scheme.
  */
 interface SyntaxHighlighterRule {

@@ -13,7 +13,7 @@ object RuleHelper {
      * @return list of matches
      */
     fun findRegexMatches(text: CharSequence, regex: Regex) = regex.findAll(text).map {
-        RuleMatch(it.range.start, it.range.endInclusive + 1)
+        RuleMatch(it.range.first, it.range.last + 1)
     }.toList()
 
 }

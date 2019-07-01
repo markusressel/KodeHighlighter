@@ -8,6 +8,5 @@ import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
  */
 data class HighlightEntity(
         val rule: SyntaxHighlighterRule,
-        val match: RuleMatch,
-        val styles: Set<StyleFactory>
+        val matches: List<RuleMatch>
 )

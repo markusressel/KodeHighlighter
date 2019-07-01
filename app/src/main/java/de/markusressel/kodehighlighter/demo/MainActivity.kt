@@ -15,6 +15,7 @@ import de.markusressel.kodehighlighter.language.python.PythonSyntaxHighlighter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -50,9 +51,12 @@ class MainActivity : AppCompatActivity() {
      */
     private fun highlightInCoroutine(text: String, highlighter: SyntaxHighlighter, target: TextView) {
         CoroutineScope(Dispatchers.Main).launch {
-            val spannable = createSpannable(text)
-            highlighter.highlight(spannable)
-            target.text = spannable
+            val spannable = async {
+                val spannable = createSpannable(text)
+                highlighter.highlight(spannable)
+                spannable
+            }
+            target.text = spannable.await()
         }
     }
 

@@ -37,17 +37,16 @@ interface SyntaxHighlighter {
      * @return list of highlighting entities
      */
     suspend fun createHighlighting(charSequence: CharSequence): List<HighlightEntity> {
-        return getRules().map { rule ->
-            val styleFactories = colorScheme.getStyles(rule)
-
-            rule.findMatches(charSequence).map { ruleMatch ->
+        return getRules().mapNotNull { rule ->
+            val matches = rule.findMatches(charSequence)
+            if (matches.isNotEmpty()) {
                 HighlightEntity(
                         rule = rule,
-                        styles = styleFactories,
-                        match = ruleMatch
-                )
+                        matches = matches)
+            } else {
+                null
             }
-        }.flatten()
+        }
     }
 
     /**
@@ -73,7 +72,10 @@ interface SyntaxHighlighter {
      */
     suspend fun highlight(spannable: Spannable, highlightEntities: List<HighlightEntity>): List<CharacterStyle> {
         return highlightEntities.map {
-            highlight(spannable, it.match.startIndex, it.match.endIndex, it.styles)
+            it.matches.map { match ->
+                val styleFactories = colorScheme.getStyles(it.rule)
+                highlight(spannable, match.startIndex, match.endIndex, styleFactories)
+            }.flatten()
         }.flatten()
     }
 
