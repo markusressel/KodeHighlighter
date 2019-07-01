@@ -10,7 +10,7 @@ class MarkdownTest {
     @Test
     fun heading_test() {
         val syntaxHighlighter = MarkdownSyntaxHighlighter().apply {
-            this.colorScheme = DarkBackgroundColorScheme()
+            colorScheme = DarkBackgroundColorScheme()
         }
 
         val fillerText = "Test text\n".repeat(50)
@@ -29,11 +29,53 @@ class MarkdownTest {
             syntaxHighlighter.createHighlighting(text)
         }
 
-        // we only expect headers
+        // we only expect a single role to trigger
         Assert.assertEquals(1, highlightEntities.size)
-
-        // test amount of headers
         Assert.assertEquals(headers.size, highlightEntities.first().matches.size)
+    }
+
+    @Test
+    fun italic_test() {
+        val syntaxHighlighter = MarkdownSyntaxHighlighter().apply {
+            colorScheme = DarkBackgroundColorScheme()
+        }
+
+        val fillerText = "Test text\n".repeat(50)
+        val strikes = listOf(
+                "*strike this text*",
+                "*strike\n this\n text*"
+        )
+
+        val text = strikes.joinToString(prefix = "Start ", separator = "\n$fillerText\n", postfix = " End!")
+
+        val highlightEntities = runBlocking {
+            syntaxHighlighter.createHighlighting(text)
+        }
+
+        Assert.assertEquals(1, highlightEntities.size)
+        Assert.assertEquals(strikes.size, highlightEntities.first().matches.size)
+    }
+
+    @Test
+    fun strike_test() {
+        val syntaxHighlighter = MarkdownSyntaxHighlighter().apply {
+            colorScheme = DarkBackgroundColorScheme()
+        }
+
+        val fillerText = "Test text\n".repeat(50)
+        val strikes = listOf(
+                "~~strike this text~~",
+                "~~strike\n this\n text~~"
+        )
+
+        val text = strikes.joinToString(prefix = "Start ", separator = "\n$fillerText\n", postfix = " End!")
+
+        val highlightEntities = runBlocking {
+            syntaxHighlighter.createHighlighting(text)
+        }
+
+        Assert.assertEquals(1, highlightEntities.size)
+        Assert.assertEquals(strikes.size, highlightEntities.first().matches.size)
     }
 
 
