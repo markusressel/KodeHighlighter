@@ -42,8 +42,8 @@ class MarkdownTest {
 
         val fillerText = "Test text\n".repeat(50)
         val strikes = listOf(
-                "*strike this text*",
-                "*strike\n this\n text*"
+                "*italic this text*",
+                "*italic\n this\n text*"
         )
 
         val text = strikes.joinToString(prefix = "Start ", separator = "\n$fillerText\n", postfix = " End!")
