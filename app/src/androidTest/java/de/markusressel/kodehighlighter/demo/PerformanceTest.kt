@@ -3,9 +3,9 @@ package de.markusressel.kodehighlighter.demo
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import android.text.SpannableStringBuilder
+import de.markusressel.kodehighlighter.core.HighlightEntity
 import de.markusressel.kodehighlighter.language.markdown.MarkdownSyntaxHighlighter
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,14 +33,16 @@ class PerformanceTest {
         val longText = text.repeat(10)
         val spannable = SpannableStringBuilder.valueOf(longText)
 
-        val time = measureTimeMillis {
-            runBlocking {
-                val stuff = markdownSyntaxHighlighter.createHighlighting(longText)
+        runBlocking {
+            var stuff: List<HighlightEntity> = emptyList()
+            val time1 = measureTimeMillis {
+                stuff = markdownSyntaxHighlighter.createHighlighting(longText)
+            }
+            val time2 = measureTimeMillis {
                 markdownSyntaxHighlighter.highlight(spannable, stuff)
             }
-        }
 
-        print("highlighting took: $time ms")
-        Assert.assertTrue(time < 100L)
+            println(time1 + time2)
+        }
     }
 }

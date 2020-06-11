@@ -7,16 +7,12 @@ import android.text.SpannableString
 import android.widget.TextView
 import de.markusressel.kodehighlighter.core.SyntaxHighlighter
 import de.markusressel.kodehighlighter.core.util.EditTextSyntaxHighlighter
-import de.markusressel.kodehighlighter.language.java.JavaSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.json.JsonSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.markdown.MarkdownSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgroundColorScheme
 import de.markusressel.kodehighlighter.language.python.PythonSyntaxHighlighter
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -72,14 +68,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initEditTextSample() {
-        val editTextSyntaxHighlighter = EditTextSyntaxHighlighter(
-                target = editTextMarkdownDark,
-                syntaxHighlighter = MarkdownSyntaxHighlighter())
-        editTextSyntaxHighlighter.start()
+        CoroutineScope(Dispatchers.Main).launch {
+            val editTextSyntaxHighlighter = EditTextSyntaxHighlighter(
+                    target = editTextMarkdownDark,
+                    syntaxHighlighter = MarkdownSyntaxHighlighter())
+            editTextSyntaxHighlighter.start()
 
-        val java = readResourceFileAsText(R.raw.java_sample)
-        editTextMarkdownDark.setText(java.repeat(10))
-
-        editTextSyntaxHighlighter.syntaxHighlighter = JavaSyntaxHighlighter()
+            val markdown = withContext(Dispatchers.IO) {
+                readResourceFileAsText(R.raw.markdown_sample)
+            }
+            editTextMarkdownDark.setText(markdown)
+        }
     }
 }

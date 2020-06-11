@@ -72,8 +72,8 @@ interface SyntaxHighlighter {
      */
     suspend fun highlight(spannable: Spannable, highlightEntities: List<HighlightEntity>): List<CharacterStyle> {
         return highlightEntities.map {
+            val styleFactories = colorScheme.getStyles(it.rule)
             it.matches.map { match ->
-                val styleFactories = colorScheme.getStyles(it.rule)
                 highlight(spannable, match.startIndex, match.endIndex, styleFactories)
             }.flatten()
         }.flatten()
