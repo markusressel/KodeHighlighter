@@ -41,19 +41,21 @@ class MarkdownTest {
         }
 
         val fillerText = "Test text\n".repeat(50)
-        val strikes = listOf(
-                "*italic this text*",
+        val italics = listOf(
+                "*italic this text*"
+        )
+        val ignored = listOf(
                 "*italic\n this\n text*"
         )
 
-        val text = strikes.joinToString(prefix = "Start ", separator = "\n$fillerText\n", postfix = " End!")
+        val text = (italics + ignored).joinToString(prefix = "Start ", separator = "\n$fillerText\n", postfix = " End!")
 
         val highlightEntities = runBlocking {
             syntaxHighlighter.createHighlighting(text)
         }
 
         Assert.assertEquals(1, highlightEntities.size)
-        Assert.assertEquals(strikes.size, highlightEntities.first().matches.size)
+        Assert.assertEquals(italics.size, highlightEntities.first().matches.size)
     }
 
     @Test
