@@ -5,6 +5,7 @@ import android.support.test.runner.AndroidJUnit4
 import android.text.SpannableStringBuilder
 import de.markusressel.kodehighlighter.core.HighlightEntity
 import de.markusressel.kodehighlighter.language.markdown.MarkdownSyntaxHighlighter
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -33,16 +34,34 @@ class PerformanceTest {
         val longText = text.repeat(10)
         val spannable = SpannableStringBuilder.valueOf(longText)
 
-        runBlocking {
-            var stuff: List<HighlightEntity> = emptyList()
-            val time1 = measureTimeMillis {
-                stuff = markdownSyntaxHighlighter.createHighlighting(longText)
-            }
-            val time2 = measureTimeMillis {
-                markdownSyntaxHighlighter.highlight(spannable, stuff)
+        runBlocking(Dispatchers.IO) {
+            var createAvg = 0L
+            var applyAvg = 0L
+            var totalAvg = 0L
+
+            val runs = 10
+            for (i in 1..runs) {
+                var stuff: List<HighlightEntity> = emptyList()
+                val time1 = measureTimeMillis {
+                    stuff = markdownSyntaxHighlighter.createHighlighting(longText)
+                }
+                val time2 = measureTimeMillis {
+                    markdownSyntaxHighlighter.highlight(spannable, stuff)
+                }
+
+                println("Create: $time1")
+                println("Apply: $time2")
+                println("Total: ${time1 + time2}")
+
+                createAvg += time1
+                applyAvg += time2
+                totalAvg += time1 + time2
             }
 
-            println(time1 + time2)
+            println("AVERAGES")
+            println("Create: ${createAvg / runs}")
+            println("Apply: ${applyAvg / runs}")
+            println("Total: ${totalAvg / runs}")
         }
     }
 }

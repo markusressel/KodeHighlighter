@@ -4,8 +4,10 @@ import android.text.Spannable
 import android.text.style.CharacterStyle
 import de.markusressel.kodehighlighter.core.colorscheme.SyntaxColorScheme
 import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 
 /**
  * A function that creates a [CharacterStyle] that can be applied to a [Spannable]
@@ -37,15 +39,20 @@ interface SyntaxHighlighter {
      * @return list of highlighting entities
      */
     suspend fun createHighlighting(charSequence: CharSequence): List<HighlightEntity> {
-        return getRules().mapNotNull { rule ->
-            val matches = rule.findMatches(charSequence)
-            if (matches.isNotEmpty()) {
-                HighlightEntity(
-                        rule = rule,
-                        matches = matches)
-            } else {
-                null
-            }
+        return coroutineScope {
+            getRules().map { rule ->
+                async {
+                    delay(2000)
+                    val matches = rule.findMatches(charSequence)
+                    if (matches.isNotEmpty()) {
+                        HighlightEntity(
+                                rule = rule,
+                                matches = matches)
+                    } else {
+                        null
+                    }
+                }
+            }.awaitAll().filterNotNull()
         }
     }
 
@@ -56,10 +63,7 @@ interface SyntaxHighlighter {
      * @return a list of all [CharacterStyle] instances that were applied
      */
     suspend fun highlight(spannable: Spannable): List<CharacterStyle> {
-        val highlightEntities = withContext(Dispatchers.Default) {
-            createHighlighting(spannable)
-        }
-
+        val highlightEntities = createHighlighting(spannable)
         return highlight(spannable, highlightEntities)
     }
 
@@ -90,11 +94,9 @@ interface SyntaxHighlighter {
      */
     private fun highlight(spannable: Spannable, start: Int, end: Int, styleFactories: Set<StyleFactory>): List<CharacterStyle> {
         val stylesToApply = styleFactories.map { it() }
-
         stylesToApply.forEach {
             spannable.setSpan(it, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
-
         return stylesToApply
     }
 

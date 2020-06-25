@@ -3,10 +3,7 @@ package de.markusressel.kodehighlighter.core.util
 import android.text.Editable
 import android.widget.EditText
 import de.markusressel.kodehighlighter.core.SyntaxHighlighter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 /**
  * Convenience class for using a [SyntaxHighlighter] in an [EditText]
@@ -42,6 +39,8 @@ open class EditTextSyntaxHighlighter(
             refreshHighlighting()
         }
 
+    private var highlightingJob: Job? = null
+
     /**
      * The [Editable] to work with
      */
@@ -68,11 +67,12 @@ open class EditTextSyntaxHighlighter(
      * (Re-)Highlight the content of the [target]
      */
     open fun refreshHighlighting() {
+        highlightingJob?.cancel("Requested new highlighting")
         if (editable == null) {
             return
         }
 
-        CoroutineScope(Dispatchers.Main).launch {
+        highlightingJob = CoroutineScope(Dispatchers.Main).launch {
             val currentText = editable.toString()
             val highlightEntities = withContext(Dispatchers.Default) {
                 statefulSyntaxHighlighter.createHighlighting(currentText)
