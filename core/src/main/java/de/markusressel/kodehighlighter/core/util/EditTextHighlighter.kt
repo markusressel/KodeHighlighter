@@ -105,7 +105,7 @@ open class EditTextHighlighter(
     /**
      * Create a copy of a Set
      */
-    fun <T> Set<T>.copyOf(): Set<T> {
+    private fun <T> Set<T>.copyOf(): Set<T> {
         val original = this
         return mutableSetOf<T>().apply { addAll(original) }
     }
