@@ -3,6 +3,7 @@ package de.markusressel.kodehighlighter.language.json
 import de.markusressel.kodehighlighter.core.LanguageRuleBook
 import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
 import de.markusressel.kodehighlighter.language.json.colorscheme.DarkBackgroundColorScheme
+import de.markusressel.kodehighlighter.language.json.rule.KeywordRule
 import de.markusressel.kodehighlighter.language.json.rule.NumericRule
 import de.markusressel.kodehighlighter.language.json.rule.StringRule
 
@@ -17,7 +18,7 @@ class JsonRuleBook : LanguageRuleBook {
         return setOf(
                 StringRule(),
                 NumericRule(),
-                LanguageRule()
+                KeywordRule()
         )
     }
 

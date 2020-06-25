@@ -73,12 +73,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initEditTextSample() {
-        CoroutineScope(Dispatchers.Main).launch {
-            val editTextHighlighter = EditTextHighlighter(
-                    target = editTextMarkdownDark,
-                    languageRuleBook = MarkdownRuleBook())
-            editTextHighlighter.start()
+        val editTextHighlighter = EditTextHighlighter(
+                target = editTextMarkdownDark,
+                languageRuleBook = MarkdownRuleBook())
+        editTextHighlighter.start()
 
+        CoroutineScope(Dispatchers.Main).launch {
             val markdown = withContext(Dispatchers.IO) {
                 readResourceFileAsText(R.raw.markdown_sample)
             }

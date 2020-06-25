@@ -31,15 +31,15 @@ CoroutineScope(Dispatchers.Main).launch {
 ## Working with `EditText`
 When using this library with an `EditText` view, previously applied styles need to be removed
 when the highlighting is updated due to a text change. To make it easy for you to deal with this
-the `EditTextSyntaxHighlighter` class can be used:
+the `EditTextHighlighter` class can be used:
 
 ```kotlin
-CoroutineScope(Dispatchers.Main).launch {
-    val editTextHighlighter = EditTextHighlighter(
-            target = yourEditTextView,
-            languageRuleBook = MarkdownRuleBook())
-    editTextHighlighter.start()
+val editTextHighlighter = EditTextHighlighter(
+        target = editTextMarkdownDark,
+        languageRuleBook = MarkdownRuleBook())
+editTextHighlighter.start()
 
+CoroutineScope(Dispatchers.Main).launch {
     val markdown = withContext(Dispatchers.IO) {
         readResourceFileAsText(R.raw.markdown_sample)
     }
@@ -109,7 +109,7 @@ dependencies {
 
 A `LanguageRuleBook` consists of a **default color scheme** and a **set of rules** that provide
 information on how to style different parts of the `Spannable`. Have a look at how the
-[MarkdownSyntaxHighlighter](markdown/src/main/java/de/markusressel/kodehighlighter/language/markdown/MarkdownRuleBook.kt)
+[MarkdownRuleBook](markdown/src/main/java/de/markusressel/kodehighlighter/language/markdown/MarkdownRuleBook.kt)
 is implemented to get a feel for how to implement it yourself.
 
 ### Styling
