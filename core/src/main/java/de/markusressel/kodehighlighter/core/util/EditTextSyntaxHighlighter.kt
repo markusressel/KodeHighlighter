@@ -2,6 +2,7 @@ package de.markusressel.kodehighlighter.core.util
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.text.style.CharacterStyle
 import android.widget.EditText
 import de.markusressel.kodehighlighter.core.SyntaxHighlighter
 import kotlinx.coroutines.*
@@ -45,7 +46,7 @@ open class EditTextSyntaxHighlighter(
     /**
      * The [Editable] to work with
      */
-    val editable
+    val editable: Editable
         get() = target.text
 
     /**
@@ -83,30 +84,45 @@ open class EditTextSyntaxHighlighter(
     open fun refreshHighlighting() {
         highlightingJob?.cancel("Requested new highlighting")
         highlightingJob = null
-        if (editable == null) {
-            return
-        }
 
         highlightingJob = CoroutineScope(Dispatchers.Main).launch {
             val currentText = editable.toString()
             val highlightEntities = withContext(Dispatchers.Default) {
                 statefulSyntaxHighlighter.createHighlighting(currentText)
             }
-            clearAppliedStyles()
+            val previousStyles = statefulSyntaxHighlighter.appliedStyles.copyOf()
             try {
                 statefulSyntaxHighlighter.highlight(editable, highlightEntities)
             } catch (e: IndexOutOfBoundsException) {
                 // text has changed while we were trying to apply styles to it
                 // the next highlighting run will fix this
+            } finally {
+                removeStyles(previousStyles)
             }
         }
     }
 
     /**
+     * Create a copy of a Set
+     */
+    fun <T> Set<T>.copyOf(): Set<T> {
+        val original = this
+        return mutableSetOf<T>().apply { addAll(original) }
+    }
+
+    /**
      * Clear all currently applied styles
      */
-    open fun clearAppliedStyles() {
-        statefulSyntaxHighlighter.clearAppliedStyles(editable)
+    open fun clearAppliedStyles() = statefulSyntaxHighlighter.clearAppliedStyles(editable)
+
+    /**
+     * Remove a list of currently applied styles
+     */
+    open fun removeStyles(styles: Set<CharacterStyle>) {
+        styles.forEach {
+            editable.removeSpan(it)
+            statefulSyntaxHighlighter.appliedStyles.remove(it)
+        }
     }
 
     /**
