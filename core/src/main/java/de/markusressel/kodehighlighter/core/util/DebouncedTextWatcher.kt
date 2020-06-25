@@ -4,8 +4,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.*
 
 /**
  * TextWatcher with built in support for debouncing fast input
@@ -18,22 +18,20 @@ open class DebouncedTextWatcher(
         val action: ((CharSequence?) -> Unit))
     : TextWatcher {
 
-    private var previousText: CharSequence = ""
+    private var timer = Timer()
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         val text = s?.toString() ?: ""
-        if (text == previousText)
-            return
 
-        previousText = text
-
-        CoroutineScope(Dispatchers.Main).launch {
-            delay(delayMs)  //debounce timeOut
-            if (text != previousText)
-                return@launch
-
-            action(text)
-        }
+        timer.cancel()
+        timer = Timer()
+        timer.schedule(object : TimerTask() {
+            override fun run() {
+                CoroutineScope(Dispatchers.Main).launch {
+                    action(text)
+                }
+            }
+        }, delayMs)
     }
 
     override fun afterTextChanged(s: Editable?) = Unit

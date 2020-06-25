@@ -71,11 +71,15 @@ interface SyntaxHighlighter {
      * @param highlightEntities a list of [HighlightEntity] objects that hold the styles to apply
      */
     suspend fun highlight(spannable: Spannable, highlightEntities: List<HighlightEntity>) {
-        highlightEntities.map {
-            val styleFactories = colorScheme.getStyles(it.rule)
-            it.matches.map { match ->
-                highlight(spannable, match.startIndex, match.endIndex, styleFactories)
-            }
+        coroutineScope {
+            highlightEntities.map {
+                async {
+                    val styleFactories = colorScheme.getStyles(it.rule)
+                    it.matches.map { match ->
+                        highlight(spannable, match.startIndex, match.endIndex, styleFactories)
+                    }
+                }
+            }.awaitAll()
         }
     }
 
