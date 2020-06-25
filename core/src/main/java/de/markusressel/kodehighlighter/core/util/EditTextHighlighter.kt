@@ -96,9 +96,9 @@ open class EditTextHighlighter(
             } catch (e: IndexOutOfBoundsException) {
                 // text has changed while we were trying to apply styles to it
                 // the next highlighting run will fix this
-            } finally {
-                removeStyles(previousStyles)
+                clearAppliedStyles()
             }
+            removeStyles(previousStyles)
         }
     }
 
