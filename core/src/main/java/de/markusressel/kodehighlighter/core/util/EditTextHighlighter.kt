@@ -4,37 +4,37 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.text.style.CharacterStyle
 import android.widget.EditText
-import de.markusressel.kodehighlighter.core.SyntaxHighlighter
+import de.markusressel.kodehighlighter.core.LanguageRuleBook
 import kotlinx.coroutines.*
 
 /**
- * Convenience class for using a [SyntaxHighlighter] in an [EditText]
+ * Convenience class for using a [LanguageRuleBook] in an [EditText]
  *
  * Note: If you need to highlight multiple [EditText] objects at the same time
- * be sure to also create one [EditTextSyntaxHighlighter] instance for each [EditText].
+ * be sure to also create one [EditTextHighlighter] instance for each [EditText].
  * Otherwise applied styles might not be cleared properly when refreshing highlighting
  * of an already highlighted [EditText].
  */
-open class EditTextSyntaxHighlighter(
+open class EditTextHighlighter(
         /**
-         * The [SyntaxHighlighter] to use
+         * The [LanguageRuleBook] to use
          */
-        syntaxHighlighter: SyntaxHighlighter,
+        languageRuleBook: LanguageRuleBook,
         /**
          * The target [EditText] to apply syntax highlighting to
          */
         target: EditText) {
 
     /**
-     * The [SyntaxHighlighter] to use
+     * The [LanguageRuleBook] to use
      */
-    var syntaxHighlighter: SyntaxHighlighter = syntaxHighlighter
+    var languageRuleBook: LanguageRuleBook = languageRuleBook
         set(value) {
             field = value
-            statefulSyntaxHighlighter = StatefulSpannableHighlightingManager(field, field.defaultColorScheme)
+            statefulSyntaxHighlighter = StatefulSpannableHighlighter(field, field.defaultColorScheme)
         }
 
-    private var statefulSyntaxHighlighter = StatefulSpannableHighlightingManager(syntaxHighlighter, syntaxHighlighter.defaultColorScheme)
+    private var statefulSyntaxHighlighter = StatefulSpannableHighlighter(languageRuleBook, languageRuleBook.defaultColorScheme)
         set(value) {
             clearAppliedStyles()
             field = value

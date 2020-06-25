@@ -2,21 +2,21 @@ package de.markusressel.kodehighlighter.core.util
 
 import android.text.Spannable
 import android.text.style.CharacterStyle
-import de.markusressel.kodehighlighter.core.HighlightEntity
+import de.markusressel.kodehighlighter.core.LanguageRuleBook
+import de.markusressel.kodehighlighter.core.RuleMatches
 import de.markusressel.kodehighlighter.core.StyleFactory
-import de.markusressel.kodehighlighter.core.SyntaxHighlighter
-import de.markusressel.kodehighlighter.core.colorscheme.SyntaxColorScheme
+import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
 /**
- * Manages the interaction between a [Spannable] and a [SyntaxHighlighter]
+ * Manages the interaction between a [Spannable] and a [LanguageRuleBook]
  */
-open class SpannableHighlightingManager(
-        private val syntaxHighlighter: SyntaxHighlighter,
-        private val colorScheme: SyntaxColorScheme = syntaxHighlighter.defaultColorScheme)
-    : SyntaxHighlighter by syntaxHighlighter {
+open class SpannableHighlighter(
+        private val languageRuleBook: LanguageRuleBook,
+        private val colorScheme: ColorScheme = languageRuleBook.defaultColorScheme)
+    : LanguageRuleBook by languageRuleBook {
 
     /**
      * Highlight the given text
@@ -24,7 +24,7 @@ open class SpannableHighlightingManager(
      * @param spannable the [Spannable] to apply highlighting to
      */
     open suspend fun highlight(spannable: Spannable) {
-        val highlightEntities = syntaxHighlighter.createHighlighting(spannable)
+        val highlightEntities = languageRuleBook.createHighlighting(spannable)
         highlight(spannable, highlightEntities)
     }
 
@@ -32,11 +32,11 @@ open class SpannableHighlightingManager(
      * Highlight the given text
      *
      * @param spannable the [Spannable] to apply highlighting to
-     * @param highlightEntities a list of [HighlightEntity] objects that hold the styles to apply
+     * @param ruleMatches a list of [RuleMatches] objects that hold the styles to apply
      */
-    open suspend fun highlight(spannable: Spannable, highlightEntities: List<HighlightEntity>) {
+    open suspend fun highlight(spannable: Spannable, ruleMatches: List<RuleMatches>) {
         coroutineScope {
-            highlightEntities.map {
+            ruleMatches.map {
                 async {
                     val styleFactories = colorScheme.getStyles(it.rule)
                     it.matches.map { match ->

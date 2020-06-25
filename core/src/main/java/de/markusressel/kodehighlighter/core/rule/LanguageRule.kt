@@ -1,12 +1,12 @@
 package de.markusressel.kodehighlighter.core.rule
 
 /**
- * Interface for a single highlighter rule.
+ * Interface for a single language rule.
  *
- * A rule is used to identify text passages that matches the rule.
- * The styles that are applied to those passages are defined in a color scheme.
+ * A rule is used to identify text passages that match characteristic words or tokens in a text.
+ * The styles that are applied to those passages are defined in a [ColorScheme].
  */
-interface SyntaxHighlighterRule {
+interface LanguageRule {
 
     /**
      * Find segments in the text that are affected by this rule

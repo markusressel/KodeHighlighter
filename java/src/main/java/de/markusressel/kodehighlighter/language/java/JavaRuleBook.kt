@@ -1,19 +1,19 @@
 package de.markusressel.kodehighlighter.language.java
 
-import de.markusressel.kodehighlighter.core.SyntaxHighlighter
-import de.markusressel.kodehighlighter.core.colorscheme.SyntaxColorScheme
-import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
+import de.markusressel.kodehighlighter.core.LanguageRuleBook
+import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
+import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.java.colorscheme.DarkBackgroundColorScheme
 import de.markusressel.kodehighlighter.language.java.rule.*
 
 /**
- * Java syntax highlighter
+ * Java language rule book
  */
-class JavaSyntaxHighlighter : SyntaxHighlighter {
+class JavaRuleBook : LanguageRuleBook {
 
-    override val defaultColorScheme: SyntaxColorScheme = DarkBackgroundColorScheme()
+    override val defaultColorScheme: ColorScheme = DarkBackgroundColorScheme()
 
-    override fun getRules(): Set<SyntaxHighlighterRule> {
+    override fun getRules(): Set<LanguageRule> {
         return setOf(
                 PackageKeywordRule(),
                 ImportKeywordRule(),

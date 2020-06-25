@@ -8,7 +8,7 @@ class MarkdownTest {
 
     @Test
     fun heading_test() {
-        val syntaxHighlighter = MarkdownSyntaxHighlighter()
+        val ruleBook = MarkdownRuleBook()
 
         val fillerText = "Test text\n".repeat(50)
         val headers = listOf(
@@ -23,7 +23,7 @@ class MarkdownTest {
         val text = headers.joinToString(separator = "\n$fillerText\n")
 
         val highlightEntities = runBlocking {
-            syntaxHighlighter.createHighlighting(text)
+            ruleBook.createHighlighting(text)
         }
 
         // we only expect a single role to trigger
@@ -33,7 +33,7 @@ class MarkdownTest {
 
     @Test
     fun italic_test() {
-        val syntaxHighlighter = MarkdownSyntaxHighlighter()
+        val ruleBook = MarkdownRuleBook()
 
         val fillerText = "Test text\n".repeat(50)
         val italics = listOf(
@@ -46,7 +46,7 @@ class MarkdownTest {
         val text = (italics + ignored).joinToString(prefix = "Start ", separator = "\n$fillerText\n", postfix = " End!")
 
         val highlightEntities = runBlocking {
-            syntaxHighlighter.createHighlighting(text)
+            ruleBook.createHighlighting(text)
         }
 
         Assert.assertEquals(1, highlightEntities.size)
@@ -55,7 +55,7 @@ class MarkdownTest {
 
     @Test
     fun strike_test() {
-        val syntaxHighlighter = MarkdownSyntaxHighlighter()
+        val ruleBook = MarkdownRuleBook()
 
         val fillerText = "Test text\n".repeat(50)
         val strikes = listOf(
@@ -66,7 +66,7 @@ class MarkdownTest {
         val text = strikes.joinToString(prefix = "Start ", separator = "\n$fillerText\n", postfix = " End!")
 
         val highlightEntities = runBlocking {
-            syntaxHighlighter.createHighlighting(text)
+            ruleBook.createHighlighting(text)
         }
 
         Assert.assertEquals(1, highlightEntities.size)

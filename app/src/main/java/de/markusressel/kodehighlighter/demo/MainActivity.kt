@@ -5,14 +5,17 @@ import android.support.annotation.RawRes
 import android.support.v7.app.AppCompatActivity
 import android.text.SpannableString
 import android.widget.TextView
-import de.markusressel.kodehighlighter.core.util.EditTextSyntaxHighlighter
-import de.markusressel.kodehighlighter.core.util.SpannableHighlightingManager
-import de.markusressel.kodehighlighter.language.json.JsonSyntaxHighlighter
-import de.markusressel.kodehighlighter.language.markdown.MarkdownSyntaxHighlighter
+import de.markusressel.kodehighlighter.core.util.EditTextHighlighter
+import de.markusressel.kodehighlighter.core.util.SpannableHighlighter
+import de.markusressel.kodehighlighter.language.json.JsonRuleBook
+import de.markusressel.kodehighlighter.language.markdown.MarkdownRuleBook
 import de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgroundColorScheme
-import de.markusressel.kodehighlighter.language.python.PythonSyntaxHighlighter
+import de.markusressel.kodehighlighter.language.python.PythonRuleBook
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,35 +29,35 @@ class MainActivity : AppCompatActivity() {
 
     private fun initTextViewSamples() {
         val markdownText = readResourceFileAsText(R.raw.markdown_sample)
-        val markdownHighlighter = MarkdownSyntaxHighlighter()
-        val markdownManager = SpannableHighlightingManager(markdownHighlighter, DarkBackgroundColorScheme())
+        val markdownRuleBook = MarkdownRuleBook()
+        val markdownHighlighter = SpannableHighlighter(markdownRuleBook, DarkBackgroundColorScheme())
 
         // TODO: currently there is no light theme
-        highlightInCoroutine(markdownText, markdownManager, markdownLight)
-        highlightInCoroutine(markdownText, markdownManager, markdownDark)
+        highlightInCoroutine(markdownText, markdownHighlighter, markdownLight)
+        highlightInCoroutine(markdownText, markdownHighlighter, markdownDark)
 
         val pythonText = readResourceFileAsText(R.raw.python_example)
-        val pythonSyntaxHighlighter = PythonSyntaxHighlighter()
-        val pythonManager = SpannableHighlightingManager(pythonSyntaxHighlighter)
-        highlightInCoroutine(pythonText, pythonManager, pythonDark)
+        val pythonRuleBook = PythonRuleBook()
+        val pythonHighlighter = SpannableHighlighter(pythonRuleBook)
+        highlightInCoroutine(pythonText, pythonHighlighter, pythonDark)
 
         val jsonText = readResourceFileAsText(R.raw.json_example)
-        val jsonSyntaxHighlighter = JsonSyntaxHighlighter()
-        val jsonManager = SpannableHighlightingManager(jsonSyntaxHighlighter, de.markusressel.kodehighlighter.language.json.colorscheme.DarkBackgroundColorScheme())
-        highlightInCoroutine(jsonText, jsonManager, jsonDark)
+        val jsonRuleBook = JsonRuleBook()
+        val jsonHighlighter = SpannableHighlighter(jsonRuleBook, de.markusressel.kodehighlighter.language.json.colorscheme.DarkBackgroundColorScheme())
+        highlightInCoroutine(jsonText, jsonHighlighter, jsonDark)
     }
 
     /**
      * Helper function to highlight something in a coroutine
      */
-    private fun highlightInCoroutine(text: String, spannableManager: SpannableHighlightingManager, target: TextView) {
+    private fun highlightInCoroutine(text: String, highlighter: SpannableHighlighter, target: TextView) {
         CoroutineScope(Dispatchers.Main).launch {
-            val spannable = async {
+            val spannable = withContext(Dispatchers.Default) {
                 val spannable = createSpannable(text)
-                spannableManager.highlight(spannable)
+                highlighter.highlight(spannable)
                 spannable
             }
-            target.text = spannable.await()
+            target.text = spannable
         }
     }
 
@@ -71,10 +74,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun initEditTextSample() {
         CoroutineScope(Dispatchers.Main).launch {
-            val editTextSyntaxHighlighter = EditTextSyntaxHighlighter(
+            val editTextHighlighter = EditTextHighlighter(
                     target = editTextMarkdownDark,
-                    syntaxHighlighter = MarkdownSyntaxHighlighter())
-            editTextSyntaxHighlighter.start()
+                    languageRuleBook = MarkdownRuleBook())
+            editTextHighlighter.start()
 
             val markdown = withContext(Dispatchers.IO) {
                 readResourceFileAsText(R.raw.markdown_sample)

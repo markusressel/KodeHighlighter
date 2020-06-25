@@ -11,6 +11,44 @@ Simple, extendable code highlighting for Spannables on Android.
 # How to use
 Have a look at the demo app (`app`  module) for a complete sample.
 
+## Simple example
+
+```kotlin
+val markdownText = readResourceFileAsText(R.raw.markdown_sample)
+val markdownRuleBook = MarkdownRuleBook()
+val markdownHighlighter = SpannableHighlighter(markdownRuleBook, DarkBackgroundColorScheme())
+
+CoroutineScope(Dispatchers.Main).launch {
+    val spannable = withContext(Dispatchers.Default) {
+        val spannable = createSpannable(text)
+        markdownHighlighter.highlight(spannable)
+        spannable
+    }
+    target.text = spannable
+}
+```
+
+## Working with `EditText`
+When using this library with an `EditText` view, previously applied styles need to be removed
+when the highlighting is updated due to a text change. To make it easy for you to deal with this
+the `EditTextSyntaxHighlighter` class can be used:
+
+```kotlin
+CoroutineScope(Dispatchers.Main).launch {
+    val editTextHighlighter = EditTextHighlighter(
+            target = yourEditTextView,
+            languageRuleBook = MarkdownRuleBook())
+    editTextHighlighter.start()
+
+    val markdown = withContext(Dispatchers.IO) {
+        readResourceFileAsText(R.raw.markdown_sample)
+    }
+    editTextMarkdownDark.setText(markdown)
+}
+```
+
+You can then set or edit any text you like and the highlighting will refresh automatically.
+
 ## Gradle
 To use this library just include it in your dependencies using
 
@@ -41,10 +79,10 @@ in your desired module ```build.gradle``` file.
 
 Currently there is no auto detection for the language used in a text.
 
-### Integrated syntax highlighters
+### Integrated language rule books
 
-This library includes a small set of highlighters for you to use right away without spending time to think about the right code highlighting.
-Here you can find a list of those items:
+This library includes rule books for a small set of languages for you to use right away, without
+spending time to think about finding the right tokens and color schemes:
 
 * java
 * json
@@ -52,7 +90,8 @@ Here you can find a list of those items:
 * markdown
 * python
 
-To include an existing language just pick the ones you would like to use and import them **in addition** to the `core` module:
+To include one of them in your project, just pick the ones you would like to use
+and - **in addition** to the `core` module - import them as a dependency:
 
 ```groovy
 dependencies {
@@ -66,89 +105,19 @@ dependencies {
     [etc.]
 ```
 
-### Writing a custom syntax highlighter
+### Writing a custom rule book
 
-Using your own rules to highlight text in the editor can be achieved by extending the `SyntaxHighlighter` interface:
+A `LanguageRuleBook` consists of a **default color scheme** and a **set of rules** that provide
+information on how to style different parts of the `Spannable`. Have a look at how the
+[MarkdownSyntaxHighlighter](markdown/src/main/java/de/markusressel/kodehighlighter/language/markdown/MarkdownRuleBook.kt)
+is implemented to get a feel for how to implement it yourself.
 
-```kotlin
-class MarkdownSyntaxHighlighter : SyntaxHighlighter {
+### Styling
 
-    override var colorScheme: SyntaxColorScheme = DarkBackgroundColorScheme()
-
-    override fun getRules(): Set<SyntaxHighlighterRule> {
-        return setOf(
-            HeadingRule(),
-            ItalicRule(),
-            BoldRule(),
-            CodeInlineRule(),
-            CodeLineRule(),
-            TextLinkRule(),
-            ImageLinkRule(),
-            StrikeRule()
-        )
-    }
-
-}
-```
-
-A syntax highlighter consists of a **default color scheme** and a **set of rules** that provide information on how to style different parts of the `Spannable`.
-Have a look at how the `MarkdownSyntaxHighlighter` is implemented to get a feel for how to implement those methods.
-
-## Styling
-
-Different code highlighting styles for the same language can be achieved
-by implementing the `SyntaxColorScheme` interface.
-
-This is taken from the `markdown` highlighter:
-```kotlin
-class DarkBackgroundColorScheme : SyntaxColorScheme {
-
-    override fun getStyles(type: SyntaxHighlighterRule): Set<StyleFactory> {
-        return when (type) {
-            is BoldRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#0091EA")) },
-                        { StyleSpan(Typeface.BOLD) })
-            }
-            is ItalicRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#0091EA")) }, { StyleSpan(Typeface.ITALIC) })
-            }
-            is CodeInlineRule, is CodeLineRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#00C853")) })
-            }
-            is HeadingRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#FF6D00")) })
-            }
-            is ImageLinkRule, is TextLinkRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#7C4DFF")) })
-            }
-            is StrikeRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#5D4037")) })
-            }
-            else -> emptySet()
-        }
-    }
-
-}
-```
-
-## Working with `EditText`
-When using this library with an `EditText` view before applying styles to the changed text you need to clear any previously applied styles to not apply duplicate styling or have leftovers of old stylings. To deal with this the `EditTextSyntaxHighlighter` class is included in this library:
-
-```kotlin
-val javaHighlighter = EditTextSyntaxHighlighter(
-                        target = editTextMarkdownDark,
-                        syntaxHighlighter = JavaSyntaxHighlighter())
-
-editTextMarkdownDark.addTextChangedListener(object : TextWatcher {
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-    override fun afterTextChanged(editable: Editable) {
-        javaHighlighter.refreshHighlighting()
-    }
-})
-```
-
-You can then set or edit any text you like and highlighting will automatically refresh.
+Different highlighting styles for a given language can be achieved
+by implementing the `ColorScheme` interface and passing it to the highlighter
+(f.ex. a `SpannableHighlighter`). For more info on how to do this have a look at the
+[DarkBackgroundColorScheme from the Markdown rule book](markdown/src/main/java/de/markusressel/kodehighlighter/language/markdown/colorscheme/DarkBackgroundColorScheme.md).
 
 # Contributing
 

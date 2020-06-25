@@ -1,7 +1,7 @@
 package de.markusressel.kodehighlighter.core.rule
 
 /**
- * Helper to implement [SyntaxHighlighterRule] more easily
+ * Helper to implement [LanguageRule] more easily
  */
 object RuleHelper {
 

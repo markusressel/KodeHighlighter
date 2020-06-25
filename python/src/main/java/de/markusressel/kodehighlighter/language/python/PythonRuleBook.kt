@@ -1,19 +1,19 @@
 package de.markusressel.kodehighlighter.language.python
 
-import de.markusressel.kodehighlighter.core.SyntaxHighlighter
-import de.markusressel.kodehighlighter.core.colorscheme.SyntaxColorScheme
-import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
+import de.markusressel.kodehighlighter.core.LanguageRuleBook
+import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
+import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.python.colorscheme.DarkBackgroundColorScheme
 import de.markusressel.kodehighlighter.language.python.rule.*
 
 /**
- * Python syntax highlighter
+ * Python language rule book
  */
-class PythonSyntaxHighlighter : SyntaxHighlighter {
+class PythonRuleBook : LanguageRuleBook {
 
-    override val defaultColorScheme: SyntaxColorScheme = DarkBackgroundColorScheme()
+    override val defaultColorScheme: ColorScheme = DarkBackgroundColorScheme()
 
-    override fun getRules(): Set<SyntaxHighlighterRule> {
+    override fun getRules(): Set<LanguageRule> {
         return setOf(
                 ClassKeywordRule(),
                 CommentRule(),

@@ -1,16 +1,19 @@
 package de.markusressel.kodehighlighter.language.kotlin
 
-import de.markusressel.kodehighlighter.core.SyntaxHighlighter
-import de.markusressel.kodehighlighter.core.colorscheme.SyntaxColorScheme
-import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
+import de.markusressel.kodehighlighter.core.LanguageRuleBook
+import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
+import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.kotlin.colorscheme.DarkBackgroundColorScheme
 import de.markusressel.kodehighlighter.language.kotlin.rule.*
 
-class KotlinSyntaxHighlighter : SyntaxHighlighter {
+/**
+ * Kotlin language rule book
+ */
+class KotlinRuleBook : LanguageRuleBook {
 
-    override val defaultColorScheme: SyntaxColorScheme = DarkBackgroundColorScheme()
+    override val defaultColorScheme: ColorScheme = DarkBackgroundColorScheme()
 
-    override fun getRules(): Set<SyntaxHighlighterRule> {
+    override fun getRules(): Set<LanguageRule> {
         return setOf(
                 AnnotationRule(),
                 ClassKeywordRule(),
