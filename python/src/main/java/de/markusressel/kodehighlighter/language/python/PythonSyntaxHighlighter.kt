@@ -1,8 +1,8 @@
 package de.markusressel.kodehighlighter.language.python
 
-import de.markusressel.kodehighlighter.core.SyntaxColorScheme
 import de.markusressel.kodehighlighter.core.SyntaxHighlighter
-import de.markusressel.kodehighlighter.core.SyntaxHighlighterRule
+import de.markusressel.kodehighlighter.core.colorscheme.SyntaxColorScheme
+import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
 import de.markusressel.kodehighlighter.language.python.colorscheme.DarkBackgroundColorScheme
 import de.markusressel.kodehighlighter.language.python.rule.*
 
@@ -11,7 +11,7 @@ import de.markusressel.kodehighlighter.language.python.rule.*
  */
 class PythonSyntaxHighlighter : SyntaxHighlighter {
 
-    override var colorScheme: SyntaxColorScheme = DarkBackgroundColorScheme()
+    override val defaultColorScheme: SyntaxColorScheme = DarkBackgroundColorScheme()
 
     override fun getRules(): Set<SyntaxHighlighterRule> {
         return setOf(

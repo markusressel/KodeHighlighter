@@ -3,15 +3,16 @@ package de.markusressel.kodehighlighter.demo
 import android.os.Bundle
 import android.support.annotation.RawRes
 import android.support.v7.app.AppCompatActivity
-import android.text.Editable
 import android.text.SpannableString
-import android.text.TextWatcher
-import de.markusressel.kodehighlighter.core.EditTextSyntaxHighlighter
-import de.markusressel.kodehighlighter.language.java.JavaSyntaxHighlighter
+import android.widget.TextView
+import de.markusressel.kodehighlighter.core.util.EditTextSyntaxHighlighter
+import de.markusressel.kodehighlighter.core.util.SpannableHighlightingManager
 import de.markusressel.kodehighlighter.language.json.JsonSyntaxHighlighter
 import de.markusressel.kodehighlighter.language.markdown.MarkdownSyntaxHighlighter
+import de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgroundColorScheme
 import de.markusressel.kodehighlighter.language.python.PythonSyntaxHighlighter
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,25 +27,34 @@ class MainActivity : AppCompatActivity() {
     private fun initTextViewSamples() {
         val markdownText = readResourceFileAsText(R.raw.markdown_sample)
         val markdownHighlighter = MarkdownSyntaxHighlighter()
-        createSpannable(markdownText).apply {
-            markdownHighlighter.highlight(this)
-            markdownLight.text = this
-        }
-        createSpannable(markdownText).apply {
-            markdownHighlighter.highlight(this)
-            markdownDark.text = this
-        }
+        val markdownManager = SpannableHighlightingManager(markdownHighlighter, DarkBackgroundColorScheme())
+
+        // TODO: currently there is no light theme
+        highlightInCoroutine(markdownText, markdownManager, markdownLight)
+        highlightInCoroutine(markdownText, markdownManager, markdownDark)
 
         val pythonText = readResourceFileAsText(R.raw.python_example)
-        createSpannable(pythonText).apply {
-            PythonSyntaxHighlighter().highlight(this)
-            pythonDark.text = this
-        }
+        val pythonSyntaxHighlighter = PythonSyntaxHighlighter()
+        val pythonManager = SpannableHighlightingManager(pythonSyntaxHighlighter)
+        highlightInCoroutine(pythonText, pythonManager, pythonDark)
 
-        val json = readResourceFileAsText(R.raw.json_example)
-        createSpannable(json).apply {
-            JsonSyntaxHighlighter().highlight(this)
-            jsonDark.text = this
+        val jsonText = readResourceFileAsText(R.raw.json_example)
+        val jsonSyntaxHighlighter = JsonSyntaxHighlighter()
+        val jsonManager = SpannableHighlightingManager(jsonSyntaxHighlighter, de.markusressel.kodehighlighter.language.json.colorscheme.DarkBackgroundColorScheme())
+        highlightInCoroutine(jsonText, jsonManager, jsonDark)
+    }
+
+    /**
+     * Helper function to highlight something in a coroutine
+     */
+    private fun highlightInCoroutine(text: String, spannableManager: SpannableHighlightingManager, target: TextView) {
+        CoroutineScope(Dispatchers.Main).launch {
+            val spannable = async {
+                val spannable = createSpannable(text)
+                spannableManager.highlight(spannable)
+                spannable
+            }
+            target.text = spannable.await()
         }
     }
 
@@ -60,19 +70,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initEditTextSample() {
-        val javaHighlighter = EditTextSyntaxHighlighter(
-                target = editTextMarkdownDark,
-                syntaxHighlighter = JavaSyntaxHighlighter())
+        CoroutineScope(Dispatchers.Main).launch {
+            val editTextSyntaxHighlighter = EditTextSyntaxHighlighter(
+                    target = editTextMarkdownDark,
+                    syntaxHighlighter = MarkdownSyntaxHighlighter())
+            editTextSyntaxHighlighter.start()
 
-        editTextMarkdownDark.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(editable: Editable) {
-                javaHighlighter.refreshHighlighting()
+            val markdown = withContext(Dispatchers.IO) {
+                readResourceFileAsText(R.raw.markdown_sample)
             }
-        })
-
-        val java = readResourceFileAsText(R.raw.java_sample)
-        editTextMarkdownDark.setText(java)
+            editTextMarkdownDark.setText(markdown)
+        }
     }
 }

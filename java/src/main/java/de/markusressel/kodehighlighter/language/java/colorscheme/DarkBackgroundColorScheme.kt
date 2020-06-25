@@ -3,8 +3,8 @@ package de.markusressel.kodehighlighter.language.java.colorscheme
 import android.graphics.Color
 import android.text.style.ForegroundColorSpan
 import de.markusressel.kodehighlighter.core.StyleFactory
-import de.markusressel.kodehighlighter.core.SyntaxColorScheme
-import de.markusressel.kodehighlighter.core.SyntaxHighlighterRule
+import de.markusressel.kodehighlighter.core.colorscheme.SyntaxColorScheme
+import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
 import de.markusressel.kodehighlighter.language.java.rule.*
 import java.util.Collections.emptySet
 
@@ -20,15 +20,16 @@ class DarkBackgroundColorScheme : SyntaxColorScheme {
             is ClassKeywordRule,
             is TypeKeywordRule,
             is StaticKeywordRule,
+            is ReturnKeywordRule,
             is FinalKeywordRule,
             is VisibilityKeywordRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#FF6D00")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }
             }
             is AnnotationRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#FBC02D")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#FBC02D")) }
             }
             is CommentRule -> {
-                setOf({ ForegroundColorSpan(Color.parseColor("#33691E")) })
+                setOf { ForegroundColorSpan(Color.parseColor("#33691E")) }
             }
             else -> emptySet()
         }

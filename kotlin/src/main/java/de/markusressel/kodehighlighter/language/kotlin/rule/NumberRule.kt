@@ -1,12 +1,13 @@
 package de.markusressel.kodehighlighter.language.kotlin.rule
 
-import android.text.Spannable
-import de.markusressel.kodehighlighter.core.SyntaxHighlighterRule
+import de.markusressel.kodehighlighter.core.rule.RuleHelper
+import de.markusressel.kodehighlighter.core.rule.RuleMatch
+import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
 
 class NumberRule : SyntaxHighlighterRule {
 
-    override fun findMatches(spannable: Spannable): List<MatchResult> {
-        return PATTERN.findAll(spannable).toList()
+    override fun findMatches(text: CharSequence): List<RuleMatch> {
+        return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
     companion object {

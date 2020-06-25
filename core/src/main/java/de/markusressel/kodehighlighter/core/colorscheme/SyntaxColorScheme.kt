@@ -1,6 +1,7 @@
-package de.markusressel.kodehighlighter.core
+package de.markusressel.kodehighlighter.core.colorscheme
 
-import android.text.style.CharacterStyle
+import de.markusressel.kodehighlighter.core.StyleFactory
+import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
 
 /**
  * A color scheme for a syntax highlighter.

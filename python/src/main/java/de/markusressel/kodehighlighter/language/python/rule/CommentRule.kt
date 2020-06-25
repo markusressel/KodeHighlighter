@@ -1,16 +1,19 @@
 package de.markusressel.kodehighlighter.language.python.rule
 
-import android.text.Spannable
-import de.markusressel.kodehighlighter.core.SyntaxHighlighterRule
+import de.markusressel.kodehighlighter.core.rule.RuleHelper
+import de.markusressel.kodehighlighter.core.rule.RuleMatch
+import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
 
 class CommentRule : SyntaxHighlighterRule {
 
-    override fun findMatches(spannable: Spannable): List<MatchResult> {
-        return PATTERN.findAll(spannable).toList()
+    override fun findMatches(text: CharSequence): List<RuleMatch> {
+        return RuleHelper.findRegexMatches(text, SINGLE_LINE_PATTERN) +
+                RuleHelper.findRegexMatches(text, MULTI_LINE_PATTERN)
     }
 
     companion object {
-        val PATTERN = "('{3}|\"{3})[\\s\\S]*?\\1".toRegex(RegexOption.MULTILINE)
+        val MULTI_LINE_PATTERN = "('{3}|\"{3})[\\s\\S]*?\\1".toRegex(RegexOption.MULTILINE)
+        val SINGLE_LINE_PATTERN = "\\s*#.*".toRegex(RegexOption.MULTILINE)
     }
 
 }

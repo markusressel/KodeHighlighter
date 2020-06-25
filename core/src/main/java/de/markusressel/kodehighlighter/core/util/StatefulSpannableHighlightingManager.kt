@@ -1,24 +1,25 @@
-package de.markusressel.kodehighlighter.core
+package de.markusressel.kodehighlighter.core.util
 
 import android.text.Spannable
 import android.text.style.CharacterStyle
+import de.markusressel.kodehighlighter.core.SyntaxHighlighter
+import de.markusressel.kodehighlighter.core.colorscheme.SyntaxColorScheme
 
 /**
  * A wrapper around a [SyntaxHighlighter] that adds a state to it so previous
  * highlighting states can be cleared before applying a new one.
  */
-open class StatefulSyntaxHighlighter(syntaxHighlighter: SyntaxHighlighter)
-    : SyntaxHighlighter by syntaxHighlighter {
+open class StatefulSpannableHighlightingManager(syntaxHighlighter: SyntaxHighlighter, colorScheme: SyntaxColorScheme)
+    : SpannableHighlightingManager(syntaxHighlighter, colorScheme) {
 
     /**
      * A set containing all currently applied styles to the [Spannable]
      */
-    open val appliedStyles: MutableSet<CharacterStyle> = mutableSetOf()
+    open val appliedStyles = mutableSetOf<CharacterStyle>()
 
-    override fun highlight(spannable: Spannable): List<CharacterStyle> {
-        val addedStyles = super.highlight(spannable)
-        appliedStyles.addAll(addedStyles)
-        return addedStyles
+    override fun applyStyle(style: CharacterStyle, spannable: Spannable, start: Int, end: Int) {
+        super.applyStyle(style, spannable, start, end)
+        appliedStyles.add(style)
     }
 
     /**
