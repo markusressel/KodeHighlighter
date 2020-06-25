@@ -7,7 +7,6 @@ import de.markusressel.kodehighlighter.core.rule.SyntaxHighlighterRule
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 
 /**
  * A function that creates a [CharacterStyle] that can be applied to a [Spannable]
@@ -42,7 +41,6 @@ interface SyntaxHighlighter {
         return coroutineScope {
             getRules().map { rule ->
                 async {
-                    delay(2000)
                     val matches = rule.findMatches(charSequence)
                     if (matches.isNotEmpty()) {
                         HighlightEntity(
