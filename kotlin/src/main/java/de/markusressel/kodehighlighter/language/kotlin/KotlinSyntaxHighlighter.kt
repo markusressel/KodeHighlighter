@@ -8,7 +8,7 @@ import de.markusressel.kodehighlighter.language.kotlin.rule.*
 
 class KotlinSyntaxHighlighter : SyntaxHighlighter {
 
-    override var colorScheme: SyntaxColorScheme = DarkBackgroundColorScheme()
+    override val defaultColorScheme: SyntaxColorScheme = DarkBackgroundColorScheme()
 
     override fun getRules(): Set<SyntaxHighlighterRule> {
         return setOf(

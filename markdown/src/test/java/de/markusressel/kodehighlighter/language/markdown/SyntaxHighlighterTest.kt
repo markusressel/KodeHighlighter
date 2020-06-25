@@ -1,6 +1,5 @@
 package de.markusressel.kodehighlighter.language.markdown
 
-import de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgroundColorScheme
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
@@ -9,9 +8,7 @@ class MarkdownTest {
 
     @Test
     fun heading_test() {
-        val syntaxHighlighter = MarkdownSyntaxHighlighter().apply {
-            colorScheme = DarkBackgroundColorScheme()
-        }
+        val syntaxHighlighter = MarkdownSyntaxHighlighter()
 
         val fillerText = "Test text\n".repeat(50)
         val headers = listOf(
@@ -36,9 +33,7 @@ class MarkdownTest {
 
     @Test
     fun italic_test() {
-        val syntaxHighlighter = MarkdownSyntaxHighlighter().apply {
-            colorScheme = DarkBackgroundColorScheme()
-        }
+        val syntaxHighlighter = MarkdownSyntaxHighlighter()
 
         val fillerText = "Test text\n".repeat(50)
         val italics = listOf(
@@ -60,9 +55,7 @@ class MarkdownTest {
 
     @Test
     fun strike_test() {
-        val syntaxHighlighter = MarkdownSyntaxHighlighter().apply {
-            colorScheme = DarkBackgroundColorScheme()
-        }
+        val syntaxHighlighter = MarkdownSyntaxHighlighter()
 
         val fillerText = "Test text\n".repeat(50)
         val strikes = listOf(

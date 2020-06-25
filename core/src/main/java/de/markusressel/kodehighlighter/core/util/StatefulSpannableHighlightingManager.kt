@@ -3,13 +3,14 @@ package de.markusressel.kodehighlighter.core.util
 import android.text.Spannable
 import android.text.style.CharacterStyle
 import de.markusressel.kodehighlighter.core.SyntaxHighlighter
+import de.markusressel.kodehighlighter.core.colorscheme.SyntaxColorScheme
 
 /**
  * A wrapper around a [SyntaxHighlighter] that adds a state to it so previous
  * highlighting states can be cleared before applying a new one.
  */
-open class StatefulSyntaxHighlighter(syntaxHighlighter: SyntaxHighlighter)
-    : SyntaxHighlighter by syntaxHighlighter {
+open class StatefulSpannableHighlightingManager(syntaxHighlighter: SyntaxHighlighter, colorScheme: SyntaxColorScheme)
+    : SpannableHighlightingManager(syntaxHighlighter, colorScheme) {
 
     /**
      * A set containing all currently applied styles to the [Spannable]

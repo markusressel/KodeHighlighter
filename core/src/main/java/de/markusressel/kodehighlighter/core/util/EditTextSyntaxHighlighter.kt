@@ -30,10 +30,10 @@ open class EditTextSyntaxHighlighter(
     var syntaxHighlighter: SyntaxHighlighter = syntaxHighlighter
         set(value) {
             field = value
-            statefulSyntaxHighlighter = StatefulSyntaxHighlighter(field)
+            statefulSyntaxHighlighter = StatefulSpannableHighlightingManager(field, field.defaultColorScheme)
         }
 
-    private var statefulSyntaxHighlighter = StatefulSyntaxHighlighter(syntaxHighlighter)
+    private var statefulSyntaxHighlighter = StatefulSpannableHighlightingManager(syntaxHighlighter, syntaxHighlighter.defaultColorScheme)
         set(value) {
             clearAppliedStyles()
             field = value

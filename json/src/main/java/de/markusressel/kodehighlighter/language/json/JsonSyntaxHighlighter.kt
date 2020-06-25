@@ -13,7 +13,7 @@ import de.markusressel.kodehighlighter.language.json.rule.StringRule
  */
 class JsonSyntaxHighlighter : SyntaxHighlighter {
 
-    override var colorScheme: SyntaxColorScheme = DarkBackgroundColorScheme()
+    override val defaultColorScheme: SyntaxColorScheme = DarkBackgroundColorScheme()
 
     override fun getRules(): Set<SyntaxHighlighterRule> {
         return setOf(
