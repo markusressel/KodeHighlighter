@@ -5,6 +5,7 @@ import android.text.TextWatcher
 import android.text.style.CharacterStyle
 import android.widget.EditText
 import de.markusressel.kodehighlighter.core.LanguageRuleBook
+import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
 import kotlinx.coroutines.*
 
 /**
@@ -21,9 +22,22 @@ open class EditTextHighlighter(
          */
         languageRuleBook: LanguageRuleBook,
         /**
+         * The [ColorScheme] to use
+         */
+        colorScheme: ColorScheme = languageRuleBook.defaultColorScheme,
+        /**
          * The target [EditText] to apply syntax highlighting to
          */
         target: EditText) {
+
+    /**
+     * The [ColorScheme] to use
+     */
+    var colorScheme: ColorScheme = colorScheme
+        set(value) {
+            field = value
+            statefulSyntaxHighlighter = StatefulSpannableHighlighter(languageRuleBook, field)
+        }
 
     /**
      * The [LanguageRuleBook] to use
@@ -31,7 +45,7 @@ open class EditTextHighlighter(
     var languageRuleBook: LanguageRuleBook = languageRuleBook
         set(value) {
             field = value
-            statefulSyntaxHighlighter = StatefulSpannableHighlighter(field, field.defaultColorScheme)
+            statefulSyntaxHighlighter = StatefulSpannableHighlighter(field, colorScheme)
         }
 
     private var statefulSyntaxHighlighter = StatefulSpannableHighlighter(languageRuleBook, languageRuleBook.defaultColorScheme)
