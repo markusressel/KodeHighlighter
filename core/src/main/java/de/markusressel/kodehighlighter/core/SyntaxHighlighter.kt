@@ -90,12 +90,19 @@ interface SyntaxHighlighter {
      * @param styleFactories a set of the style factories to apply
      * @return a list of all applied styles
      */
-    private fun highlight(spannable: Spannable, start: Int, end: Int, styleFactories: Set<StyleFactory>): List<CharacterStyle> {
+    fun highlight(spannable: Spannable, start: Int, end: Int, styleFactories: Set<StyleFactory>): List<CharacterStyle> {
         val stylesToApply = styleFactories.map { it() }
         stylesToApply.forEach {
-            spannable.setSpan(it, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            applyStyle(it, spannable, start, end)
         }
         return stylesToApply
+    }
+
+    /**
+     * Applies the given style to a spannable at a specific position
+     */
+    fun applyStyle(style: CharacterStyle, spannable: Spannable, start: Int, end: Int) {
+        spannable.setSpan(style, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
 
 }

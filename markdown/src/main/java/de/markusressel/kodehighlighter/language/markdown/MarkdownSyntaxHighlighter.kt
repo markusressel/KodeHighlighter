@@ -19,7 +19,8 @@ class MarkdownSyntaxHighlighter : SyntaxHighlighter {
                 CodeLineRule(),
                 TextLinkRule(),
                 ImageLinkRule(),
-                StrikeRule())
+                StrikeRule(),
+                ListRule())
     }
 
 }

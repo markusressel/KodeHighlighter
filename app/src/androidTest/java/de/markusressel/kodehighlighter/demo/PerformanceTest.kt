@@ -88,15 +88,18 @@ class PerformanceTest {
         val markdownSyntaxHighlighter = MarkdownSyntaxHighlighter()
         val text = InstrumentationRegistry.getTargetContext().resources.openRawResource(R.raw.markdown_sample).bufferedReader().readText()
         val longText = text.repeat(10)
-        val spannable = SpannableStringBuilder.valueOf(longText)
 
         runBlocking(Dispatchers.IO) {
+//            delay(15000)
+
             var createAvg = 0L
             var applyAvg = 0L
             var totalAvg = 0L
 
             val runs = 10
             for (i in 1..runs) {
+                val spannable = SpannableStringBuilder.valueOf(longText)
+
                 var stuff: List<HighlightEntity> = emptyList()
                 val time1 = measureTimeMillis {
                     stuff = markdownSyntaxHighlighter.createHighlighting(spannable)

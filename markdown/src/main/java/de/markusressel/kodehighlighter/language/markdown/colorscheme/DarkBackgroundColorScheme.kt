@@ -35,6 +35,9 @@ class DarkBackgroundColorScheme : SyntaxColorScheme {
             is StrikeRule -> {
                 setOf { ForegroundColorSpan(Color.parseColor("#5D4037")) }
             }
+            is ListRule -> {
+                setOf { ForegroundColorSpan(Color.parseColor("#5f84d4")) }
+            }
             else -> emptySet()
         }
     }

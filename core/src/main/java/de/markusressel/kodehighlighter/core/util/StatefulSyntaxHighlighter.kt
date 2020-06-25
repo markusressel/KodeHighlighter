@@ -2,7 +2,6 @@ package de.markusressel.kodehighlighter.core.util
 
 import android.text.Spannable
 import android.text.style.CharacterStyle
-import de.markusressel.kodehighlighter.core.HighlightEntity
 import de.markusressel.kodehighlighter.core.SyntaxHighlighter
 
 /**
@@ -15,12 +14,11 @@ open class StatefulSyntaxHighlighter(syntaxHighlighter: SyntaxHighlighter)
     /**
      * A set containing all currently applied styles to the [Spannable]
      */
-    open val appliedStyles: MutableSet<CharacterStyle> = mutableSetOf()
+    open val appliedStyles = mutableSetOf<CharacterStyle>()
 
-    override suspend fun highlight(spannable: Spannable, highlightEntities: List<HighlightEntity>): List<CharacterStyle> {
-        val addedStyles = super.highlight(spannable, highlightEntities)
-        appliedStyles.addAll(addedStyles)
-        return addedStyles
+    override fun applyStyle(style: CharacterStyle, spannable: Spannable, start: Int, end: Int) {
+        super.applyStyle(style, spannable, start, end)
+        appliedStyles.add(style)
     }
 
     /**

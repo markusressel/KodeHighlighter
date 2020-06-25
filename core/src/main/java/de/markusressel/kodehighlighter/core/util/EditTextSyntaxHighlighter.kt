@@ -1,6 +1,7 @@
 package de.markusressel.kodehighlighter.core.util
 
 import android.text.Editable
+import android.text.TextWatcher
 import android.widget.EditText
 import de.markusressel.kodehighlighter.core.SyntaxHighlighter
 import kotlinx.coroutines.*
@@ -57,17 +58,31 @@ open class EditTextSyntaxHighlighter(
             refreshHighlighting()
         }
 
-    private val textWatcher = DebouncedTextWatcher(
+    private val debouncedTextWatcher = DebouncedTextWatcher(
             delayMs = 100,
             action = {
                 refreshHighlighting()
             })
+
+    private val realtimeTextWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            highlightingJob?.cancel("Text has changed")
+            highlightingJob = null
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        }
+    }
 
     /**
      * (Re-)Highlight the content of the [target]
      */
     open fun refreshHighlighting() {
         highlightingJob?.cancel("Requested new highlighting")
+        highlightingJob = null
         if (editable == null) {
             return
         }
@@ -78,7 +93,12 @@ open class EditTextSyntaxHighlighter(
                 statefulSyntaxHighlighter.createHighlighting(currentText)
             }
             clearAppliedStyles()
-            statefulSyntaxHighlighter.highlight(editable, highlightEntities)
+            try {
+                statefulSyntaxHighlighter.highlight(editable, highlightEntities)
+            } catch (e: IndexOutOfBoundsException) {
+                // text has changed while we were trying to apply styles to it
+                // the next highlighting run will fix this
+            }
         }
     }
 
@@ -93,13 +113,15 @@ open class EditTextSyntaxHighlighter(
      * Start continuous highlighting
      */
     open fun start() {
-        target.addTextChangedListener(textWatcher)
+        target.addTextChangedListener(debouncedTextWatcher)
+        target.addTextChangedListener(realtimeTextWatcher)
     }
 
     /**
      * Stop continuous highlighting
      */
     open fun cancel() {
-        target.removeTextChangedListener(textWatcher)
+        target.removeTextChangedListener(realtimeTextWatcher)
+        target.removeTextChangedListener(debouncedTextWatcher)
     }
 }
