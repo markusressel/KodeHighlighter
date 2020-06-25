@@ -58,11 +58,10 @@ interface SyntaxHighlighter {
      * Highlight the given text
      *
      * @param spannable the [Spannable] to apply highlighting to
-     * @return a list of all [CharacterStyle] instances that were applied
      */
-    suspend fun highlight(spannable: Spannable): List<CharacterStyle> {
+    suspend fun highlight(spannable: Spannable) {
         val highlightEntities = createHighlighting(spannable)
-        return highlight(spannable, highlightEntities)
+        highlight(spannable, highlightEntities)
     }
 
     /**
@@ -70,15 +69,14 @@ interface SyntaxHighlighter {
      *
      * @param spannable the [Spannable] to apply highlighting to
      * @param highlightEntities a list of [HighlightEntity] objects that hold the styles to apply
-     * @return a list of all [CharacterStyle] instances that were applied
      */
-    suspend fun highlight(spannable: Spannable, highlightEntities: List<HighlightEntity>): List<CharacterStyle> {
-        return highlightEntities.map {
+    suspend fun highlight(spannable: Spannable, highlightEntities: List<HighlightEntity>) {
+        highlightEntities.map {
             val styleFactories = colorScheme.getStyles(it.rule)
             it.matches.map { match ->
                 highlight(spannable, match.startIndex, match.endIndex, styleFactories)
-            }.flatten()
-        }.flatten()
+            }
+        }
     }
 
     /**
@@ -88,14 +86,11 @@ interface SyntaxHighlighter {
      * @param start the starting position
      * @param end the endIndex position (inclusive)
      * @param styleFactories a set of the style factories to apply
-     * @return a list of all applied styles
      */
-    fun highlight(spannable: Spannable, start: Int, end: Int, styleFactories: Set<StyleFactory>): List<CharacterStyle> {
-        val stylesToApply = styleFactories.map { it() }
-        stylesToApply.forEach {
-            applyStyle(it, spannable, start, end)
+    fun highlight(spannable: Spannable, start: Int, end: Int, styleFactories: Set<StyleFactory>) {
+        styleFactories.forEach {
+            applyStyle(it(), spannable, start, end)
         }
-        return stylesToApply
     }
 
     /**
