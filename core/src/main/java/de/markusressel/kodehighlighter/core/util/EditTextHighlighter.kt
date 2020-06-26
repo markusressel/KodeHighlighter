@@ -28,16 +28,11 @@ open class EditTextHighlighter(
         /**
          * The target [EditText] to apply syntax highlighting to
          */
-        target: EditText) {
-
-    /**
-     * The [ColorScheme] to use
-     */
-    var colorScheme: ColorScheme = colorScheme
-        set(value) {
-            field = value
-            statefulSyntaxHighlighter = StatefulSpannableHighlighter(languageRuleBook, field)
-        }
+        target: EditText,
+        /**
+         * Time in milliseconds to debounce user input
+         */
+        debounceMs: Long = 100) {
 
     /**
      * The [LanguageRuleBook] to use
@@ -46,6 +41,15 @@ open class EditTextHighlighter(
         set(value) {
             field = value
             statefulSyntaxHighlighter = StatefulSpannableHighlighter(field, colorScheme)
+        }
+
+    /**
+     * The [ColorScheme] to use
+     */
+    var colorScheme: ColorScheme = colorScheme
+        set(value) {
+            field = value
+            statefulSyntaxHighlighter = StatefulSpannableHighlighter(languageRuleBook, field)
         }
 
     private var statefulSyntaxHighlighter = StatefulSpannableHighlighter(languageRuleBook, languageRuleBook.defaultColorScheme)
@@ -73,8 +77,17 @@ open class EditTextHighlighter(
             refreshHighlighting()
         }
 
+    /**
+     * Time in milliseconds to debounce user input
+     */
+    var debounceMs: Long = debounceMs
+        set(value) {
+            field = value
+            debouncedTextWatcher.delayMs = value
+        }
+
     private val debouncedTextWatcher = DebouncedTextWatcher(
-            delayMs = 100,
+            delayMs = this.debounceMs,
             action = {
                 refreshHighlighting()
             })

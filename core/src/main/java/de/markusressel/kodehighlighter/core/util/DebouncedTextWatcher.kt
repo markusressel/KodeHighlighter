@@ -14,7 +14,7 @@ import java.util.*
  * @param action action to execute after the text has stabilized
  */
 open class DebouncedTextWatcher(
-        val delayMs: Long,
+        var delayMs: Long,
         val action: ((CharSequence?) -> Unit))
     : TextWatcher {
 
