@@ -18,6 +18,10 @@ import kotlinx.coroutines.*
  */
 open class EditTextHighlighter(
         /**
+         * The target [EditText] to apply syntax highlighting to
+         */
+        target: EditText,
+        /**
          * The [LanguageRuleBook] to use
          */
         languageRuleBook: LanguageRuleBook,
@@ -25,10 +29,6 @@ open class EditTextHighlighter(
          * The [ColorScheme] to use
          */
         colorScheme: ColorScheme = languageRuleBook.defaultColorScheme,
-        /**
-         * The target [EditText] to apply syntax highlighting to
-         */
-        target: EditText,
         /**
          * Time in milliseconds to debounce user input
          */
