@@ -21,6 +21,8 @@ buildscript {
         androidKtxVersion = "0.3"
         supportLibVersion = "28.0.0"
 
+        coroutinesCoreVesion = "1.3.7"
+
         javaxAnnotationVersion = "10.0-b28"
         aboutlibrariesVersion = "8.2.0"
         materialdrawerVersion = "8.1.1"
