@@ -4,8 +4,7 @@ import de.markusressel.kodehighlighter.core.LanguageRuleBook
 import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.generic.colorscheme.DarkBackgroundColorScheme
-import de.markusressel.kodehighlighter.language.generic.rule.EscapeCharRule
-import de.markusressel.kodehighlighter.language.generic.rule.KeywordRule
+import de.markusressel.kodehighlighter.language.generic.rule.*
 
 /**
  * Markdown language rule book
@@ -17,7 +16,11 @@ class GenericRuleBook : LanguageRuleBook {
     override fun getRules(): Set<LanguageRule> {
         return setOf(
                 EscapeCharRule(),
-                KeywordRule()
+                NumericRule(),
+                KeywordRule(),
+                ConstantsRule(),
+                OperatorRule(),
+                CommentRule()
         )
     }
 
