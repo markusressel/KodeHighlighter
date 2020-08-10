@@ -117,7 +117,7 @@ is implemented to get a feel for how to implement it yourself.
 Different highlighting styles for a given language can be achieved
 by implementing the `ColorScheme` interface and passing it to the highlighter
 (f.ex. a `SpannableHighlighter`). For more info on how to do this have a look at the
-[DarkBackgroundColorScheme from the Markdown rule book](markdown/src/main/java/de/markusressel/kodehighlighter/language/markdown/colorscheme/DarkBackgroundColorScheme.md).
+[DarkBackgroundColorScheme from the Markdown rule book](markdown/src/main/java/de/markusressel/kodehighlighter/language/markdown/colorscheme/DarkBackgroundColorScheme.kt).
 
 # Contributing
 
