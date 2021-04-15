@@ -11,6 +11,8 @@ import de.markusressel.kodehighlighter.language.markdown.rule.*
  */
 class MarkdownRuleBook : LanguageRuleBook {
 
+    override val targetLanguages = setOf(MarkdownLanguage)
+
     override val defaultColorScheme: ColorScheme = DarkBackgroundColorScheme()
 
     override fun getRules(): Set<LanguageRule> {

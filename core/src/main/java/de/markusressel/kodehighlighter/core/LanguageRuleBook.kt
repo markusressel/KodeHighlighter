@@ -19,6 +19,11 @@ typealias StyleFactory = () -> CharacterStyle
 interface LanguageRuleBook {
 
     /**
+     * A set of languages this rulebook was designed for
+     */
+    val targetLanguages: Set<Language>
+
+    /**
      * The default color scheme
      */
     val defaultColorScheme: ColorScheme

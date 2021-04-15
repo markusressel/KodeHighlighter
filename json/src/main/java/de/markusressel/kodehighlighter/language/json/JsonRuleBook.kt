@@ -12,6 +12,7 @@ import de.markusressel.kodehighlighter.language.json.rule.StringRule
  */
 class JsonRuleBook : LanguageRuleBook {
 
+    override val targetLanguages = setOf(JsonLanguage)
     override val defaultColorScheme: ColorScheme = DarkBackgroundColorScheme()
 
     override fun getRules(): Set<de.markusressel.kodehighlighter.core.rule.LanguageRule> {

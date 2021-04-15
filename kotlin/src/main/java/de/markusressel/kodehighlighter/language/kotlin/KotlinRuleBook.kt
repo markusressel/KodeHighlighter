@@ -11,6 +11,8 @@ import de.markusressel.kodehighlighter.language.kotlin.rule.*
  */
 class KotlinRuleBook : LanguageRuleBook {
 
+    override val targetLanguages = setOf(KotlinLanguage)
+
     override val defaultColorScheme: ColorScheme = DarkBackgroundColorScheme()
 
     override fun getRules(): Set<LanguageRule> {

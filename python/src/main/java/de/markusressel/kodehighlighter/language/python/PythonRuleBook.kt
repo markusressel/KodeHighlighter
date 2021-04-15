@@ -11,6 +11,8 @@ import de.markusressel.kodehighlighter.language.python.rule.*
  */
 class PythonRuleBook : LanguageRuleBook {
 
+    override val targetLanguages = setOf(PythonLanguage)
+
     override val defaultColorScheme: ColorScheme = DarkBackgroundColorScheme()
 
     override fun getRules(): Set<LanguageRule> {
