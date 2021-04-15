@@ -24,6 +24,9 @@ class DarkBackgroundColorScheme : ColorScheme {
             is CommentRule -> {
                 setOf { ForegroundColorSpan(Color.parseColor("#33691E")) }
             }
+            is FunctionCallRule -> {
+                setOf { ForegroundColorSpan(Color.MAGENTA) }
+            }
             else -> emptySet()
         }
     }

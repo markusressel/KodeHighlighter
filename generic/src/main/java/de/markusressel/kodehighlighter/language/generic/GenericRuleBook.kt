@@ -15,6 +15,7 @@ class GenericRuleBook : LanguageRuleBook {
 
     override fun getRules(): Set<LanguageRule> {
         return setOf(
+                FunctionCallRule(),
                 EscapeCharRule(),
                 NumericRule(),
                 KeywordRule(),
