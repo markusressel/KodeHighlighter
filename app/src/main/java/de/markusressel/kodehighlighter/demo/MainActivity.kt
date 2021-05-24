@@ -1,10 +1,10 @@
 package de.markusressel.kodehighlighter.demo
 
 import android.os.Bundle
-import android.support.annotation.RawRes
-import android.support.v7.app.AppCompatActivity
 import android.text.SpannableString
 import android.widget.TextView
+import androidx.annotation.RawRes
+import androidx.appcompat.app.AppCompatActivity
 import de.markusressel.kodehighlighter.core.util.EditTextHighlighter
 import de.markusressel.kodehighlighter.core.util.SpannableHighlighter
 import de.markusressel.kodehighlighter.language.json.JsonRuleBook
