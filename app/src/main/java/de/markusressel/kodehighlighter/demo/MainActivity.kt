@@ -10,6 +10,7 @@ import de.markusressel.kodehighlighter.core.util.SpannableHighlighter
 import de.markusressel.kodehighlighter.language.json.JsonRuleBook
 import de.markusressel.kodehighlighter.language.markdown.MarkdownRuleBook
 import de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgroundColorScheme
+import de.markusressel.kodehighlighter.language.ocaml.OCamlRuleBook
 import de.markusressel.kodehighlighter.language.python.PythonRuleBook
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
@@ -45,6 +46,11 @@ class MainActivity : AppCompatActivity() {
         val jsonRuleBook = JsonRuleBook()
         val jsonHighlighter = SpannableHighlighter(jsonRuleBook, de.markusressel.kodehighlighter.language.json.colorscheme.DarkBackgroundColorScheme())
         highlightInCoroutine(jsonText, jsonHighlighter, jsonDark)
+
+        val ocamlText = readResourceFileAsText(R.raw.ocaml_example)
+        val ocamlRuleBook = OCamlRuleBook()
+        val ocamlHighlighter = SpannableHighlighter(ocamlRuleBook)
+        highlightInCoroutine(ocamlText, ocamlHighlighter, ocamlDark)
     }
 
     /**

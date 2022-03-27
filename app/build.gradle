@@ -44,6 +44,7 @@ dependencies {
     implementation project(':markdown')
     implementation project(':python')
     implementation project(':json')
+    implementation project(':ocaml')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesCore"
