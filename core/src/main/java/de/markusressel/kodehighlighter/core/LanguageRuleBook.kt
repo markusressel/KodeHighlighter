@@ -26,7 +26,7 @@ interface LanguageRuleBook {
     /**
      * Get a set of rules for this highlighter
      */
-    fun getRules(): Set<LanguageRule>
+    fun getRules(): List<LanguageRule>
 
     /**
      * Analyzes the given text and creates a list of styles that would need to be applied

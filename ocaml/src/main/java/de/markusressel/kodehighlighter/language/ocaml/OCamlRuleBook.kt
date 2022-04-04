@@ -10,8 +10,8 @@ class OCamlRuleBook : LanguageRuleBook {
 
     override val defaultColorScheme: ColorScheme = DarkBackgroundColorScheme()
 
-    override fun getRules(): Set<LanguageRule> {
-        return setOf(
+    override fun getRules(): List<LanguageRule> {
+        return listOf(
             BooleanRule(),
             KeywordRule(),
             ModuleRule(),
