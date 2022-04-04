@@ -16,7 +16,6 @@ class PythonRuleBook : LanguageRuleBook {
     override fun getRules(): Set<LanguageRule> {
         return setOf(
                 ClassKeywordRule(),
-                CommentRule(),
                 DecoratorRule(),
                 DefKeyword(),
                 ExceptRule(),
@@ -25,7 +24,8 @@ class PythonRuleBook : LanguageRuleBook {
                 OtherKeywordsRule(),
                 ReturnKeywordRule(),
                 SelfKeywordRule(),
-                TypeKeywordRule())
+                TypeKeywordRule(),
+                CommentRule())
     }
 
 }

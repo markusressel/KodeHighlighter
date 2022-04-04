@@ -13,10 +13,10 @@ class OCamlRuleBook : LanguageRuleBook {
     override fun getRules(): Set<LanguageRule> {
         return setOf(
             BooleanRule(),
-            CommentRule(),
             KeywordRule(),
             ModuleRule(),
             NumberRule(),
+            CommentRule(),
             StringRule())
     }
 

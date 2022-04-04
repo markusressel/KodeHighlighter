@@ -17,13 +17,13 @@ class KotlinRuleBook : LanguageRuleBook {
         return setOf(
                 AnnotationRule(),
                 ClassKeywordRule(),
-                CommentRule(),
                 ImportKeywordRule(),
                 PackageKeywordRule(),
                 ReturnKeywordRule(),
                 FunctionKeywordRule(),
                 VarKeywordRule(),
-                NumberRule())
+                NumberRule(),
+                CommentRule())
     }
 
 }
