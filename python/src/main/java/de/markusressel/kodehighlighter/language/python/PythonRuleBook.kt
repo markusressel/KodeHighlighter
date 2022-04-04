@@ -13,10 +13,9 @@ class PythonRuleBook : LanguageRuleBook {
 
     override val defaultColorScheme: ColorScheme = DarkBackgroundColorScheme()
 
-    override fun getRules(): Set<LanguageRule> {
-        return setOf(
+    override fun getRules(): List<LanguageRule> {
+        return listOf(
                 ClassKeywordRule(),
-                CommentRule(),
                 DecoratorRule(),
                 DefKeyword(),
                 ExceptRule(),
@@ -25,7 +24,8 @@ class PythonRuleBook : LanguageRuleBook {
                 OtherKeywordsRule(),
                 ReturnKeywordRule(),
                 SelfKeywordRule(),
-                TypeKeywordRule())
+                TypeKeywordRule(),
+                CommentRule())
     }
 
 }
