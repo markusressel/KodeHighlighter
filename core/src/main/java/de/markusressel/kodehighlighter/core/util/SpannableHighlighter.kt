@@ -6,9 +6,6 @@ import de.markusressel.kodehighlighter.core.LanguageRuleBook
 import de.markusressel.kodehighlighter.core.RuleMatches
 import de.markusressel.kodehighlighter.core.StyleFactory
 import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 
 /**
  * Manages the interaction between a [Spannable] and a [LanguageRuleBook]
@@ -35,12 +32,10 @@ open class SpannableHighlighter(
      * @param ruleMatches a list of [RuleMatches] objects that hold the styles to apply
      */
     open suspend fun highlight(spannable: Spannable, ruleMatches: List<RuleMatches>) {
-        coroutineScope {
-            ruleMatches.forEach {
-                val styleFactories = colorScheme.getStyles(it.rule)
-                it.matches.forEach { match ->
-                    highlight(spannable, match.startIndex, match.endIndex, styleFactories)
-                }
+        ruleMatches.forEach {
+            val styleFactories = colorScheme.getStyles(it.rule)
+            it.matches.forEach { match ->
+                highlight(spannable, match.startIndex, match.endIndex, styleFactories)
             }
         }
     }
