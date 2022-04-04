@@ -46,9 +46,7 @@ interface LanguageRuleBook {
                         null
                     }
                 }
-            }.awaitAll().filterNotNull().sortedBy {
-                it.rule.getApplyingOrder()
-            }
+            }.awaitAll().filterNotNull()
         }
     }
 

@@ -10,10 +10,6 @@ class StringRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    override fun getApplyingOrder(): Int {
-        return 3
-    }
-
     companion object {
         val PATTERN = "\"(\\\\\"|[^\"\\n])*\"".toRegex()
     }

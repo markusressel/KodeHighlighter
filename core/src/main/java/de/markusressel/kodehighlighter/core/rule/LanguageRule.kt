@@ -16,14 +16,4 @@ interface LanguageRule {
      */
     fun findMatches(text: CharSequence): List<RuleMatch>
 
-    /**
-     * Allow rules to be applied in a specific order
-     * Rules are applied in an ascendant order (1, 2, ...)
-     *
-     * @return an integer determining the order of applying, defaults to 1
-     */
-    fun getApplyingOrder(): Int {
-        return 1
-    }
-
 }

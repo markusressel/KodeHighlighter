@@ -10,10 +10,6 @@ class CommentRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    override fun getApplyingOrder(): Int {
-        return 2
-    }
-
     companion object {
         val PATTERN = "//.*|(\"(?:\\\\[^\"]|\\\\\"|.)*?\")|(?s)/\\*.*?\\*/".toRegex()
     }
