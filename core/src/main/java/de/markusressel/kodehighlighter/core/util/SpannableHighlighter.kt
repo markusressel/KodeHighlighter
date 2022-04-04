@@ -36,14 +36,12 @@ open class SpannableHighlighter(
      */
     open suspend fun highlight(spannable: Spannable, ruleMatches: List<RuleMatches>) {
         coroutineScope {
-            ruleMatches.map {
-                async {
-                    val styleFactories = colorScheme.getStyles(it.rule)
-                    it.matches.map { match ->
-                        highlight(spannable, match.startIndex, match.endIndex, styleFactories)
-                    }
+            ruleMatches.forEach {
+                val styleFactories = colorScheme.getStyles(it.rule)
+                it.matches.forEach { match ->
+                    highlight(spannable, match.startIndex, match.endIndex, styleFactories)
                 }
-            }.awaitAll()
+            }
         }
     }
 

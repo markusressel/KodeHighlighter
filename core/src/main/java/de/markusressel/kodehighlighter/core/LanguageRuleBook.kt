@@ -41,14 +41,14 @@ interface LanguageRuleBook {
                 async {
                     val matches = rule.findMatches(charSequence)
                     if (matches.isNotEmpty()) {
-                        RuleMatches(
-                                rule = rule,
-                                matches = matches)
+                        RuleMatches(rule, matches)
                     } else {
                         null
                     }
                 }
-            }.awaitAll().filterNotNull()
+            }.awaitAll().filterNotNull().sortedBy {
+                it.rule.getApplyingOrder()
+            }
         }
     }
 

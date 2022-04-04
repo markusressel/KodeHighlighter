@@ -11,6 +11,10 @@ class CommentRule : LanguageRule {
                 RuleHelper.findRegexMatches(text, MULTI_LINE_PATTERN)
     }
 
+    override fun getApplyingOrder(): Int {
+        return 2
+    }
+
     companion object {
         val MULTI_LINE_PATTERN = "('{3}|\"{3})[\\s\\S]*?\\1".toRegex(RegexOption.MULTILINE)
         val SINGLE_LINE_PATTERN = "\\s*#.*".toRegex(RegexOption.MULTILINE)
