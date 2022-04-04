@@ -12,12 +12,12 @@ class OCamlRuleBook : LanguageRuleBook {
 
     override fun getRules(): List<LanguageRule> {
         return listOf(
-            BooleanRule(),
-            KeywordRule(),
-            ModuleRule(),
-            NumberRule(),
-            CommentRule(),
-            StringRule())
+                BooleanRule(),
+                KeywordRule(),
+                ModuleRule(),
+                NumberRule(),
+                CommentRule(),
+                StringRule())
     }
 
 }
