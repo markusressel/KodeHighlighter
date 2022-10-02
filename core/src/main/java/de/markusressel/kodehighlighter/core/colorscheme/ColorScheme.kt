@@ -7,11 +7,11 @@ import de.markusressel.kodehighlighter.core.rule.LanguageRule
  * A color scheme for a language rule book.
  * This essentially maps rules to the styles that will be applied to matched text passages.
  */
-interface ColorScheme {
+interface ColorScheme<Style> {
 
     /**
      * Get a set of styles to apply for a specific language rule
      */
-    fun getStyles(type: LanguageRule): Set<StyleFactory>
+    fun getStyles(type: LanguageRule): Set<StyleFactory<Style>>
 
 }

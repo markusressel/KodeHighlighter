@@ -1,6 +1,7 @@
 package de.markusressel.kodehighlighter.language.python.colorscheme
 
 import android.graphics.Color
+import android.text.style.CharacterStyle
 import android.text.style.ForegroundColorSpan
 import de.markusressel.kodehighlighter.core.StyleFactory
 import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
@@ -11,9 +12,9 @@ import java.util.Collections.emptySet
 /**
  * A dark color scheme for python
  */
-class DarkBackgroundColorScheme : ColorScheme {
+class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
 
-    override fun getStyles(type: LanguageRule): Set<StyleFactory> {
+    override fun getStyles(type: LanguageRule): Set<StyleFactory<CharacterStyle>> {
         return when (type) {
             is ClassKeywordRule,
             is DefKeyword,

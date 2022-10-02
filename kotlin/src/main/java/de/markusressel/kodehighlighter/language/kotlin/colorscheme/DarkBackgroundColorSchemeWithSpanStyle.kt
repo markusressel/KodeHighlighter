@@ -1,8 +1,7 @@
 package de.markusressel.kodehighlighter.language.kotlin.colorscheme
 
-import android.graphics.Color
-import android.text.style.CharacterStyle
-import android.text.style.ForegroundColorSpan
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
 import de.markusressel.kodehighlighter.core.StyleFactory
 import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
@@ -19,11 +18,11 @@ import de.markusressel.kodehighlighter.language.kotlin.rule.VarKeywordRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.VisibilityKeywordRule
 
 /**
- * A dark color scheme for kotlin
+ * A dark color scheme for kotlin to be used for compose
  */
-class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
+class DarkBackgroundColorSchemeWithSpanStyle : ColorScheme<SpanStyle> {
 
-    override fun getStyles(type: LanguageRule): Set<StyleFactory<CharacterStyle>> {
+    override fun getStyles(type: LanguageRule): Set<StyleFactory<SpanStyle>> {
         return when (type) {
             is ImportKeywordRule,
             is PackageKeywordRule,
@@ -33,16 +32,16 @@ class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
             is FunctionKeywordRule,
             is VisibilityKeywordRule,
             is VarKeywordRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }
+                setOf { SpanStyle(Color(0xFFFF6D00)) }
             }
             is AnnotationRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }
+                setOf { SpanStyle(Color(0xFFFF6D00)) }
             }
             is CommentRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#33691E")) }
+                setOf { SpanStyle(Color(0xFF33691E)) }
             }
             is NumberRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#01579B")) }
+                setOf { SpanStyle(Color(0xFF01579B)) }
             }
             else -> emptySet()
         }
