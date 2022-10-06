@@ -74,12 +74,20 @@ class MainActivity : AppCompatActivity() {
 
                     Spacer(modifier = Modifier.size(32.dp))
 
+                    var textFieldValue by remember {
+                        mutableStateOf(
+                            TextFieldValue(
+                                annotatedString = AnnotatedString(text),
+                            )
+                        )
+                    }
+
                     KuteEditText(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(128.dp),
-                        value = text,
-                        onValueChange = { text = it.text }
+                        value = textFieldValue,
+                        onValueChange = { textFieldValue = it }
                     )
 
                     Spacer(modifier = Modifier.size(32.dp))
@@ -97,7 +105,7 @@ class MainActivity : AppCompatActivity() {
     @Composable
     fun KuteTextField(
         modifier: Modifier = Modifier,
-        value: String,
+        value: TextFieldValue,
         onValueChange: (TextFieldValue) -> Unit,
     ) {
         KuteEditText(
@@ -115,7 +123,7 @@ class MainActivity : AppCompatActivity() {
     @Composable
     fun KuteEditText(
         modifier: Modifier = Modifier,
-        value: String,
+        value: TextFieldValue,
         onValueChange: (TextFieldValue) -> Unit,
     ) {
         val composeHighlighter by remember {
@@ -128,21 +136,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         var annotatedText by remember {
-
-            mutableStateOf(AnnotatedString(text = ""))
-        }
-
-        LaunchedEffect(value) {
-            annotatedText = composeHighlighter.highlight(AnnotatedString(text = value))
+            mutableStateOf(AnnotatedString(text = value.text))
         }
 
         TextField(
             modifier = modifier,
             value = TextFieldValue(
-                annotatedText
+                annotatedString = annotatedText,
+                selection = value.selection,
             ),
             onValueChange = onValueChange,
         )
+
+        LaunchedEffect(value) {
+            annotatedText = composeHighlighter.highlight(annotatedText)
+        }
     }
 
     @Composable
