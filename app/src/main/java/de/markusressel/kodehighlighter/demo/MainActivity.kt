@@ -5,15 +5,17 @@ import android.text.SpannableString
 import android.widget.TextView
 import androidx.annotation.RawRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -47,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         initEditTextSample()
     }
 
+    @OptIn(ExperimentalComposeUiApi::class)
     private fun initComposeSamples() {
         binding.composeView.setContent {
             MaterialTheme {
@@ -54,23 +57,21 @@ class MainActivity : AppCompatActivity() {
                     mutableStateOf(readResourceFileAsText(R.raw.markdown_sample))
                 }
 
+                val nestedScrollInteropConnection = rememberNestedScrollInteropConnection()
+
                 Column {
-
-
-                    KuteTextView(
+                    Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(128.dp)
-                            .scrollable(
-                                state = rememberScrollState(),
-                                orientation = Orientation.Vertical
-                            )
-                            .scrollable(
-                                state = rememberScrollState(),
-                                orientation = Orientation.Horizontal
-                            ),
-                        text = text
-                    )
+                            .verticalScroll(rememberScrollState())
+                            .nestedScroll(nestedScrollInteropConnection)
+                    ) {
+                        KuteTextView(
+                            modifier = Modifier.wrapContentSize(),
+                            text = text
+                        )
+                    }
 
                     Spacer(modifier = Modifier.size(32.dp))
 
