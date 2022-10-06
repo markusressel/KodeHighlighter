@@ -5,10 +5,18 @@ import android.text.SpannableString
 import android.widget.TextView
 import androidx.annotation.RawRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
 import de.markusressel.kodehighlighter.core.util.AnnotatedStringHighlighter
 import de.markusressel.kodehighlighter.core.util.EditTextHighlighter
 import de.markusressel.kodehighlighter.core.util.SpannableHighlighter
@@ -42,29 +50,110 @@ class MainActivity : AppCompatActivity() {
     private fun initComposeSamples() {
         binding.composeView.setContent {
             MaterialTheme {
-                val composeHighlighter by remember {
-                    mutableStateOf(
-                        AnnotatedStringHighlighter(
-                            languageRuleBook = MarkdownRuleBook(),
-                            colorScheme = DarkBackgroundColorSchemeWithSpanStyle()
-                        )
-                    )
-                }
-
                 var text by remember {
                     mutableStateOf(readResourceFileAsText(R.raw.markdown_sample))
                 }
-                var annotatedText by remember {
-                    mutableStateOf(AnnotatedString(text = ""))
-                }
 
-                LaunchedEffect(text) {
-                    annotatedText = composeHighlighter.highlight(AnnotatedString(text = text))
-                }
+                KuteTextView(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(128.dp),
+                    text = text
+                )
 
-                Text(annotatedText)
+                Spacer(modifier = Modifier.size(8.dp))
+
+                KuteEditText(
+                    value = text,
+                    onValueChange = { text = it.text }
+                )
             }
         }
+    }
+
+    /**
+     * An [InputField] based Text Editor composable.
+     * The same thing as [KuteEditText] but with a name that matches compose.
+     *
+     * @see [KuteEditText]
+     */
+    @Composable
+    fun KuteTextField(
+        modifier: Modifier = Modifier,
+        value: String,
+        onValueChange: (TextFieldValue) -> Unit,
+    ) {
+        KuteEditText(
+            modifier,
+            value,
+            onValueChange,
+        )
+    }
+
+    /**
+     * An [InputField] based Text Editor composable.
+     *
+     * @see [KuteTextField]
+     */
+    @Composable
+    fun KuteEditText(
+        modifier: Modifier = Modifier,
+        value: String,
+        onValueChange: (TextFieldValue) -> Unit,
+    ) {
+        val composeHighlighter by remember {
+            mutableStateOf(
+                AnnotatedStringHighlighter(
+                    languageRuleBook = MarkdownRuleBook(),
+                    colorScheme = DarkBackgroundColorSchemeWithSpanStyle()
+                )
+            )
+        }
+
+        var annotatedText by remember {
+
+            mutableStateOf(AnnotatedString(text = ""))
+        }
+
+        LaunchedEffect(value) {
+            annotatedText = composeHighlighter.highlight(AnnotatedString(text = value))
+        }
+
+        TextField(
+            modifier = modifier,
+            value = TextFieldValue(
+                annotatedText
+            ),
+            onValueChange = onValueChange,
+        )
+    }
+
+    @Composable
+    fun KuteTextView(
+        modifier: Modifier = Modifier,
+        text: String,
+    ) {
+        val composeHighlighter by remember {
+            mutableStateOf(
+                AnnotatedStringHighlighter(
+                    languageRuleBook = MarkdownRuleBook(),
+                    colorScheme = DarkBackgroundColorSchemeWithSpanStyle()
+                )
+            )
+        }
+
+        var annotatedText by remember {
+            mutableStateOf(AnnotatedString(text = ""))
+        }
+
+        LaunchedEffect(text) {
+            annotatedText = composeHighlighter.highlight(AnnotatedString(text = text))
+        }
+
+        Text(
+            modifier = modifier,
+            text = annotatedText
+        )
     }
 
     private fun initTextViewSamples() {
