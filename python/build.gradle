@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'org.jetbrains.dokka-android'
 
-apply plugin: 'com.github.dcendents.android-maven'
 group = rootProject.ext.group
 
 android {
@@ -12,8 +11,6 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
@@ -23,12 +20,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'de.markusressel.kodehighlighter.language.python'
 }
 
 dependencies {
     api project(':core')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation 'androidx.compose.ui:ui-text:1.1.1'
+    implementation 'androidx.compose.ui:ui-text:1.2.1'
 }
 
 // build a jar with source files
