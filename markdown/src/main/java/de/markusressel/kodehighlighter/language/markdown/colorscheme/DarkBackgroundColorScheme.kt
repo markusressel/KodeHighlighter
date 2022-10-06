@@ -2,6 +2,7 @@ package de.markusressel.kodehighlighter.language.markdown.colorscheme
 
 import android.graphics.Color
 import android.graphics.Typeface
+import android.text.style.CharacterStyle
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import de.markusressel.kodehighlighter.core.StyleFactory
@@ -12,9 +13,9 @@ import de.markusressel.kodehighlighter.language.markdown.rule.*
 /**
  * A dark color scheme for markdown
  */
-class DarkBackgroundColorScheme : ColorScheme {
+class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
 
-    override fun getStyles(type: LanguageRule): Set<StyleFactory> {
+    override fun getStyles(type: LanguageRule): Set<StyleFactory<CharacterStyle>> {
         return when (type) {
             is BoldRule -> {
                 setOf({ ForegroundColorSpan(Color.parseColor("#0091EA")) },

@@ -12,8 +12,8 @@ import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
  */
 open class SpannableHighlighter(
         private val languageRuleBook: LanguageRuleBook,
-        private val colorScheme: ColorScheme = languageRuleBook.defaultColorScheme)
-    : LanguageRuleBook by languageRuleBook {
+        private val colorScheme: ColorScheme<CharacterStyle>
+) : LanguageRuleBook by languageRuleBook {
 
     /**
      * Highlight the given text
@@ -48,7 +48,7 @@ open class SpannableHighlighter(
      * @param end the endIndex position (inclusive)
      * @param styleFactories a set of the style factories to apply
      */
-    open fun highlight(spannable: Spannable, start: Int, end: Int, styleFactories: Set<StyleFactory>) {
+    open fun highlight(spannable: Spannable, start: Int, end: Int, styleFactories: Set<StyleFactory<CharacterStyle>>) {
         styleFactories.forEach {
             applyStyle(it(), spannable, start, end)
         }

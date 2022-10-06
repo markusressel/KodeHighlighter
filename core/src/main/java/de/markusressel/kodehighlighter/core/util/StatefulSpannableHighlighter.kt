@@ -9,7 +9,7 @@ import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
  * A wrapper around a [LanguageRuleBook] that adds a state to it so previous
  * highlighting states can be cleared before applying a new one.
  */
-open class StatefulSpannableHighlighter(languageRuleBook: LanguageRuleBook, colorScheme: ColorScheme)
+open class StatefulSpannableHighlighter(languageRuleBook: LanguageRuleBook, colorScheme: ColorScheme<CharacterStyle>)
     : SpannableHighlighter(languageRuleBook, colorScheme) {
 
     /**

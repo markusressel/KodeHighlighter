@@ -1,14 +1,15 @@
 package de.markusressel.kodehighlighter.language.ocaml
 
 import de.markusressel.kodehighlighter.core.LanguageRuleBook
-import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
-import de.markusressel.kodehighlighter.language.ocaml.colorscheme.DarkBackgroundColorScheme
-import de.markusressel.kodehighlighter.language.ocaml.rule.*
+import de.markusressel.kodehighlighter.language.ocaml.rule.BooleanRule
+import de.markusressel.kodehighlighter.language.ocaml.rule.CommentRule
+import de.markusressel.kodehighlighter.language.ocaml.rule.KeywordRule
+import de.markusressel.kodehighlighter.language.ocaml.rule.ModuleRule
+import de.markusressel.kodehighlighter.language.ocaml.rule.NumberRule
+import de.markusressel.kodehighlighter.language.ocaml.rule.StringRule
 
 class OCamlRuleBook : LanguageRuleBook {
-
-    override val defaultColorScheme: ColorScheme = DarkBackgroundColorScheme()
 
     override fun getRules(): List<LanguageRule> {
         return listOf(

@@ -2,26 +2,21 @@ package de.markusressel.kodehighlighter.core
 
 import android.text.Spannable
 import android.text.style.CharacterStyle
-import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
+import androidx.compose.ui.text.SpanStyle
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
 /**
- * A function that creates a [CharacterStyle] that can be applied to a [Spannable]
+ * A function that creates a style like [CharacterStyle] or [SpanStyle] that can be applied to a [Spannable] or [CharSequence]
  */
-typealias StyleFactory = () -> CharacterStyle
+typealias StyleFactory<Style> = () -> Style
 
 /**
  * Interface for a language rule book, providing definitions of what to highlight
  */
 interface LanguageRuleBook {
-
-    /**
-     * The default color scheme
-     */
-    val defaultColorScheme: ColorScheme
 
     /**
      * Get a set of rules for this highlighter

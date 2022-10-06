@@ -6,7 +6,12 @@ import android.text.style.CharacterStyle
 import android.widget.EditText
 import de.markusressel.kodehighlighter.core.LanguageRuleBook
 import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Convenience class for using a [LanguageRuleBook] in an [EditText]
@@ -28,7 +33,7 @@ open class EditTextHighlighter(
         /**
          * The [ColorScheme] to use
          */
-        colorScheme: ColorScheme = languageRuleBook.defaultColorScheme,
+        colorScheme: ColorScheme<CharacterStyle>,
         /**
          * Time in milliseconds to debounce user input
          */
@@ -46,13 +51,13 @@ open class EditTextHighlighter(
     /**
      * The [ColorScheme] to use
      */
-    var colorScheme: ColorScheme = colorScheme
+    var colorScheme: ColorScheme<CharacterStyle> = colorScheme
         set(value) {
             field = value
             statefulSyntaxHighlighter = StatefulSpannableHighlighter(languageRuleBook, field)
         }
 
-    private var statefulSyntaxHighlighter = StatefulSpannableHighlighter(languageRuleBook, languageRuleBook.defaultColorScheme)
+    private var statefulSyntaxHighlighter = StatefulSpannableHighlighter(languageRuleBook, colorScheme)
         set(value) {
             clearAppliedStyles()
             field = value

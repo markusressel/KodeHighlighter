@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         val pythonText = readResourceFileAsText(R.raw.python_example)
         val pythonRuleBook = PythonRuleBook()
-        val pythonHighlighter = SpannableHighlighter(pythonRuleBook)
+        val pythonHighlighter = SpannableHighlighter(pythonRuleBook, DarkBackgroundColorScheme())
         highlightInCoroutine(pythonText, pythonHighlighter, pythonDark)
 
         val jsonText = readResourceFileAsText(R.raw.json_example)
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
         val ocamlText = readResourceFileAsText(R.raw.ocaml_example)
         val ocamlRuleBook = OCamlRuleBook()
-        val ocamlHighlighter = SpannableHighlighter(ocamlRuleBook)
+        val ocamlHighlighter = SpannableHighlighter(ocamlRuleBook, DarkBackgroundColorScheme())
         highlightInCoroutine(ocamlText, ocamlHighlighter, ocamlDark)
     }
 
@@ -81,7 +81,9 @@ class MainActivity : AppCompatActivity() {
     private fun initEditTextSample() {
         val editTextHighlighter = EditTextHighlighter(
                 target = editTextMarkdownDark,
-                languageRuleBook = MarkdownRuleBook())
+                languageRuleBook = MarkdownRuleBook(),
+                colorScheme = DarkBackgroundColorScheme()
+        )
         editTextHighlighter.start()
 
         CoroutineScope(Dispatchers.Main).launch {

@@ -1,8 +1,7 @@
 package de.markusressel.kodehighlighter.language.java.colorscheme
 
-import android.graphics.Color
-import android.text.style.CharacterStyle
-import android.text.style.ForegroundColorSpan
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
 import de.markusressel.kodehighlighter.core.StyleFactory
 import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
@@ -19,11 +18,11 @@ import de.markusressel.kodehighlighter.language.java.colorscheme.rule.Visibility
 import java.util.Collections.emptySet
 
 /**
- * A dark color scheme for java
+ * A dark color scheme for java to be used for compose
  */
-class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
+class DarkBackgroundColorSchemeWithSpanStyle : ColorScheme<SpanStyle> {
 
-    override fun getStyles(type: LanguageRule): Set<StyleFactory<CharacterStyle>> {
+    override fun getStyles(type: LanguageRule): Set<StyleFactory<SpanStyle>> {
         return when (type) {
             is ImportKeywordRule,
             is PackageKeywordRule,
@@ -33,13 +32,13 @@ class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
             is ReturnKeywordRule,
             is FinalKeywordRule,
             is VisibilityKeywordRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }
+                setOf { SpanStyle(Color(0xFFFF6D00)) }
             }
             is AnnotationRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#FBC02D")) }
+                setOf { SpanStyle(Color(0xFFFBC02D)) }
             }
             is CommentRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#33691E")) }
+                setOf { SpanStyle(Color(0xFF33691E)) }
             }
             else -> emptySet()
         }
