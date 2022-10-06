@@ -5,10 +5,10 @@ import android.text.SpannableString
 import android.widget.TextView
 import androidx.annotation.RawRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -54,19 +54,36 @@ class MainActivity : AppCompatActivity() {
                     mutableStateOf(readResourceFileAsText(R.raw.markdown_sample))
                 }
 
-                KuteTextView(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(128.dp),
-                    text = text
-                )
+                Column {
 
-                Spacer(modifier = Modifier.size(8.dp))
 
-                KuteEditText(
-                    value = text,
-                    onValueChange = { text = it.text }
-                )
+                    KuteTextView(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(128.dp)
+                            .scrollable(
+                                state = rememberScrollState(),
+                                orientation = Orientation.Vertical
+                            )
+                            .scrollable(
+                                state = rememberScrollState(),
+                                orientation = Orientation.Horizontal
+                            ),
+                        text = text
+                    )
+
+                    Spacer(modifier = Modifier.size(32.dp))
+
+                    KuteEditText(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(128.dp),
+                        value = text,
+                        onValueChange = { text = it.text }
+                    )
+
+                    Spacer(modifier = Modifier.size(32.dp))
+                }
             }
         }
     }
