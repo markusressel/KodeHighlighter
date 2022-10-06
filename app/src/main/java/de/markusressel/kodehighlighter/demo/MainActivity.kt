@@ -12,6 +12,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -53,13 +54,13 @@ class MainActivity : AppCompatActivity() {
     private fun initComposeSamples() {
         binding.composeView.setContent {
             MaterialTheme {
-                var text by remember {
-                    mutableStateOf(readResourceFileAsText(R.raw.markdown_sample))
-                }
-
-                val nestedScrollInteropConnection = rememberNestedScrollInteropConnection()
-
                 Column {
+                    var text by rememberSaveable {
+                        mutableStateOf(readResourceFileAsText(R.raw.markdown_sample))
+                    }
+
+                    val nestedScrollInteropConnection = rememberNestedScrollInteropConnection()
+
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -88,7 +89,10 @@ class MainActivity : AppCompatActivity() {
                             .fillMaxWidth()
                             .height(128.dp),
                         value = textFieldValue,
-                        onValueChange = { textFieldValue = it }
+                        onValueChange = {
+                            textFieldValue = it
+                            text = it.text
+                        }
                     )
 
                     Spacer(modifier = Modifier.size(32.dp))
@@ -168,12 +172,12 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        var annotatedText by remember {
-            mutableStateOf(AnnotatedString(text = ""))
+        var annotatedText by remember(text) {
+            mutableStateOf(AnnotatedString(text = text))
         }
 
         LaunchedEffect(text) {
-            annotatedText = composeHighlighter.highlight(AnnotatedString(text = text))
+            annotatedText = composeHighlighter.highlight(annotatedText)
         }
 
         Text(
