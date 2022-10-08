@@ -5,19 +5,17 @@ import android.text.SpannableString
 import android.widget.TextView
 import androidx.annotation.RawRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -52,69 +50,84 @@ class MainActivity : AppCompatActivity() {
         initEditTextSample()
     }
 
-    @OptIn(ExperimentalComposeUiApi::class)
     private fun initComposeSamples() {
         binding.composeView.setContent {
             MaterialTheme {
-                Column {
-                    var text by rememberSaveable {
-                        mutableStateOf(readResourceFileAsText(R.raw.markdown_sample))
-                    }
-                    val ruleBook by remember { mutableStateOf(MarkdownRuleBook()) }
-                    val colorScheme by remember {
-                        mutableStateOf(
-                            DarkBackgroundColorSchemeWithSpanStyle()
-                        )
-                    }
-
-                    val nestedScrollInteropConnection = rememberNestedScrollInteropConnection()
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(128.dp)
-                            .verticalScroll(rememberScrollState())
-                            .nestedScroll(nestedScrollInteropConnection)
-                    ) {
-                        KodeText(
-                            modifier = Modifier.wrapContentSize(),
-                            text = text,
-                            languageRuleBook = ruleBook,
-                            colorScheme = colorScheme,
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.size(32.dp))
-
-                    var textFieldValue by remember {
-                        mutableStateOf(
-                            TextFieldValue(
-                                annotatedString = AnnotatedString(text),
-                            )
-                        )
-                    }
-
-                    KodeTextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(128.dp),
-                        value = textFieldValue,
-                        languageRuleBook = ruleBook,
-                        colorScheme = colorScheme,
-                        onValueChange = {
-                            if (it.text != text) {
-                                text = it.text
-                            }
-                            if (it != textFieldValue) {
-                                textFieldValue = it
-                            }
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.size(32.dp))
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(32.dp)
+                ) {
+                    KodeTextExample()
+                    KodeTextFieldExample()
+                    Text(text = "Legaxy XML Views")
                 }
             }
         }
+    }
+
+    @Composable
+    private fun KodeTextExample() {
+        val text by rememberSaveable {
+            mutableStateOf(readResourceFileAsText(R.raw.markdown_sample))
+        }
+        val ruleBook by remember { mutableStateOf(MarkdownRuleBook()) }
+        val colorScheme by remember {
+            mutableStateOf(
+                DarkBackgroundColorSchemeWithSpanStyle()
+            )
+        }
+
+        Text(text = "Compose KodeText")
+
+        KodeText(
+            modifier = Modifier
+                .wrapContentSize()
+                .fillMaxWidth()
+                .border(BorderStroke(2.dp, color = MaterialTheme.colors.primary)),
+            text = text,
+            languageRuleBook = ruleBook,
+            colorScheme = colorScheme,
+        )
+    }
+
+    @Composable
+    private fun KodeTextFieldExample() {
+        var text by rememberSaveable {
+            mutableStateOf(readResourceFileAsText(R.raw.markdown_sample))
+        }
+        val ruleBook by remember { mutableStateOf(MarkdownRuleBook()) }
+        val colorScheme by remember {
+            mutableStateOf(
+                DarkBackgroundColorSchemeWithSpanStyle()
+            )
+        }
+
+        var textFieldValue by remember {
+            mutableStateOf(
+                TextFieldValue(
+                    annotatedString = AnnotatedString(text),
+                )
+            )
+        }
+
+        Text(text = "Compose KodeTextField")
+
+        KodeTextField(
+            modifier = Modifier
+                .wrapContentSize()
+                .fillMaxWidth()
+                .border(BorderStroke(2.dp, color = MaterialTheme.colors.primary)),
+            value = textFieldValue,
+            languageRuleBook = ruleBook,
+            colorScheme = colorScheme,
+            onValueChange = {
+                if (it.text != text) {
+                    text = it.text
+                }
+                if (it != textFieldValue) {
+                    textFieldValue = it
+                }
+            }
+        )
     }
 
     private fun initTextViewSamples() {

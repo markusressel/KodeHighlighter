@@ -1,15 +1,19 @@
 package de.markusressel.kodehighlighter.core.ui
 
-import androidx.compose.material.TextField
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.TransformedText
+import androidx.compose.ui.text.input.VisualTransformation
 import de.markusressel.kodehighlighter.core.LanguageRuleBook
 import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
 import de.markusressel.kodehighlighter.core.util.AnnotatedStringHighlighter
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+
 
 /**
  * An [InputField] based Text Editor composable.
@@ -30,33 +34,29 @@ fun KodeTextField(
     colorScheme: ColorScheme<SpanStyle>,
     onValueChange: (TextFieldValue) -> Unit,
 ) {
-    val composeHighlighter by remember {
-        mutableStateOf(
-            AnnotatedStringHighlighter(
-                languageRuleBook = languageRuleBook,
-                colorScheme = colorScheme,
-            )
-        )
-    }
+    val visualTransformation = HighlightingTransformation(languageRuleBook, colorScheme)
 
-    var annotatedText by remember(value.text) {
-        mutableStateOf(AnnotatedString(text = value.text))
-    }
-
-    TextField(
+    BasicTextField(
         modifier = modifier,
-        value = TextFieldValue(
-            annotatedString = annotatedText,
-            selection = value.selection,
-        ),
-        onValueChange = {
-            onValueChange(it)
-        },
+        value = value,
+        onValueChange = onValueChange,
+        visualTransformation = visualTransformation,
     )
+}
 
-    LaunchedEffect(value.text) {
-        delay(300)
-        annotatedText = composeHighlighter.highlight(value.text)
+class HighlightingTransformation(
+    ruleBook: LanguageRuleBook,
+    colorScheme: ColorScheme<SpanStyle>
+) : VisualTransformation {
+
+    private val highlighter = AnnotatedStringHighlighter(ruleBook, colorScheme)
+
+    override fun filter(text: AnnotatedString): TransformedText {
+        // TODO: is it possible to run this asynchronously somehow?
+        val highlightedText = runBlocking {
+            highlighter.highlight(text.text)
+        }
+        return TransformedText(highlightedText, OffsetMapping.Identity)
     }
 }
 
@@ -79,7 +79,7 @@ fun KodeEditText(
     colorScheme: ColorScheme<SpanStyle>,
     onValueChange: (TextFieldValue) -> Unit,
 ) {
-    KodeEditText(
+    KodeTextField(
         modifier,
         value,
         languageRuleBook,
