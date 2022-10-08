@@ -1,8 +1,9 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'org.jetbrains.dokka-android'
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'org.jetbrains.dokka'
+}
 
-apply plugin: 'com.github.dcendents.android-maven'
 group = rootProject.ext.group
 
 android {
@@ -12,8 +13,6 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
@@ -23,35 +22,38 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'de.markusressel.kodehighlighter.core'
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.3.2'
+    }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesCore"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesAndroid"
-    implementation 'androidx.compose.ui:ui-text:1.1.1'
+
+    // Compose
+    implementation 'androidx.compose.ui:ui-text:1.2.1'
+    // Material Design
+    implementation 'androidx.compose.material:material:1.2.1'
+
+    debugImplementation "androidx.compose.ui:ui-tooling:1.2.1"
+    implementation "androidx.compose.ui:ui-tooling-preview:1.2.1"
 
     testImplementation "junit:junit:$versionJunit"
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
 
 configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
-// build a jar with source files
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-task dokkaJar(type: Jar, dependsOn: dokka) {
-    classifier = 'javadoc'
-    from dokka.outputDirectory
-}
-
-artifacts {
-    archives sourcesJar
-    archives dokkaJar
-}
+apply from: rootProject.file('dokka.gradle')
+apply from: rootProject.file('jars.gradle')
