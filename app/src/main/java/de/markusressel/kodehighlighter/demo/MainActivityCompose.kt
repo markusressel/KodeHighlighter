@@ -4,11 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Checkbox
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -45,35 +42,50 @@ class MainActivityCompose : ComponentActivity() {
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = "Text"
-                )
-                Checkbox(
-                    checked = uiState.selectedViewType == ViewType.Text,
-                    onCheckedChange = { viewModel.onUiEvent(UiEvent.ViewTypeSelected(ViewType.Text)) }
-                )
-            }
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = "Editor"
-                )
-                Checkbox(
-                    checked = uiState.selectedViewType == ViewType.Editor,
-                    onCheckedChange = { viewModel.onUiEvent(UiEvent.ViewTypeSelected(ViewType.Editor)) }
-                )
-            }
+            ViewTypeSelection(uiState)
 
             ComposeSamples(
                 selectedViewType = uiState.selectedViewType,
                 selectedLanguage = uiState.selectedLanguage
+            )
+        }
+    }
+
+    @Composable
+    private fun ViewTypeSelection(uiState: UiState) {
+        Row(
+            modifier = Modifier
+                .clickable {
+                    viewModel.onUiEvent(UiEvent.ViewTypeSelected(ViewType.Text))
+                }
+                .padding(horizontal = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier.weight(1f),
+                text = "Text"
+            )
+            Checkbox(
+                checked = uiState.selectedViewType == ViewType.Text,
+                onCheckedChange = { viewModel.onUiEvent(UiEvent.ViewTypeSelected(ViewType.Text)) }
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .clickable {
+                    viewModel.onUiEvent(UiEvent.ViewTypeSelected(ViewType.Editor))
+                }
+                .padding(horizontal = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier.weight(1f),
+                text = "Editor"
+            )
+            Checkbox(
+                checked = uiState.selectedViewType == ViewType.Editor,
+                onCheckedChange = { viewModel.onUiEvent(UiEvent.ViewTypeSelected(ViewType.Editor)) }
             )
         }
     }
@@ -104,8 +116,6 @@ class MainActivityCompose : ComponentActivity() {
                 DarkBackgroundColorSchemeWithSpanStyle()
             )
         }
-
-        Text(text = "Compose KodeText")
 
         val borderSize = 2.dp
 
@@ -140,8 +150,6 @@ class MainActivityCompose : ComponentActivity() {
                 )
             )
         }
-
-        Text(text = "Compose KodeTextField")
 
         val borderSize = 2.dp
 
