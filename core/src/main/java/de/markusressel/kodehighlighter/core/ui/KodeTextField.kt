@@ -21,7 +21,7 @@ import kotlinx.coroutines.runBlocking
 
 
 /**
- * An [InputField] based Text Editor composable.
+ * An [BasicTextField] based Text Editor composable.
  * The same thing as [KodeEditText] but with a name that matches compose naming style.
  *
  * @param value the [TextFieldValue] value of the text field.
