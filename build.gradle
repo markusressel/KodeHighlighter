@@ -6,6 +6,8 @@ buildscript {
     ext {
         group = 'com.github.markusressel'
 
+        dokka_version = '1.7.10'
+
         gradle_plugin_version = '7.3.0'
 
         minSdkVersion = 21
@@ -31,21 +33,21 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
         mavenCentral()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$gradle_plugin_version"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}")
+        classpath("org.jetbrains.dokka:dokka-gradle-plugin:${dokka_version}")
+
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.18"
     }
 }
 
 allprojects {
     repositories {
         google()
-        jcenter()
         mavenCentral()
         maven { url 'https://jitpack.io' }
     }
