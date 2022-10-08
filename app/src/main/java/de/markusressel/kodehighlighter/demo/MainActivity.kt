@@ -7,10 +7,7 @@ import androidx.annotation.RawRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -78,11 +75,14 @@ class MainActivity : AppCompatActivity() {
 
         Text(text = "Compose KodeText")
 
+        val borderSize = 2.dp
+
         KodeText(
             modifier = Modifier
+                .border(BorderStroke(borderSize, color = MaterialTheme.colors.primary))
+                .padding(borderSize * 2)
                 .wrapContentSize()
-                .fillMaxWidth()
-                .border(BorderStroke(2.dp, color = MaterialTheme.colors.primary)),
+                .fillMaxWidth(),
             text = text,
             languageRuleBook = ruleBook,
             colorScheme = colorScheme,
@@ -111,11 +111,14 @@ class MainActivity : AppCompatActivity() {
 
         Text(text = "Compose KodeTextField")
 
+        val borderSize = 2.dp
+
         KodeTextField(
             modifier = Modifier
+                .border(BorderStroke(borderSize, color = MaterialTheme.colors.primary))
+                .padding(borderSize * 2)
                 .wrapContentSize()
-                .fillMaxWidth()
-                .border(BorderStroke(2.dp, color = MaterialTheme.colors.primary)),
+                .fillMaxWidth(),
             value = textFieldValue,
             languageRuleBook = ruleBook,
             colorScheme = colorScheme,
