@@ -30,10 +30,7 @@ import de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgro
 import de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgroundColorSchemeWithSpanStyle
 import de.markusressel.kodehighlighter.language.ocaml.OCamlRuleBook
 import de.markusressel.kodehighlighter.language.python.PythonRuleBook
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -68,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                             .verticalScroll(rememberScrollState())
                             .nestedScroll(nestedScrollInteropConnection)
                     ) {
-                        KuteTextView(
+                        KodeTextView(
                             modifier = Modifier.wrapContentSize(),
                             text = text
                         )
@@ -84,14 +81,18 @@ class MainActivity : AppCompatActivity() {
                         )
                     }
 
-                    KuteEditText(
+                    KodeEditText(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(128.dp),
                         value = textFieldValue,
                         onValueChange = {
-                            textFieldValue = it
-                            text = it.text
+                            if (it.text != text) {
+                                text = it.text
+                            }
+                            if (it != textFieldValue) {
+                                textFieldValue = it
+                            }
                         }
                     )
 
@@ -103,17 +104,17 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * An [InputField] based Text Editor composable.
-     * The same thing as [KuteEditText] but with a name that matches compose.
+     * The same thing as [KodeEditText] but with a name that matches compose.
      *
-     * @see [KuteEditText]
+     * @see [KodeEditText]
      */
     @Composable
-    fun KuteTextField(
+    fun KodeTextField(
         modifier: Modifier = Modifier,
         value: TextFieldValue,
         onValueChange: (TextFieldValue) -> Unit,
     ) {
-        KuteEditText(
+        KodeEditText(
             modifier,
             value,
             onValueChange,
@@ -123,10 +124,10 @@ class MainActivity : AppCompatActivity() {
     /**
      * An [InputField] based Text Editor composable.
      *
-     * @see [KuteTextField]
+     * @see [KodeTextField]
      */
     @Composable
-    fun KuteEditText(
+    fun KodeEditText(
         modifier: Modifier = Modifier,
         value: TextFieldValue,
         onValueChange: (TextFieldValue) -> Unit,
@@ -140,7 +141,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        var annotatedText by remember {
+        var annotatedText by remember(value.text) {
             mutableStateOf(AnnotatedString(text = value.text))
         }
 
@@ -150,16 +151,19 @@ class MainActivity : AppCompatActivity() {
                 annotatedString = annotatedText,
                 selection = value.selection,
             ),
-            onValueChange = onValueChange,
+            onValueChange = {
+                onValueChange(it)
+            },
         )
 
-        LaunchedEffect(value) {
-            annotatedText = composeHighlighter.highlight(annotatedText)
+        LaunchedEffect(value.text) {
+            delay(300)
+            annotatedText = composeHighlighter.highlight(value.text)
         }
     }
 
     @Composable
-    fun KuteTextView(
+    fun KodeTextView(
         modifier: Modifier = Modifier,
         text: String,
     ) {
