@@ -3,33 +3,15 @@ package de.markusressel.kodehighlighter.demo
 import android.os.Bundle
 import android.text.SpannableString
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.annotation.RawRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.unit.dp
-import de.markusressel.kodehighlighter.core.ui.KodeText
-import de.markusressel.kodehighlighter.core.ui.KodeTextField
 import de.markusressel.kodehighlighter.core.util.EditTextHighlighter
 import de.markusressel.kodehighlighter.core.util.SpannableHighlighter
 import de.markusressel.kodehighlighter.demo.databinding.ActivityMainBinding
 import de.markusressel.kodehighlighter.language.json.JsonRuleBook
 import de.markusressel.kodehighlighter.language.markdown.MarkdownRuleBook
 import de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgroundColorScheme
-import de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgroundColorSchemeWithSpanStyle
 import de.markusressel.kodehighlighter.language.ocaml.OCamlRuleBook
 import de.markusressel.kodehighlighter.language.python.PythonRuleBook
 import kotlinx.coroutines.CoroutineScope
@@ -39,6 +21,7 @@ import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
+    val viewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,74 +30,8 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        initComposeSamples()
         initTextViewSamples()
         initEditTextSample()
-    }
-
-    @OptIn(ExperimentalComposeUiApi::class)
-    private fun initComposeSamples() {
-        binding.composeView.setContent {
-            MaterialTheme {
-                Column {
-                    var text by rememberSaveable {
-                        mutableStateOf(readResourceFileAsText(R.raw.markdown_sample))
-                    }
-                    val ruleBook by remember { mutableStateOf(MarkdownRuleBook()) }
-                    val colorScheme by remember {
-                        mutableStateOf(
-                            DarkBackgroundColorSchemeWithSpanStyle()
-                        )
-                    }
-
-                    val nestedScrollInteropConnection = rememberNestedScrollInteropConnection()
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(128.dp)
-                            .verticalScroll(rememberScrollState())
-                            .nestedScroll(nestedScrollInteropConnection)
-                    ) {
-                        KodeText(
-                            modifier = Modifier.wrapContentSize(),
-                            text = text,
-                            languageRuleBook = ruleBook,
-                            colorScheme = colorScheme,
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.size(32.dp))
-
-                    var textFieldValue by remember {
-                        mutableStateOf(
-                            TextFieldValue(
-                                annotatedString = AnnotatedString(text),
-                            )
-                        )
-                    }
-
-                    KodeTextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(128.dp),
-                        value = textFieldValue,
-                        languageRuleBook = ruleBook,
-                        colorScheme = colorScheme,
-                        onValueChange = {
-                            if (it.text != text) {
-                                text = it.text
-                            }
-                            if (it != textFieldValue) {
-                                textFieldValue = it
-                            }
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.size(32.dp))
-                }
-            }
-        }
     }
 
     private fun initTextViewSamples() {
@@ -123,8 +40,6 @@ class MainActivity : AppCompatActivity() {
         val markdownHighlighter =
             SpannableHighlighter(markdownRuleBook, DarkBackgroundColorScheme())
 
-        // TODO: currently there is no light theme
-        highlightInCoroutine(markdownText, markdownHighlighter, binding.markdownLight)
         highlightInCoroutine(markdownText, markdownHighlighter, binding.markdownDark)
 
         val pythonText = readResourceFileAsText(R.raw.python_example)

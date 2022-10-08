@@ -9,11 +9,6 @@
         android:orientation="vertical"
         android:padding="8dp">
 
-        <androidx.compose.ui.platform.ComposeView
-            android:id="@+id/composeView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
         <EditText
             android:id="@+id/editTextMarkdownDark"
             android:layout_width="match_parent"
@@ -29,12 +24,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/markdown_light_header" />
-
-        <TextView
-            android:id="@+id/markdownLight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#22000000" />
 
         <TextView
             android:layout_width="match_parent"

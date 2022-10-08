@@ -49,28 +49,3 @@ fun KodeText(
         text = annotatedText
     )
 }
-
-/**
- * An text with support for code highlighting.
- * The same thing as [KodeText] but with a name that matches XML widget naming style.
- *
- * @param text the text value of this component
- * @param languageRuleBook the language rules to use for highlighting
- * @param colorScheme the color scheme to use for highlighting
- *
- * @see [KodeText]
- */
-@Composable
-fun KodeTextView(
-    modifier: Modifier = Modifier,
-    text: String,
-    languageRuleBook: LanguageRuleBook,
-    colorScheme: ColorScheme<SpanStyle>,
-) {
-    KodeText(
-        modifier = modifier,
-        text = text,
-        languageRuleBook = languageRuleBook,
-        colorScheme = colorScheme,
-    )
-}
