@@ -11,8 +11,8 @@ import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
  * Manages the interaction between a [AnnotatedString] and a [LanguageRuleBook]
  */
 open class AnnotatedStringHighlighter(
-        private val languageRuleBook: LanguageRuleBook,
-        private val colorScheme: ColorScheme<SpanStyle>
+    private val languageRuleBook: LanguageRuleBook,
+    private val colorScheme: ColorScheme<SpanStyle>
 ) : LanguageRuleBook by languageRuleBook {
 
     /**
@@ -31,7 +31,10 @@ open class AnnotatedStringHighlighter(
      * @param charSequence the [CharSequence] to apply highlighting to
      * @param ruleMatches a list of [RuleMatches] objects that hold the styles to apply
      */
-    open suspend fun highlight(charSequence: CharSequence, ruleMatches: List<RuleMatches>): AnnotatedString {
+    open suspend fun highlight(
+        charSequence: CharSequence,
+        ruleMatches: List<RuleMatches>
+    ): AnnotatedString {
         return buildAnnotatedString {
             append(charSequence.toString())
             ruleMatches.forEach {

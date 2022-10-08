@@ -1,10 +1,15 @@
 package de.markusressel.kodehighlighter.core.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.TransformedText
@@ -29,18 +34,31 @@ import kotlinx.coroutines.runBlocking
 @Composable
 fun KodeTextField(
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     value: TextFieldValue,
     languageRuleBook: LanguageRuleBook,
     colorScheme: ColorScheme<SpanStyle>,
     onValueChange: (TextFieldValue) -> Unit,
+    colors: KodeTextFieldColors = KodeTextFieldDefaults.textFieldColors(),
+    textStyle: TextStyle = LocalTextStyle.current,
 ) {
+    // If color is not provided via the text style, use content color as a default
+    val textColor = textStyle.color.takeOrElse {
+        colors.textColor(enabled).value
+    }
+    val mergedTextStyle = textStyle.merge(TextStyle(color = textColor))
+
     val visualTransformation = HighlightingTransformation(languageRuleBook, colorScheme)
 
     BasicTextField(
-        modifier = modifier,
+        modifier = Modifier
+            .background(colors.backgroundColor(enabled).value)
+            .then(modifier),
         value = value,
         onValueChange = onValueChange,
         visualTransformation = visualTransformation,
+        cursorBrush = SolidColor(colors.cursorColor().value),
+        textStyle = mergedTextStyle,
     )
 }
 
@@ -80,11 +98,11 @@ fun KodeEditText(
     onValueChange: (TextFieldValue) -> Unit,
 ) {
     KodeTextField(
-        modifier,
-        value,
-        languageRuleBook,
-        colorScheme,
-        onValueChange,
+        modifier = modifier,
+        value = value,
+        languageRuleBook = languageRuleBook,
+        colorScheme = colorScheme,
+        onValueChange = onValueChange,
     )
 }
 
