@@ -1,14 +1,19 @@
 package de.markusressel.kodehighlighter.demo
 
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class MainViewModel : ViewModel() {
 
-    val uiState: UiState = UiState()
+    val uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
 
     fun onUiEvent(event: UiEvent) {
         when (event) {
-            else -> {}
+            is UiEvent.ViewTypeSelected -> {
+                uiState.value = uiState.value.copy(
+                    selectedViewType = event.viewType
+                )
+            }
         }
     }
 

@@ -7,10 +7,14 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Checkbox
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
@@ -23,25 +27,69 @@ import de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgro
 
 class MainActivityCompose : ComponentActivity() {
 
-    val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
-                ComposeSamples()
+                MainScreen()
             }
         }
     }
 
     @Composable
-    private fun ComposeSamples() {
+    private fun MainScreen() {
+        val uiState by viewModel.uiState.collectAsState()
+
+        Column(
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = "Text"
+                )
+                Checkbox(
+                    checked = uiState.selectedViewType == ViewType.Text,
+                    onCheckedChange = { viewModel.onUiEvent(UiEvent.ViewTypeSelected(ViewType.Text)) }
+                )
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = "Editor"
+                )
+                Checkbox(
+                    checked = uiState.selectedViewType == ViewType.Editor,
+                    onCheckedChange = { viewModel.onUiEvent(UiEvent.ViewTypeSelected(ViewType.Editor)) }
+                )
+            }
+
+            ComposeSamples(
+                selectedViewType = uiState.selectedViewType,
+                selectedLanguage = uiState.selectedLanguage
+            )
+        }
+    }
+
+    @Composable
+    private fun ComposeSamples(
+        selectedViewType: ViewType,
+        selectedLanguage: LanguageExample
+    ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(32.dp)
         ) {
-            KodeTextExample()
-            KodeTextFieldExample()
-            Text(text = "Legaxy XML Views")
+            when (selectedViewType) {
+                ViewType.Text -> KodeTextExample()
+                ViewType.Editor -> KodeTextFieldExample()
+            }
         }
     }
 

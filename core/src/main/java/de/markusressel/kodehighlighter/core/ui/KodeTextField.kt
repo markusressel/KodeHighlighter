@@ -77,32 +77,3 @@ class HighlightingTransformation(
         return TransformedText(highlightedText, OffsetMapping.Identity)
     }
 }
-
-/**
- * An [InputField] based Text Editor composable.
- * The same thing as [KodeTextField] but with a name that matches XML widget naming style.
- *
- * @param value the [TextFieldValue] value of the text field.
- * @param languageRuleBook the language rules to use for highlighting
- * @param colorScheme the color scheme to use for highlighting
- * @param onValueChange callback for changes o the current value
- *
- * @see [KodeTextField]
- */
-@Composable
-fun KodeEditText(
-    modifier: Modifier = Modifier,
-    value: TextFieldValue,
-    languageRuleBook: LanguageRuleBook,
-    colorScheme: ColorScheme<SpanStyle>,
-    onValueChange: (TextFieldValue) -> Unit,
-) {
-    KodeTextField(
-        modifier = modifier,
-        value = value,
-        languageRuleBook = languageRuleBook,
-        colorScheme = colorScheme,
-        onValueChange = onValueChange,
-    )
-}
-
