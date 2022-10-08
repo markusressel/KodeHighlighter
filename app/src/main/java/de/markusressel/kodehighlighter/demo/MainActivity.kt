@@ -9,10 +9,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -20,7 +21,8 @@ import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import de.markusressel.kodehighlighter.core.util.AnnotatedStringHighlighter
+import de.markusressel.kodehighlighter.core.ui.KodeText
+import de.markusressel.kodehighlighter.core.ui.KodeTextField
 import de.markusressel.kodehighlighter.core.util.EditTextHighlighter
 import de.markusressel.kodehighlighter.core.util.SpannableHighlighter
 import de.markusressel.kodehighlighter.demo.databinding.ActivityMainBinding
@@ -30,7 +32,10 @@ import de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgro
 import de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgroundColorSchemeWithSpanStyle
 import de.markusressel.kodehighlighter.language.ocaml.OCamlRuleBook
 import de.markusressel.kodehighlighter.language.python.PythonRuleBook
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -55,6 +60,12 @@ class MainActivity : AppCompatActivity() {
                     var text by rememberSaveable {
                         mutableStateOf(readResourceFileAsText(R.raw.markdown_sample))
                     }
+                    val ruleBook by remember { mutableStateOf(MarkdownRuleBook()) }
+                    val colorScheme by remember {
+                        mutableStateOf(
+                            DarkBackgroundColorSchemeWithSpanStyle()
+                        )
+                    }
 
                     val nestedScrollInteropConnection = rememberNestedScrollInteropConnection()
 
@@ -65,9 +76,11 @@ class MainActivity : AppCompatActivity() {
                             .verticalScroll(rememberScrollState())
                             .nestedScroll(nestedScrollInteropConnection)
                     ) {
-                        KodeTextView(
+                        KodeText(
                             modifier = Modifier.wrapContentSize(),
-                            text = text
+                            text = text,
+                            languageRuleBook = ruleBook,
+                            colorScheme = colorScheme,
                         )
                     }
 
@@ -81,11 +94,13 @@ class MainActivity : AppCompatActivity() {
                         )
                     }
 
-                    KodeEditText(
+                    KodeTextField(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(128.dp),
                         value = textFieldValue,
+                        languageRuleBook = ruleBook,
+                        colorScheme = colorScheme,
                         onValueChange = {
                             if (it.text != text) {
                                 text = it.text
@@ -100,94 +115,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    /**
-     * An [InputField] based Text Editor composable.
-     * The same thing as [KodeEditText] but with a name that matches compose.
-     *
-     * @see [KodeEditText]
-     */
-    @Composable
-    fun KodeTextField(
-        modifier: Modifier = Modifier,
-        value: TextFieldValue,
-        onValueChange: (TextFieldValue) -> Unit,
-    ) {
-        KodeEditText(
-            modifier,
-            value,
-            onValueChange,
-        )
-    }
-
-    /**
-     * An [InputField] based Text Editor composable.
-     *
-     * @see [KodeTextField]
-     */
-    @Composable
-    fun KodeEditText(
-        modifier: Modifier = Modifier,
-        value: TextFieldValue,
-        onValueChange: (TextFieldValue) -> Unit,
-    ) {
-        val composeHighlighter by remember {
-            mutableStateOf(
-                AnnotatedStringHighlighter(
-                    languageRuleBook = MarkdownRuleBook(),
-                    colorScheme = DarkBackgroundColorSchemeWithSpanStyle()
-                )
-            )
-        }
-
-        var annotatedText by remember(value.text) {
-            mutableStateOf(AnnotatedString(text = value.text))
-        }
-
-        TextField(
-            modifier = modifier,
-            value = TextFieldValue(
-                annotatedString = annotatedText,
-                selection = value.selection,
-            ),
-            onValueChange = {
-                onValueChange(it)
-            },
-        )
-
-        LaunchedEffect(value.text) {
-            delay(300)
-            annotatedText = composeHighlighter.highlight(value.text)
-        }
-    }
-
-    @Composable
-    fun KodeTextView(
-        modifier: Modifier = Modifier,
-        text: String,
-    ) {
-        val composeHighlighter by remember {
-            mutableStateOf(
-                AnnotatedStringHighlighter(
-                    languageRuleBook = MarkdownRuleBook(),
-                    colorScheme = DarkBackgroundColorSchemeWithSpanStyle()
-                )
-            )
-        }
-
-        var annotatedText by remember(text) {
-            mutableStateOf(AnnotatedString(text = text))
-        }
-
-        LaunchedEffect(text) {
-            annotatedText = composeHighlighter.highlight(annotatedText)
-        }
-
-        Text(
-            modifier = modifier,
-            text = annotatedText
-        )
     }
 
     private fun initTextViewSamples() {
