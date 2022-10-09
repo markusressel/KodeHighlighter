@@ -52,8 +52,8 @@ object KodeTextFieldDefaults {
     const val BackgroundOpacity = 0.12f
 
     /**
-     * Creates a [KodeTextFieldColors] that represents the default input text, background and content
-     * (including label, placeholder, leading and trailing icons) colors used in a [KodeTextField].
+     * Creates a [KodeTextFieldColors] that represents the default input text, background
+     * and content colors used in a [KodeTextField].
      */
     @Composable
     fun textFieldColors(
