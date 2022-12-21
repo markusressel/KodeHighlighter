@@ -12,7 +12,6 @@ import de.markusressel.kodehighlighter.core.util.AnnotatedStringHighlighter
 
 /**
  * An text with support for code highlighting.
- * The same thing as [KodeText] but with a name that matches XML widget naming style.
  *
  * @param text the text value of this component
  * @param languageRuleBook the language rules to use for highlighting

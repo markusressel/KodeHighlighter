@@ -22,12 +22,15 @@ import kotlinx.coroutines.runBlocking
 
 /**
  * An [BasicTextField] based Text Editor composable.
- * The same thing as [KodeEditText] but with a name that matches compose naming style.
  *
+ * @param enabled whether the text field is enabled
+ * @param readOnly whether the contents of the text field can be edited by the user
  * @param value the [TextFieldValue] value of the text field.
  * @param languageRuleBook the language rules to use for highlighting
  * @param colorScheme the color scheme to use for highlighting
  * @param onValueChange callback for changes o the current value
+ * @param colors a set of colors for different parts of the view
+ * @param textStyle the styling of the text ([AnnotatedString] can override this)
  *
  * @see [KodeEditText]
  */
@@ -35,6 +38,7 @@ import kotlinx.coroutines.runBlocking
 fun KodeTextField(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    readOnly: Boolean = enabled,
     value: TextFieldValue,
     languageRuleBook: LanguageRuleBook,
     colorScheme: ColorScheme<SpanStyle>,
@@ -59,6 +63,7 @@ fun KodeTextField(
         visualTransformation = visualTransformation,
         cursorBrush = SolidColor(colors.cursorColor().value),
         textStyle = mergedTextStyle,
+        readOnly = readOnly
     )
 }
 
