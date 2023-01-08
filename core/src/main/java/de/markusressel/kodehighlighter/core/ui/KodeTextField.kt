@@ -1,6 +1,5 @@
 package de.markusressel.kodehighlighter.core.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.runtime.*
@@ -38,7 +37,7 @@ import kotlinx.coroutines.runBlocking
 fun KodeTextField(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    readOnly: Boolean = enabled,
+    readOnly: Boolean = enabled.not(),
     value: TextFieldValue,
     languageRuleBook: LanguageRuleBook,
     colorScheme: ColorScheme<SpanStyle>,
@@ -55,9 +54,7 @@ fun KodeTextField(
     val visualTransformation = HighlightingTransformation(languageRuleBook, colorScheme)
 
     BasicTextField(
-        modifier = Modifier
-            .background(colors.backgroundColor(enabled).value)
-            .then(modifier),
+        modifier = modifier,
         value = value,
         onValueChange = onValueChange,
         visualTransformation = visualTransformation,

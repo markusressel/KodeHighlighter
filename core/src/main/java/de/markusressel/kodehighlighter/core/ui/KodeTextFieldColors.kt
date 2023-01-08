@@ -25,14 +25,6 @@ interface KodeTextFieldColors {
     fun textColor(enabled: Boolean): State<Color>
 
     /**
-     * Represents the background color for this text field.
-     *
-     * @param enabled whether the text field is enabled
-     */
-    @Composable
-    fun backgroundColor(enabled: Boolean): State<Color>
-
-    /**
      * Represents the color used for the cursor of this text field.
      */
     @Composable
@@ -47,11 +39,6 @@ interface KodeTextFieldColors {
 object KodeTextFieldDefaults {
 
     /**
-     * The default opacity used for a [KodeTextField]'s background color.
-     */
-    const val BackgroundOpacity = 0.12f
-
-    /**
      * Creates a [KodeTextFieldColors] that represents the default input text, background
      * and content colors used in a [KodeTextField].
      */
@@ -59,14 +46,12 @@ object KodeTextFieldDefaults {
     fun textFieldColors(
         textColor: Color = LocalContentColor.current.copy(LocalContentAlpha.current),
         disabledTextColor: Color = textColor.copy(ContentAlpha.disabled),
-        backgroundColor: Color = MaterialTheme.colors.onSurface.copy(alpha = BackgroundOpacity),
         cursorColor: Color = MaterialTheme.colors.primary,
     ): KodeTextFieldColors =
         DefaultKodeTextFieldColors(
             textColor = textColor,
             disabledTextColor = disabledTextColor,
             cursorColor = cursorColor,
-            backgroundColor = backgroundColor,
         )
 }
 
@@ -75,13 +60,7 @@ private data class DefaultKodeTextFieldColors(
     private val textColor: Color,
     private val disabledTextColor: Color,
     private val cursorColor: Color,
-    private val backgroundColor: Color,
 ) : KodeTextFieldColors {
-
-    @Composable
-    override fun backgroundColor(enabled: Boolean): State<Color> {
-        return rememberUpdatedState(backgroundColor)
-    }
 
     @Composable
     override fun textColor(enabled: Boolean): State<Color> {
