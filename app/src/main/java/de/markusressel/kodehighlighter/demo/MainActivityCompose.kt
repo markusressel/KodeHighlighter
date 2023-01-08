@@ -11,7 +11,6 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
@@ -224,12 +223,10 @@ class MainActivityCompose : ComponentActivity() {
         ruleBook: LanguageRuleBook,
         colorScheme: ColorScheme<SpanStyle>,
     ) {
-        var text by rememberSaveable { mutableStateOf(initialText) }
-
-        var textFieldValue by remember {
+        var textFieldValue by remember(initialText) {
             mutableStateOf(
                 TextFieldValue(
-                    annotatedString = AnnotatedString(text),
+                    annotatedString = AnnotatedString(initialText),
                 )
             )
         }
@@ -246,9 +243,6 @@ class MainActivityCompose : ComponentActivity() {
             languageRuleBook = ruleBook,
             colorScheme = colorScheme,
             onValueChange = {
-                if (it.text != text) {
-                    text = it.text
-                }
                 if (it != textFieldValue) {
                     textFieldValue = it
                 }
