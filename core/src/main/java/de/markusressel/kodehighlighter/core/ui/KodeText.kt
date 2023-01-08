@@ -26,7 +26,7 @@ fun KodeText(
     languageRuleBook: LanguageRuleBook,
     colorScheme: ColorScheme<SpanStyle>,
 ) {
-    val composeHighlighter by remember {
+    val composeHighlighter by remember(languageRuleBook, colorScheme) {
         mutableStateOf(
             AnnotatedStringHighlighter(
                 languageRuleBook = languageRuleBook,
@@ -39,7 +39,7 @@ fun KodeText(
         mutableStateOf(AnnotatedString(text = text))
     }
 
-    LaunchedEffect(text) {
+    LaunchedEffect(text, composeHighlighter) {
         annotatedText = composeHighlighter.highlight(annotatedText)
     }
 

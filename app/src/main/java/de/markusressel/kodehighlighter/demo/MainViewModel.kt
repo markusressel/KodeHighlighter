@@ -14,6 +14,11 @@ class MainViewModel : ViewModel() {
                     selectedViewType = event.viewType
                 )
             }
+            is UiEvent.LanguageExampleSelected -> {
+                uiState.value = uiState.value.copy(
+                    selectedLanguage = event.languageExample
+                )
+            }
         }
     }
 

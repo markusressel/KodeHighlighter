@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Checkbox
+import androidx.compose.material.DropdownMenu
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -14,12 +15,18 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import de.markusressel.kodehighlighter.core.LanguageRuleBook
+import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
 import de.markusressel.kodehighlighter.core.ui.KodeText
 import de.markusressel.kodehighlighter.core.ui.KodeTextField
+import de.markusressel.kodehighlighter.language.java.JavaRuleBook
+import de.markusressel.kodehighlighter.language.json.JsonRuleBook
+import de.markusressel.kodehighlighter.language.kotlin.KotlinRuleBook
 import de.markusressel.kodehighlighter.language.markdown.MarkdownRuleBook
-import de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgroundColorSchemeWithSpanStyle
+import de.markusressel.kodehighlighter.language.python.PythonRuleBook
 
 
 class MainActivityCompose : ComponentActivity() {
@@ -43,6 +50,14 @@ class MainActivityCompose : ComponentActivity() {
             modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
             ViewTypeSelection(uiState)
+
+            ExampleFileSelection(
+                currentLanguage = uiState.selectedLanguage,
+                availableLanguages = uiState.availableLanguages,
+                onLanguageSelected = {
+                    viewModel.onUiEvent(UiEvent.LanguageExampleSelected(it))
+                }
+            )
 
             ComposeSamples(
                 selectedViewType = uiState.selectedViewType,
@@ -91,6 +106,50 @@ class MainActivityCompose : ComponentActivity() {
     }
 
     @Composable
+    private fun ExampleFileSelection(
+        currentLanguage: LanguageExample,
+        availableLanguages: List<LanguageExample>,
+        onLanguageSelected: (LanguageExample) -> Unit,
+    ) {
+        var expanded by remember { mutableStateOf(false) }
+        Row(
+            modifier = Modifier
+                .defaultMinSize(minHeight = 48.dp)
+                .clickable {
+                    expanded = expanded.not()
+                },
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .weight(1f),
+                text = "Language: ${currentLanguage.name}"
+            )
+
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                Column {
+                    availableLanguages.forEach { language ->
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    onLanguageSelected(language)
+                                    expanded = false
+                                }
+                                .padding(8.dp),
+                            text = language.name,
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    @Composable
     private fun ComposeSamples(
         selectedViewType: ViewType,
         selectedLanguage: LanguageExample
@@ -98,25 +157,53 @@ class MainActivityCompose : ComponentActivity() {
         Column(
             verticalArrangement = Arrangement.spacedBy(32.dp)
         ) {
+            val text by remember(selectedLanguage) {
+                mutableStateOf(resources.readResourceFileAsText(selectedLanguage.resource))
+            }
+            val ruleBook by remember(selectedLanguage) {
+                derivedStateOf {
+                    when (selectedLanguage) {
+                        markdownExample -> MarkdownRuleBook()
+                        jsonExample -> JsonRuleBook()
+                        javaExample -> JavaRuleBook()
+                        pythonExample -> PythonRuleBook()
+                        else -> KotlinRuleBook()
+                    }
+                }
+            }
+            val colorScheme by remember(selectedLanguage) {
+                derivedStateOf {
+                    when (selectedLanguage) {
+                        markdownExample -> de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
+                        jsonExample -> de.markusressel.kodehighlighter.language.json.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
+                        javaExample -> de.markusressel.kodehighlighter.language.java.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
+                        pythonExample -> de.markusressel.kodehighlighter.language.python.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
+                        else -> de.markusressel.kodehighlighter.language.kotlin.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
+                    }
+                }
+            }
+
             when (selectedViewType) {
-                ViewType.Text -> KodeTextExample()
-                ViewType.Editor -> KodeTextFieldExample()
+                ViewType.Text -> KodeTextExample(
+                    text = text,
+                    ruleBook = ruleBook,
+                    colorScheme = colorScheme,
+                )
+                ViewType.Editor -> KodeTextFieldExample(
+                    initialText = text,
+                    ruleBook = ruleBook,
+                    colorScheme = colorScheme,
+                )
             }
         }
     }
 
     @Composable
-    private fun KodeTextExample() {
-        val text by rememberSaveable {
-            mutableStateOf(resources.readResourceFileAsText(R.raw.markdown_sample))
-        }
-        val ruleBook by remember { mutableStateOf(MarkdownRuleBook()) }
-        val colorScheme by remember {
-            mutableStateOf(
-                DarkBackgroundColorSchemeWithSpanStyle()
-            )
-        }
-
+    private fun KodeTextExample(
+        text: String,
+        ruleBook: LanguageRuleBook,
+        colorScheme: ColorScheme<SpanStyle>
+    ) {
         val borderSize = 2.dp
 
         KodeText(
@@ -132,16 +219,12 @@ class MainActivityCompose : ComponentActivity() {
     }
 
     @Composable
-    private fun KodeTextFieldExample() {
-        var text by rememberSaveable {
-            mutableStateOf(resources.readResourceFileAsText(R.raw.markdown_sample))
-        }
-        val ruleBook by remember { mutableStateOf(MarkdownRuleBook()) }
-        val colorScheme by remember {
-            mutableStateOf(
-                DarkBackgroundColorSchemeWithSpanStyle()
-            )
-        }
+    private fun KodeTextFieldExample(
+        initialText: String,
+        ruleBook: LanguageRuleBook,
+        colorScheme: ColorScheme<SpanStyle>,
+    ) {
+        var text by rememberSaveable { mutableStateOf(initialText) }
 
         var textFieldValue by remember {
             mutableStateOf(
