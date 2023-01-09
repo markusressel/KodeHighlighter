@@ -6,10 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Checkbox
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +18,7 @@ import de.markusressel.kodehighlighter.core.LanguageRuleBook
 import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
 import de.markusressel.kodehighlighter.core.ui.KodeText
 import de.markusressel.kodehighlighter.core.ui.KodeTextField
+import de.markusressel.kodehighlighter.demo.theme.KodeHighlighterTheme
 import de.markusressel.kodehighlighter.language.java.JavaRuleBook
 import de.markusressel.kodehighlighter.language.json.JsonRuleBook
 import de.markusressel.kodehighlighter.language.kotlin.KotlinRuleBook
@@ -35,7 +33,7 @@ class MainActivityCompose : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme {
+            KodeHighlighterTheme {
                 MainScreen()
             }
         }
@@ -46,7 +44,9 @@ class MainActivityCompose : ComponentActivity() {
         val uiState by viewModel.uiState.collectAsState()
 
         Column(
-            modifier = Modifier.verticalScroll(rememberScrollState())
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .verticalScroll(rememberScrollState())
         ) {
             ViewTypeSelection(uiState)
 
@@ -77,7 +77,8 @@ class MainActivityCompose : ComponentActivity() {
         ) {
             Text(
                 modifier = Modifier.weight(1f),
-                text = "Text"
+                text = "Text",
+                color = MaterialTheme.colors.onSurface,
             )
             Checkbox(
                 checked = uiState.selectedViewType == ViewType.Text,
@@ -95,7 +96,8 @@ class MainActivityCompose : ComponentActivity() {
         ) {
             Text(
                 modifier = Modifier.weight(1f),
-                text = "Editor"
+                text = "Editor",
+                color = MaterialTheme.colors.onSurface,
             )
             Checkbox(
                 checked = uiState.selectedViewType == ViewType.Editor,
@@ -123,7 +125,8 @@ class MainActivityCompose : ComponentActivity() {
                 modifier = Modifier
                     .padding(8.dp)
                     .weight(1f),
-                text = "Language: ${currentLanguage.name}"
+                text = "Language: ${currentLanguage.name}",
+                color = MaterialTheme.colors.onSurface,
             )
 
             DropdownMenu(
@@ -214,6 +217,7 @@ class MainActivityCompose : ComponentActivity() {
             text = text,
             languageRuleBook = ruleBook,
             colorScheme = colorScheme,
+            textColor = MaterialTheme.colors.onSurface,
         )
     }
 
@@ -242,6 +246,7 @@ class MainActivityCompose : ComponentActivity() {
             value = textFieldValue,
             languageRuleBook = ruleBook,
             colorScheme = colorScheme,
+            textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colors.onSurface),
             onValueChange = {
                 if (it != textFieldValue) {
                     textFieldValue = it

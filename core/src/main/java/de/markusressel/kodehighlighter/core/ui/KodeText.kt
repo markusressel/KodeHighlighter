@@ -1,8 +1,10 @@
 package de.markusressel.kodehighlighter.core.ui
 
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import de.markusressel.kodehighlighter.core.LanguageRuleBook
@@ -25,6 +27,7 @@ fun KodeText(
     text: String,
     languageRuleBook: LanguageRuleBook,
     colorScheme: ColorScheme<SpanStyle>,
+    textColor: Color = LocalTextStyle.current.color,
 ) {
     val composeHighlighter by remember(languageRuleBook, colorScheme) {
         mutableStateOf(
@@ -45,6 +48,7 @@ fun KodeText(
 
     Text(
         modifier = modifier,
-        text = annotatedText
+        text = annotatedText,
+        color = textColor,
     )
 }
