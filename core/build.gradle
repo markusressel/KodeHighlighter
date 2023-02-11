@@ -39,7 +39,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesAndroid"
 
     // Compose
-    implementation 'androidx.compose.ui:ui-text:1.3.2'
+    implementation 'androidx.compose.ui:ui-text:1.3.3'
     // Material Design
     implementation 'androidx.compose.material:material:1.3.1'
 
