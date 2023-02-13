@@ -22,7 +22,7 @@ buildscript {
 
         javaxAnnotationVersion = "10.0-b28"
 
-        kotlinCoroutinesCore = "1.4.3"
+        kotlinCoroutinesCore = "1.6.4"
         kotlinCoroutinesAndroid = "1.6.4"
 
         timberKtVersion = "1.5.1"
