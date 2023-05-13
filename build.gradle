@@ -1,14 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.7.20'
+    ext.kotlin_version = '1.8.21'
 
     ext {
         group = 'com.github.markusressel'
 
         dokka_version = '1.7.20'
 
-        gradle_plugin_version = '7.3.0'
+        gradle_plugin_version = '8.0.0'
 
         minSdkVersion = 21
         versionName = "3.1.0"
@@ -64,11 +64,11 @@ apply plugin: 'kotlin'
 
 compileKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 }
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 }

@@ -1,11 +1,11 @@
 // build a jar with source files
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
+    archiveClassifier = 'sources'
 }
 
 task dokkaJar(type: Jar, dependsOn: dokkaJavadoc) {
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
     from dokkaJavadoc.outputDirectory
 }
 
