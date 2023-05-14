@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'org.jetbrains.dokka'
+    id 'maven-publish'
 }
 
 group = rootProject.ext.group
@@ -35,6 +36,14 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion '1.4.7'
     }
+
+    publishing {
+        singleVariant("release") {
+            // if you don't want sources/javadoc, remove these lines
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
 }
 
 dependencies {
@@ -60,4 +69,4 @@ configurations.all {
 }
 
 apply from: rootProject.file('dokka.gradle')
-apply from: rootProject.file('jars.gradle')
+//apply from: rootProject.file('jars.gradle')

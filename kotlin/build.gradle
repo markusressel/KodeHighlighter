@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'org.jetbrains.dokka'
+    id 'maven-publish'
 }
 
 group = rootProject.ext.group
@@ -27,6 +28,14 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
+    publishing {
+        singleVariant("release") {
+            // if you don't want sources/javadoc, remove these lines
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+
     namespace 'de.markusressel.kodehighlighter.language.kotlin'
 }
 
@@ -37,4 +46,4 @@ dependencies {
 }
 
 apply from: rootProject.file('dokka.gradle')
-apply from: rootProject.file('jars.gradle')
+//apply from: rootProject.file('jars.gradle')
