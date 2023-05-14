@@ -12,7 +12,7 @@ tasks.dokkaGfm.configure {
 
 tasks.withType(dokkaHtml.getClass()).configureEach {
     pluginsMapConfiguration.set(
-            ["org.jetbrains.dokka.base.DokkaBase": """{ "separateInheritedMembers": true}"""]
+        ["org.jetbrains.dokka.base.DokkaBase": """{ "separateInheritedMembers": true}"""]
     )
 }
 
@@ -20,6 +20,19 @@ dokkaHtml.configure {
     dokkaSourceSets {
         named("main") {
             skipDeprecated.set(true)
+        }
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId "${group}"
+                artifactId "${project.name}"
+                version "${versionName}"
+            }
         }
     }
 }
