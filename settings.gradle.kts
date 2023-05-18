@@ -17,7 +17,8 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "kodehighlighter"
-include(":app")
+if (System.getenv("JITPACK").toBoolean().not())
+    include(":app")
 include(":core")
 include(":java")
 include(":json")

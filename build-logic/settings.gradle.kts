@@ -11,4 +11,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "build-logic"
-include(":convention")
+if (System.getenv("JITPACK").toBoolean().not())
+    include(":convention")
