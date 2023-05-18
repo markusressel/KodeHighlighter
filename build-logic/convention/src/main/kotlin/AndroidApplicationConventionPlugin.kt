@@ -14,6 +14,8 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 apply("org.jetbrains.kotlin.android")
             }
 
+            group = "de.markusressel.kodehighlighter.demo"
+
             configureKotlinAndroidToolchain()
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)

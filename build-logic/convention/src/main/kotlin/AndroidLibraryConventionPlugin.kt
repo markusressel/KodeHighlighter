@@ -19,10 +19,19 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 apply("org.jetbrains.kotlin.android")
             }
 
+            group = "de.markusressel.kodehighlighter.library"
+
             configureKotlinAndroidToolchain()
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = 33
+
+                publishing {
+                    singleVariant("release") {
+                        withJavadocJar()
+                        withSourcesJar()
+                    }
+                }
             }
             extensions.configure<LibraryAndroidComponentsExtension> {
                 disableUnnecessaryAndroidTests(target)
