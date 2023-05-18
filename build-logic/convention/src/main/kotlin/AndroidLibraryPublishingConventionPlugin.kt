@@ -12,6 +12,7 @@ class AndroidLibraryPublishingConventionPlugin : Plugin<Project> {
                 }
                 publishing {
                     singleVariant("release") {
+                        group = "com.github.markusressel.KodeHighlighter"
                         withJavadocJar()
                         withSourcesJar()
                     }
