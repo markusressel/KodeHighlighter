@@ -1,1 +1,0 @@
-include ':app', ':core', ':java', ':json', ':kotlin', ':markdown', ':python', ':ocaml'
