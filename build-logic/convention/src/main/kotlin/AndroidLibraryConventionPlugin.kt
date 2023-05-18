@@ -25,13 +25,6 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = 33
-
-                publishing {
-                    singleVariant("release") {
-                        withJavadocJar()
-                        withSourcesJar()
-                    }
-                }
             }
             extensions.configure<LibraryAndroidComponentsExtension> {
                 disableUnnecessaryAndroidTests(target)

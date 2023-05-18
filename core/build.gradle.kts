@@ -1,6 +1,7 @@
 plugins {
     id("kodehighlighter.android.library")
     id("kodehighlighter.android.library.compose")
+    id("kodehighlighter.android.library.publishing")
 }
 
 android {

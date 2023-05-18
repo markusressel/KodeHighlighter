@@ -43,6 +43,10 @@ gradlePlugin {
             id = "kodehighlighter.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
+        register("androidLibraryPublishing") {
+            id = "kodehighlighter.android.library.publishing"
+            implementationClass = "AndroidLibraryPublishingConventionPlugin"
+        }
         register("androidTest") {
             id = "kodehighlighter.android.test"
             implementationClass = "AndroidTestConventionPlugin"
