@@ -120,7 +120,7 @@ in your project build.gradle file and
 dependencies {
     ...
 
-    def codeHighlighterVersion = "v3.1.0"
+    def codeHighlighterVersion = "v4.0.0"
     implementation("com.github.markusressel.KodeHighlighter:core:${codeHighlighterVersion}")
 }
 ```
