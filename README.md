@@ -3,7 +3,7 @@ Simple, extendable code highlighting for Spannables on Android.
 
 # Features
 
-* [x] Compose Support (`CharacterStyle`)
+* [x] Compose Support (`SpanStyle`)
 * [x] View (Legacy) Support (`CharacterStyle`)
 * [x] Custom Languages
 * [x] Language specific Themes
