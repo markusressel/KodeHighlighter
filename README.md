@@ -9,7 +9,62 @@ Simple, extendable code highlighting for Spannables on Android.
 * [x] Language specific Themes
 
 # How to use
+
 Have a look at the demo app (`app`  module) for a complete sample.
+
+# Compose
+
+## KodeText
+
+```kotlin
+val text by remember(selectedLanguage) {
+    mutableStateOf("# Hello World!")
+}
+val ruleBook by remember { derivedStateOf { MarkdownRuleBook() } }
+val colorScheme by remember { derivedStateOf { de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgroundColorSchemeWithSpanStyle() } }
+
+KodeText(
+    modifier = Modifier
+        .padding(4.dp)
+        .wrapContentSize()
+        .fillMaxWidth(),
+    text = text,
+    languageRuleBook = ruleBook,
+    colorScheme = colorScheme,
+    textColor = MaterialTheme.colors.onSurface,
+)
+```
+
+## KodeTextField
+
+```kotlin
+val initialText = "# Hello World!"
+var textFieldValue by remember(initialText) {
+    mutableStateOf(
+        TextFieldValue(
+            annotatedString = AnnotatedString(initialText),
+        )
+    )
+}
+
+KodeTextField(
+    modifier = Modifier
+        .padding(4.dp)
+        .wrapContentSize()
+        .fillMaxWidth(),
+    value = textFieldValue,
+    languageRuleBook = ruleBook,
+    colorScheme = colorScheme,
+    textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colors.onSurface),
+    onValueChange = {
+        if (it != textFieldValue) {
+            textFieldValue = it
+        }
+    }
+)
+```
+
+# XML
 
 ## Simple example
 
