@@ -1,12 +1,12 @@
-# KodeHighlighter
+# KodeHighlighter  [![Master](https://travis-ci.org/markusressel/KodeHighlighter.svg?branch=master)](https://travis-ci.org/markusressel/KodeHighlighter/branches) [![codebeat badge](https://codebeat.co/badges/e533d507-9e49-4010-9c02-7fb3e638bb0d)](https://codebeat.co/projects/github-com-markusressel-kodehighlighter-master)
 Simple, extendable code highlighting for Spannables on Android.
 
-# Build Status
+# Features
 
-| Master |
-|--------|
-| [![Master](https://travis-ci.org/markusressel/KodeHighlighter.svg?branch=master)](https://travis-ci.org/markusressel/KodeHighlighter/branches) |
-| [![codebeat badge](https://codebeat.co/badges/e533d507-9e49-4010-9c02-7fb3e638bb0d)](https://codebeat.co/projects/github-com-markusressel-kodehighlighter-master) |
+* [x] Compose Support (`CharacterStyle`)
+* [x] View (Legacy) Support (`CharacterStyle`)
+* [x] Custom Languages
+* [x] Language specific Themes
 
 # How to use
 Have a look at the demo app (`app`  module) for a complete sample.
