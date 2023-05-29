@@ -1,9 +1,14 @@
 [versions]
 androidDesugarJdkLibs = "1.2.2"
 androidGradlePlugin = "8.0.0"
+androidxActivityCompose = "1.7.2"
+androidxAppCompat = "1.6.1"
 androidxComposeBom = "2023.01.00"
 androidxComposeCompiler = "1.4.7"
+androidxComposeUi = "1.4.3"
 androidxComposeUiText = "1.4.3"
+androidxCore = "1.10.1"
+androidxLifecycle = "2.6.1"
 androidxTestExtJunit = "1.1.5"
 androidxTestEspressoCore = "3.5.1"
 dokkaGradlePlugin = "1.8.10"
@@ -18,11 +23,29 @@ ksp = "1.8.21-1.0.11"
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 
+android-material = { group = "com.google.android.material", name = "material", version = "1.9.0" }
+android-material-compose-theme-adapter = { group = "com.google.android.material", name = "compose-theme-adapter", version = "1.2.1" }
+
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivityCompose" }
+
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
+
+androidx-compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "androidxComposeUi" }
+
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
-androidx-compose-ui-text = { group = "androidx.compose.ui", name = "ui-text", version.ref = "androidxComposeUiText" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidxComposeUi" }
 androidx-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "androidxComposeUiText" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version = "1.2.0-alpha02" }
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "androidxComposeUi" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "androidxComposeUi" }
+androidx-compose-ui-text = { group = "androidx.compose.ui", name = "ui-text", version.ref = "androidxComposeUiText" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 
 dokka-gradle-plugin = { group = "org.jetbrains.dokka", name = "dokka-gradle-plugin", version.ref = "dokkaGradlePlugin" }
 
@@ -33,8 +56,6 @@ kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinCoroutinesAndroid" }
 
 ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
-
-
 
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestExtJunit" }

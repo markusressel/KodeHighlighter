@@ -40,30 +40,26 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-
-    implementation("com.android.support.constraint:constraint-layout:2.0.4")
-
+    implementation(libs.androidx.appcompat)
 
     // Animations
-    implementation("androidx.compose.animation:animation:1.4.3")
+    implementation(libs.androidx.compose.animation)
 
 
-    implementation("androidx.compose.runtime:runtime:1.4.3@aar")
+    implementation(libs.androidx.compose.runtime)
     // Compose
-    implementation("androidx.compose.ui:ui:1.4.3")
+    implementation(libs.androidx.compose.ui)
     // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-    implementation("androidx.compose.foundation:foundation:1.4.3")
+    implementation(libs.androidx.compose.foundation)
     // Material Design
-    implementation("androidx.compose.material:material:1.4.3")
+    implementation(libs.androidx.compose.material)
     // Integration with activities
-    implementation("androidx.activity:activity-compose:1.7.1")
+    implementation(libs.androidx.activity.compose)
     // Integration with ViewModels
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     // When using a MDC theme
-    implementation("com.google.android.material:compose-theme-adapter:1.2.1")
+    implementation(libs.android.material.compose.theme.adapter)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.ui.tooling.preview)
