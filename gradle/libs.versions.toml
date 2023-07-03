@@ -15,7 +15,7 @@ dokkaGradlePlugin = "1.8.20"
 junit4 = "4.13.2"
 kotlin = "1.8.21"
 kotlinCoroutinesCore = "1.7.1"
-kotlinCoroutinesAndroid = "1.7.1"
+kotlinCoroutinesAndroid = "1.7.2"
 ksp = "1.8.21-1.0.11"
 
 
