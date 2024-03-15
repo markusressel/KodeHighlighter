@@ -23,7 +23,7 @@ ksp = "1.9.21-1.0.15"
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 
-android-material = { group = "com.google.android.material", name = "material", version = "1.9.0" }
+android-material = { group = "com.google.android.material", name = "material", version = "1.11.0" }
 android-material-compose-theme-adapter = { group = "com.google.android.material", name = "compose-theme-adapter", version = "1.2.1" }
 
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivityCompose" }
@@ -35,7 +35,7 @@ androidx-compose-animation = { group = "androidx.compose.animation", name = "ani
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidxComposeUi" }
 androidx-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "androidxComposeUiText" }
-androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version = "1.2.0-alpha02" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version = "1.2.1" }
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "androidxComposeUi" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "androidxComposeUi" }
 androidx-compose-ui-text = { group = "androidx.compose.ui", name = "ui-text", version.ref = "androidxComposeUiText" }
