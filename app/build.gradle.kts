@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId = "de.markusressel.kodehighlighter.demo"
         versionCode = 1
-        versionName = "4.0.2"
+        versionName = "4.0.3"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         setProperty("archivesBaseName", "KodeHighlighter_v${versionName}_(${versionCode})")
