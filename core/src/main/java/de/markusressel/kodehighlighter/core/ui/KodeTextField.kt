@@ -8,13 +8,17 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import de.markusressel.kodehighlighter.core.LanguageRuleBook
+import de.markusressel.kodehighlighter.core.StyleFactory
 import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
+import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.core.util.AnnotatedStringHighlighter
 import kotlinx.coroutines.runBlocking
 
@@ -44,6 +48,9 @@ fun KodeTextField(
     onValueChange: (TextFieldValue) -> Unit,
     colors: KodeTextFieldColors = KodeTextFieldDefaults.textFieldColors(),
     textStyle: TextStyle = LocalTextStyle.current,
+    onTextLayout: (TextLayoutResult) -> Unit = {},
+    decorationBox: @Composable (innerTextField: @Composable () -> Unit) -> Unit =
+        @Composable { innerTextField -> innerTextField() }
 ) {
     // If color is not provided via the text style, use content color as a default
     val textColor = textStyle.color.takeOrElse {
@@ -60,7 +67,9 @@ fun KodeTextField(
         visualTransformation = visualTransformation,
         cursorBrush = SolidColor(colors.cursorColor().value),
         textStyle = mergedTextStyle,
-        readOnly = readOnly
+        readOnly = readOnly,
+        onTextLayout = onTextLayout,
+        decorationBox = decorationBox,
     )
 }
 
@@ -78,4 +87,23 @@ class HighlightingTransformation(
         }
         return TransformedText(highlightedText, OffsetMapping.Identity)
     }
+}
+
+@Preview
+@Composable
+private fun KodeTextFieldPreview() {
+    KodeTextField(
+        value = TextFieldValue("Hello, World!\nThis is a test!"),
+        languageRuleBook = object : LanguageRuleBook {
+            override fun getRules(): List<LanguageRule> {
+                return emptyList()
+            }
+        },
+        colorScheme = object : ColorScheme<SpanStyle> {
+            override fun getStyles(type: LanguageRule): Set<StyleFactory<SpanStyle>> {
+                return emptySet()
+            }
+        },
+        onValueChange = {},
+    )
 }
