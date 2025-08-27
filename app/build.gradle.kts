@@ -10,8 +10,15 @@ android {
         versionCode = 1
         versionName = "4.0.3"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
 
-        setProperty("archivesBaseName", "KodeHighlighter_v${versionName}_(${versionCode})")
+    androidComponents {
+        onVariants { variant ->
+            variant.outputs.forEach { output ->
+                val outputImpl = output as com.android.build.api.variant.impl.VariantOutputImpl
+                outputImpl.outputFileName.set("KodeHighlighter_v${defaultConfig.versionName}_(${defaultConfig.versionCode}).apk")
+            }
+        }
     }
 
     packaging {
