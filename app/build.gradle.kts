@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId = "de.markusressel.kodehighlighter.demo"
         versionCode = 1
-        versionName = "4.0.3"
+        versionName = "4.0.4"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
