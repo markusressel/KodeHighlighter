@@ -27,7 +27,7 @@ class AndroidLibraryPublishingConventionPlugin : Plugin<Project> {
                             artifactId = target.name
                             version = "${target.version}"
 
-                            artifact("${layout.buildDirectory}/outputs/aar/${target.name}-release.aar") {
+                            artifact("${layout.buildDirectory.asFile.get().absolutePath}/outputs/aar/${target.name}-release.aar") {
                                 builtBy(tasks.getByName("assemble"))
                             }
                         }
