@@ -22,7 +22,7 @@ ksp = "2.2.10-2.0.2"
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 
-android-material = { group = "com.google.android.material", name = "material", version = "1.12.0" }
+android-material = { group = "com.google.android.material", name = "material", version = "1.13.0" }
 android-material-compose-theme-adapter = { group = "com.google.android.material", name = "compose-theme-adapter", version = "1.2.1" }
 
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivityCompose" }
