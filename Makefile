@@ -9,5 +9,8 @@ unittest:
 apk:
 	./gradlew app:assembleDebug --stacktrace
 
+app: apk
+build: apk
+
 publish:
 	./gradlew publishMavenPublicationToMavenLocal

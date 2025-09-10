@@ -18,20 +18,21 @@ import de.markusressel.kodehighlighter.language.python.rule.TypeKeywordRule
  * Python language rule book
  */
 class PythonRuleBook : LanguageRuleBook {
+    
+    private val rules = listOf(
+        ClassKeywordRule,
+        DecoratorRule,
+        DefKeyword,
+        ExceptRule,
+        InternalFunctionsRule,
+        MagicRule,
+        OtherKeywordsRule,
+        ReturnKeywordRule,
+        SelfKeywordRule,
+        TypeKeywordRule,
+        CommentRule
+    )
 
-    override fun getRules(): List<LanguageRule> {
-        return listOf(
-                ClassKeywordRule(),
-                DecoratorRule(),
-                DefKeyword(),
-                ExceptRule(),
-                InternalFunctionsRule(),
-                MagicRule(),
-                OtherKeywordsRule(),
-                ReturnKeywordRule(),
-                SelfKeywordRule(),
-                TypeKeywordRule(),
-                CommentRule())
-    }
+    override fun getRules() = rules
 
 }

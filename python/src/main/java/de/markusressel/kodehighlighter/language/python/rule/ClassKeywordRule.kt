@@ -4,14 +4,12 @@ import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.core.rule.RuleHelper
 import de.markusressel.kodehighlighter.core.rule.RuleMatch
 
-class ClassKeywordRule : LanguageRule {
+object ClassKeywordRule : LanguageRule {
 
     override fun findMatches(text: CharSequence): List<RuleMatch> {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    companion object {
-        val PATTERN = "(class|object)(?=\\s)".toRegex()
-    }
+    private val PATTERN = "(class|object)(?=\\s)".toRegex()
 
 }

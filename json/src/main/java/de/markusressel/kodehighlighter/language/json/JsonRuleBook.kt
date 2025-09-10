@@ -11,12 +11,12 @@ import de.markusressel.kodehighlighter.language.json.rule.StringRule
  */
 class JsonRuleBook : LanguageRuleBook {
 
-    override fun getRules(): List<LanguageRule> {
-        return listOf(
-                StringRule(),
-                NumericRule(),
-                KeywordRule()
-        )
-    }
+    private val rules: List<LanguageRule> = listOf(
+        StringRule,
+        NumericRule,
+        KeywordRule
+    )
+
+    override fun getRules() = rules
 
 }
