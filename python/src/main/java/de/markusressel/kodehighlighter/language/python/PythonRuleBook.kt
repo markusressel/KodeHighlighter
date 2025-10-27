@@ -1,7 +1,6 @@
 package de.markusressel.kodehighlighter.language.python
 
 import de.markusressel.kodehighlighter.core.LanguageRuleBook
-import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.python.rule.ClassKeywordRule
 import de.markusressel.kodehighlighter.language.python.rule.CommentRule
 import de.markusressel.kodehighlighter.language.python.rule.DecoratorRule
@@ -17,8 +16,8 @@ import de.markusressel.kodehighlighter.language.python.rule.TypeKeywordRule
 /**
  * Python language rule book
  */
-class PythonRuleBook : LanguageRuleBook {
-    
+open class PythonRuleBook : LanguageRuleBook {
+
     private val rules = listOf(
         ClassKeywordRule,
         DecoratorRule,

@@ -15,7 +15,7 @@ import de.markusressel.kodehighlighter.language.java.rule.VisibilityKeywordRule
 /**
  * Java language rule book
  */
-class JavaRuleBook : LanguageRuleBook {
+open class JavaRuleBook : LanguageRuleBook {
 
     private val rules = listOf(
         PackageKeywordRule,

@@ -9,7 +9,7 @@ import de.markusressel.kodehighlighter.language.json.rule.StringRule
 /**
  * JSON language rule book
  */
-class JsonRuleBook : LanguageRuleBook {
+open class JsonRuleBook : LanguageRuleBook {
 
     private val rules: List<LanguageRule> = listOf(
         NumericRule,
