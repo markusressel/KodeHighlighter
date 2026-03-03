@@ -1,21 +1,21 @@
 [versions]
 androidDesugarJdkLibs = "2.1.5"
-androidGradlePlugin = "8.13.0"
-androidxActivityCompose = "1.11.0"
+androidGradlePlugin = "9.0.1"
+androidxActivityCompose = "1.12.4"
 androidxAppCompat = "1.7.1"
-androidxComposeBom = "2025.10.01"
-androidxComposeUi = "1.9.4"
-androidxComposeUiText = "1.9.4"
+androidxComposeBom = "2026.02.01"
+androidxComposeUi = "1.10.4"
+androidxComposeUiText = "1.10.4"
 androidxCore = "1.17.0"
-androidxLifecycle = "2.9.4"
+androidxLifecycle = "2.10.0"
 androidxTestExtJunit = "1.3.0"
 androidxTestEspressoCore = "3.7.0"
 dokkaGradlePlugin = "2.1.0"
 junit4 = "4.13.2"
-kotlin = "2.2.21"
+kotlin = "2.3.10"
 kotlinCoroutinesCore = "1.10.2"
 kotlinCoroutinesAndroid = "1.10.2"
-ksp = "2.3.0"
+ksp = "2.3.2"
 
 
 [libraries]
@@ -68,5 +68,4 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
-org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

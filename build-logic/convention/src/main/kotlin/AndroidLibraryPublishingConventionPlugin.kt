@@ -1,4 +1,4 @@
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
@@ -9,15 +9,15 @@ import org.gradle.kotlin.dsl.create
 class AndroidLibraryPublishingConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            extensions.configure<LibraryExtension> {
-                with(pluginManager) {
-                    apply("maven-publish")
-                }
-                publishing {
-                    singleVariant("release") {
-                        group = "com.github.markusressel.KodeHighlighter"
-                        withJavadocJar()
-                        withSourcesJar()
+            pluginManager.apply("maven-publish")
+
+            extensions.apply {
+                configure<LibraryExtension> {
+                    publishing {
+                        singleVariant("release") {
+                            withJavadocJar()
+                            withSourcesJar()
+                        }
                     }
                 }
                 configure<PublishingExtension> {
