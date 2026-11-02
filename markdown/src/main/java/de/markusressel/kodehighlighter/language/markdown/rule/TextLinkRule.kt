@@ -13,6 +13,6 @@ object TextLinkRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "(?<!!)\\[[^\\]\\n]*\\]\\([^)\\n]*\\)".toRegex()
+    private val PATTERN = "(?<!!)\\[[^\\[\\]\\n]*\\]\\([^)\\n]{0,2048}\\)".toRegex()
 
 }

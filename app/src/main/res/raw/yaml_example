@@ -1,0 +1,19 @@
+# CI sample
+name: Build
+on:
+  push:
+    branches: [ master ]
+defaults: &defaults
+  retries: 3
+  timeout: 1.5
+  enabled: true
+jobs:
+  build:
+    <<: *defaults
+    runs-on: "ubuntu-latest" # the runner
+    steps:
+      - uses: actions/checkout@v7
+      - name: 'it''s a test'
+        run: make test
+---
+empty: null

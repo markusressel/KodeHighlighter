@@ -1,12 +1,17 @@
 package de.markusressel.kodehighlighter.demo
 
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
+import de.markusressel.kodehighlighter.language.diff.DiffRuleBook
 import de.markusressel.kodehighlighter.language.java.JavaRuleBook
 import de.markusressel.kodehighlighter.language.json.JsonRuleBook
 import de.markusressel.kodehighlighter.language.kotlin.KotlinRuleBook
 import de.markusressel.kodehighlighter.language.markdown.MarkdownRuleBook
 import de.markusressel.kodehighlighter.language.ocaml.OCamlRuleBook
+import de.markusressel.kodehighlighter.language.properties.PropertiesRuleBook
 import de.markusressel.kodehighlighter.language.python.PythonRuleBook
+import de.markusressel.kodehighlighter.language.toml.TomlRuleBook
+import de.markusressel.kodehighlighter.language.xml.XmlRuleBook
+import de.markusressel.kodehighlighter.language.yaml.YamlRuleBook
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.fail
 import org.junit.Test
@@ -57,7 +62,17 @@ class RuleWorstCaseTest {
     @Test
     fun ruleBooksStayWithinBudgetOnWorstCaseInputs() {
         val ruleBooks = listOf(
-            JavaRuleBook(), JsonRuleBook(), KotlinRuleBook(), MarkdownRuleBook(), OCamlRuleBook(), PythonRuleBook()
+            JavaRuleBook(),
+            JsonRuleBook(),
+            KotlinRuleBook(),
+            MarkdownRuleBook(),
+            OCamlRuleBook(),
+            XmlRuleBook(),
+            YamlRuleBook(),
+            TomlRuleBook(),
+            PropertiesRuleBook(),
+            DiffRuleBook(),
+            PythonRuleBook(),
         )
         val inputs = listOf(
             unterminatedEscapes,
@@ -73,6 +88,20 @@ class RuleWorstCaseTest {
             "/* ".repeat(20_000),
             "**a ".repeat(15_000),
             "_a ".repeat(15_000),
+            "a" + " ".repeat(50_000),
+            "0x" + "1".repeat(50_000),
+            "0b" + "1".repeat(50_000),
+            "- ".repeat(25_000),
+            "a: ".repeat(15_000),
+            "<".repeat(50_000),
+            "<!DOCTYPE ".repeat(5_000),
+            "<a b='".repeat(8_000),
+            "#".repeat(50_000),
+            "#[".repeat(25_000),
+            "![".repeat(25_000),
+            "[a](b".repeat(10_000),
+            "r##\"".repeat(12_000),
+            "R\"x(".repeat(12_000),
         )
         val executor = Executors.newCachedThreadPool { task ->
             Thread(task).apply { isDaemon = true }

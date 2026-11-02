@@ -101,6 +101,16 @@ class MarkdownRuleBookTest {
     }
 
     @Test
+    fun `only the innermost brackets are a link`() {
+        assertHighlighting(
+            ruleBook,
+            "[a [b](c) [![d](e)](f)",
+            TextLinkRule to listOf("[b](c)"),
+            ImageLinkRule to listOf("![d](e)"),
+        )
+    }
+
+    @Test
     fun `links and images`() {
         assertHighlighting(
             ruleBook,

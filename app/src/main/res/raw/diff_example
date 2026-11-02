@@ -1,0 +1,10 @@
+diff --git a/README.md b/README.md
+index 83db48f..bf2a2ac 100644
+--- a/README.md
++++ b/README.md
+@@ -1,4 +1,4 @@ KodeHighlighter
+ Simple code highlighting
+-for Spannables
++for Spannables and Compose
+
+ More text

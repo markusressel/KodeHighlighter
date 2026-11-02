@@ -35,6 +35,31 @@ val ocamlExample = LanguageExample(
     resource = R.raw.ocaml_example
 )
 
+val xmlExample = LanguageExample(
+    name = "XML",
+    resource = R.raw.xml_example
+)
+
+val yamlExample = LanguageExample(
+    name = "YAML",
+    resource = R.raw.yaml_example
+)
+
+val tomlExample = LanguageExample(
+    name = "TOML",
+    resource = R.raw.toml_example
+)
+
+val propertiesExample = LanguageExample(
+    name = "Properties",
+    resource = R.raw.properties_example
+)
+
+val diffExample = LanguageExample(
+    name = "Diff",
+    resource = R.raw.diff_example
+)
+
 data class UiState(
     val selectedLanguage: LanguageExample = markdownExample,
     val availableLanguages: List<LanguageExample> = listOf(
@@ -44,6 +69,11 @@ data class UiState(
         pythonExample,
         kotlinExample,
         ocamlExample,
+        xmlExample,
+        yamlExample,
+        tomlExample,
+        propertiesExample,
+        diffExample,
     ),
     val selectedViewType: ViewType = ViewType.Text,
     val selectedTheme: DemoTheme = DemoTheme.LanguageDefault,

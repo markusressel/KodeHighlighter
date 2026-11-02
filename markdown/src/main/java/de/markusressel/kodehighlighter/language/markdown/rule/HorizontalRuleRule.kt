@@ -13,6 +13,6 @@ object HorizontalRuleRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "(?m)^ {0,3}(?:(?:\\*[ \\t]*){3,}|(?:-[ \\t]*){3,}|(?:_[ \\t]*){3,})\$".toRegex()
+    private val PATTERN = "(?m)^ {0,3}(?:(?:\\*[ \\t]*+){3,}+|(?:-[ \\t]*+){3,}+|(?:_[ \\t]*+){3,}+)\$".toRegex()
 
 }

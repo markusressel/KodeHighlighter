@@ -1,0 +1,18 @@
+# Version catalog sample
+title = "KodeHighlighter"
+released = 2026-11-02
+
+[versions]
+kotlin = "2.0.0" # the language
+retries = 3
+ratio = 1.5e3
+enabled = true
+
+[libraries.junit]
+"group name" = 'junit'
+description = """
+multiple
+lines"""
+
+[[plugins]]
+ids = [ 0xFF, 1_000 ]

@@ -1,0 +1,6 @@
+# gradle.properties sample
+! this is also a comment
+org.gradle.jvmargs=-Xmx4g -Dfile.encoding=UTF-8
+android.useAndroidX = true
+url : https://example.com/path?a=b
+empty=
