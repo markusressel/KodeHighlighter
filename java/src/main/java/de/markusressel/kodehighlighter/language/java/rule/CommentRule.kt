@@ -10,6 +10,6 @@ object CommentRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "//.*|(\"(?:\\\\[^\"]|\\\\\"|.)*?\")|(?s)/\\*.*?\\*/".toRegex()
+    private val PATTERN = "//.*|\"[^\"\\\\\\n]*+(?:\\\\.[^\"\\\\\\n]*+)*+\"|(?s)/\\*.*?\\*/".toRegex()
 
 }

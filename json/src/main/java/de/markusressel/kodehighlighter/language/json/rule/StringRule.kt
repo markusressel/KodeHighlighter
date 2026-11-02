@@ -10,6 +10,6 @@ object StringRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "\"(?:\\\\.|[^\"\\\\])*\"".toRegex()
+    private val PATTERN = "\"[^\"\\\\]*+(?:\\\\.[^\"\\\\]*+)*+\"".toRegex()
 
 }

@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.TextUnit
 import de.markusressel.kodehighlighter.core.LanguageRuleBook
 import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
 import de.markusressel.kodehighlighter.core.util.AnnotatedStringHighlighter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 /**
@@ -60,7 +62,9 @@ fun KodeText(
     }
 
     LaunchedEffect(text, composeHighlighter) {
-        annotatedText = composeHighlighter.highlight(annotatedText)
+        annotatedText = withContext(Dispatchers.Default) {
+            composeHighlighter.highlight(text)
+        }
     }
 
     Text(

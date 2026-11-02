@@ -12,6 +12,6 @@ object CommentRule : LanguageRule {
     }
 
     private val MULTI_LINE_PATTERN = "('{3}|\"{3})[\\s\\S]*?\\1".toRegex(RegexOption.MULTILINE)
-    private val SINGLE_LINE_PATTERN = "\\s*#.*".toRegex(RegexOption.MULTILINE)
+    private val SINGLE_LINE_PATTERN = "#.*".toRegex(RegexOption.MULTILINE)
 
 }

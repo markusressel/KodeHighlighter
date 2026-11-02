@@ -10,6 +10,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.TransformedText
@@ -20,7 +21,9 @@ import de.markusressel.kodehighlighter.core.StyleFactory
 import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.core.util.AnnotatedStringHighlighter
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 
 /**
@@ -58,10 +61,24 @@ fun KodeTextField(
     }
     val mergedTextStyle = textStyle.merge(TextStyle(color = textColor))
 
-    val visualTransformation = HighlightingTransformation(languageRuleBook, colorScheme)
+    val highlighter = remember(languageRuleBook, colorScheme) {
+        AnnotatedStringHighlighter(languageRuleBook, colorScheme)
+    }
+    var highlightedText by remember(highlighter) {
+        mutableStateOf<AnnotatedString?>(null)
+    }
+    LaunchedEffect(value.text, highlighter) {
+        highlightedText = withContext(Dispatchers.Default) {
+            highlighter.highlight(value.text)
+        }
+    }
+    val visualTransformation = remember(highlightedText) {
+        LatestHighlightingTransformation(highlightedText)
+    }
 
     BasicTextField(
         modifier = modifier,
+        enabled = enabled,
         value = value,
         onValueChange = onValueChange,
         visualTransformation = visualTransformation,
@@ -73,6 +90,10 @@ fun KodeTextField(
     )
 }
 
+/**
+ * Highlights on the calling thread, which blocks the UI on large inputs.
+ * [KodeTextField] no longer uses this.
+ */
 class HighlightingTransformation(
     ruleBook: LanguageRuleBook,
     colorScheme: ColorScheme<SpanStyle>
@@ -81,11 +102,54 @@ class HighlightingTransformation(
     private val highlighter = AnnotatedStringHighlighter(ruleBook, colorScheme)
 
     override fun filter(text: AnnotatedString): TransformedText {
-        // TODO: is it possible to run this asynchronously somehow?
         val highlightedText = runBlocking {
             highlighter.highlight(text.text)
         }
         return TransformedText(highlightedText, OffsetMapping.Identity)
+    }
+}
+
+/**
+ * Shows the most recent highlighting result, which is computed in the background.
+ *
+ * @param highlightedText the latest result, null if there is none yet
+ */
+private class LatestHighlightingTransformation(
+    private val highlightedText: AnnotatedString?
+) : VisualTransformation {
+
+    override fun filter(text: AnnotatedString): TransformedText {
+        return TransformedText(
+            applyLatestHighlighting(text.text, highlightedText),
+            OffsetMapping.Identity
+        )
+    }
+}
+
+/**
+ * Applies a highlighting result to a text, which may have changed since the result was computed.
+ * Until the next result arrives, the previous styles are kept at their positions, cut to the new length.
+ *
+ * @param text the current text
+ * @param highlightedText the latest result, null if there is none yet
+ * @return the text with styles
+ */
+internal fun applyLatestHighlighting(
+    text: String,
+    highlightedText: AnnotatedString?
+): AnnotatedString {
+    return when {
+        highlightedText == null -> AnnotatedString(text)
+        highlightedText.text == text -> highlightedText
+        else -> buildAnnotatedString {
+            append(text)
+            highlightedText.spanStyles.forEach { span ->
+                val end = minOf(span.end, text.length)
+                if (span.start < end) {
+                    addStyle(span.item, span.start, end)
+                }
+            }
+        }
     }
 }
 

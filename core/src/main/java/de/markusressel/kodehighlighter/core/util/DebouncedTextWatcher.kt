@@ -1,37 +1,39 @@
 package de.markusressel.kodehighlighter.core.util
 
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.util.*
 
 /**
  * TextWatcher with built in support for debouncing fast input
  *
  * @param delayMs debounce delay in milliseconds
- * @param action action to execute after the text has stabilized
+ * @param action action to execute on the main thread after the text has stabilized
  */
 open class DebouncedTextWatcher(
         var delayMs: Long,
         val action: ((CharSequence?) -> Unit))
     : TextWatcher {
 
-    private var timer = Timer()
+    private val handler = Handler(Looper.getMainLooper())
+    private var pendingAction: Runnable? = null
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         val text = s?.toString() ?: ""
 
-        timer.cancel()
-        timer = Timer()
-        timer.schedule(object : TimerTask() {
-            override fun run() {
-                CoroutineScope(Dispatchers.Main).launch {
-                    action(text)
-                }
-            }
-        }, delayMs)
+        cancel()
+        val runnable = Runnable { action(text) }
+        pendingAction = runnable
+        handler.postDelayed(runnable, delayMs)
+    }
+
+    /**
+     * Cancels the pending action, if any
+     */
+    open fun cancel() {
+        pendingAction?.let(handler::removeCallbacks)
+        pendingAction = null
     }
 
     override fun afterTextChanged(s: Editable?) = Unit
