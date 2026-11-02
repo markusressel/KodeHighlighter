@@ -8,12 +8,13 @@ KodeHighlighter is an Android syntax highlighting library. It is published throu
 - One module per language: `java`, `json`, `kotlin`, `markdown`, `ocaml`, `python`. Package `de.markusressel.kodehighlighter.language.<language>` with a `<Language>RuleBook`, a `rule` package and a `colorscheme` package.
 - Rules are `object`s implementing `LanguageRule`, with the regex in a `private val PATTERN` at the end of the object.
 - `app`: demo app, package `de.markusressel.kodehighlighter.demo`.
+- `test-support`: unpublished test helpers (`assertHighlighting`) for use as `testImplementation`.
 - `build-logic`: Gradle convention plugins. Versions live in `gradle/libs.versions.toml`.
 
 ## Build
 
-- CI (`.github/workflows`) runs `make test` and `make apk` (`./gradlew app:assembleDebug`) and `make unittest` (`./gradlew core:testDebugUnitTest`) with JDK 21. JitPack also uses JDK 21.
-- Unit tests exist in `markdown` and `app` (JUnit 4).
+- CI (`.github/workflows`) runs `make test` and `make apk` (`./gradlew app:assembleDebug`) and `make unittest` (`./gradlew testDebugUnitTest`, all modules) with JDK 21. JitPack also uses JDK 21.
+- Unit tests exist in `core` and `markdown` (JUnit 4). Instrumented tests are in `app/src/androidTest` and are not run by CI.
 
 ## Code style
 
