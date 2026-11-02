@@ -22,4 +22,10 @@ class RuleHelperTest {
             assertEquals(expected, ranges(text, regex))
         }
     }
+
+    @Test
+    fun `group matches return the range of the group`() {
+        val matches = RuleHelper.findRegexGroupMatches("a=b c d=e", "(\\w)=(\\w)|(c)".toRegex(), 2)
+        assertEquals(listOf(RuleMatch(2, 3), RuleMatch(8, 9)), matches)
+    }
 }

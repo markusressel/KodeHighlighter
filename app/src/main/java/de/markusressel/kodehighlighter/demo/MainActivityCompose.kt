@@ -17,6 +17,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import de.markusressel.kodehighlighter.core.LanguageRuleBook
 import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
+import de.markusressel.kodehighlighter.core.colorscheme.GitHubDarkTheme
 import de.markusressel.kodehighlighter.core.colorscheme.TokenTheme
 import de.markusressel.kodehighlighter.core.ui.KodeText
 import de.markusressel.kodehighlighter.core.ui.KodeTextField
@@ -27,6 +28,11 @@ import de.markusressel.kodehighlighter.language.kotlin.KotlinRuleBook
 import de.markusressel.kodehighlighter.language.markdown.MarkdownRuleBook
 import de.markusressel.kodehighlighter.language.ocaml.OCamlRuleBook
 import de.markusressel.kodehighlighter.language.python.PythonRuleBook
+import de.markusressel.kodehighlighter.language.diff.DiffRuleBook
+import de.markusressel.kodehighlighter.language.properties.PropertiesRuleBook
+import de.markusressel.kodehighlighter.language.toml.TomlRuleBook
+import de.markusressel.kodehighlighter.language.yaml.YamlRuleBook
+import de.markusressel.kodehighlighter.language.xml.XmlRuleBook
 
 
 class MainActivityCompose : ComponentActivity() {
@@ -200,6 +206,11 @@ class MainActivityCompose : ComponentActivity() {
                         javaExample -> JavaRuleBook()
                         pythonExample -> PythonRuleBook()
                         ocamlExample -> OCamlRuleBook()
+                        diffExample -> DiffRuleBook()
+                        propertiesExample -> PropertiesRuleBook()
+                        tomlExample -> TomlRuleBook()
+                        yamlExample -> YamlRuleBook()
+                        xmlExample -> XmlRuleBook()
                         else -> KotlinRuleBook()
                     }
                 }
@@ -212,6 +223,11 @@ class MainActivityCompose : ComponentActivity() {
                         javaExample -> de.markusressel.kodehighlighter.language.java.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
                         pythonExample -> de.markusressel.kodehighlighter.language.python.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
                         ocamlExample -> de.markusressel.kodehighlighter.language.ocaml.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
+                        diffExample -> GitHubDarkTheme.spanStyleColorScheme
+                        propertiesExample -> GitHubDarkTheme.spanStyleColorScheme
+                        tomlExample -> GitHubDarkTheme.spanStyleColorScheme
+                        yamlExample -> GitHubDarkTheme.spanStyleColorScheme
+                        xmlExample -> GitHubDarkTheme.spanStyleColorScheme
                         else -> de.markusressel.kodehighlighter.language.kotlin.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
                     }
                 }

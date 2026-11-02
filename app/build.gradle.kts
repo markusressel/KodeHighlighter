@@ -48,6 +48,11 @@ dependencies {
     implementation(project(":python"))
     implementation(project(":json"))
     implementation(project(":ocaml"))
+    implementation(project(":diff"))
+    implementation(project(":properties"))
+    implementation(project(":toml"))
+    implementation(project(":yaml"))
+    implementation(project(":xml"))
 
     implementation(libs.kotlin.stdlib.jdk8)
     implementation(libs.kotlinx.coroutines.core)
