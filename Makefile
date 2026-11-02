@@ -4,7 +4,7 @@ test:
 	./gradlew app:assembleDebug --stacktrace
 
 unittest:
-	./gradlew core:testDebugUnitTest --stacktrace
+	./gradlew testDebugUnitTest --stacktrace
 
 apk:
 	./gradlew app:assembleDebug --stacktrace

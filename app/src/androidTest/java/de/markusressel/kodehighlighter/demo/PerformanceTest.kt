@@ -1,9 +1,12 @@
 package de.markusressel.kodehighlighter.demo
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
 import android.text.SpannableStringBuilder
+import android.text.style.CharacterStyle
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import de.markusressel.kodehighlighter.core.LanguageRuleBook
 import de.markusressel.kodehighlighter.core.RuleMatches
+import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
 import de.markusressel.kodehighlighter.core.util.SpannableHighlighter
 import de.markusressel.kodehighlighter.language.java.JavaRuleBook
 import de.markusressel.kodehighlighter.language.json.JsonRuleBook
@@ -27,27 +30,28 @@ class PerformanceTest {
     @Test
     fun useAppContext() {
         // Context of the app under test.
-        val appContext = InstrumentationRegistry.getTargetContext()
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
 
         assertEquals("de.markusressel.kodehighlighter.demo", appContext.packageName)
     }
 
     @Test
     fun performance_comparison() {
-        val highlightersMap = mapOf(
-                "Java" to JavaRuleBook(),
-                "JSON" to JsonRuleBook(),
-                "Kotlin" to KotlinRuleBook(),
-                "Markdown" to MarkdownRuleBook(),
-                "Python" to PythonRuleBook()
+        val highlightersMap: Map<String, Pair<LanguageRuleBook, ColorScheme<CharacterStyle>>> = mapOf(
+                "Java" to (JavaRuleBook() to de.markusressel.kodehighlighter.language.java.colorscheme.DarkBackgroundColorScheme()),
+                "JSON" to (JsonRuleBook() to de.markusressel.kodehighlighter.language.json.colorscheme.DarkBackgroundColorScheme()),
+                "Kotlin" to (KotlinRuleBook() to de.markusressel.kodehighlighter.language.kotlin.colorscheme.DarkBackgroundColorScheme()),
+                "Markdown" to (MarkdownRuleBook() to de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgroundColorScheme()),
+                "Python" to (PythonRuleBook() to de.markusressel.kodehighlighter.language.python.colorscheme.DarkBackgroundColorScheme())
         )
 
-        val text = InstrumentationRegistry.getTargetContext().resources.openRawResource(R.raw.markdown_sample).bufferedReader().readText()
+        val text = InstrumentationRegistry.getInstrumentation().targetContext.resources.openRawResource(R.raw.markdown_sample).bufferedReader().readText()
         val longText = text.repeat(10)
 
         runBlocking(Dispatchers.IO) {
             highlightersMap.map {
-                val highlighter = SpannableHighlighter(it.value)
+                val (ruleBook, colorScheme) = it.value
+                val highlighter = SpannableHighlighter(ruleBook, colorScheme)
                 val spannable = SpannableStringBuilder.valueOf(longText)
 
                 var createAvg = 0L
@@ -58,7 +62,7 @@ class PerformanceTest {
                 for (i in 1..runs) {
                     var stuff: List<RuleMatches> = emptyList()
                     val time1 = measureTimeMillis {
-                        stuff = it.value.createHighlighting(spannable)
+                        stuff = ruleBook.createHighlighting(spannable)
                     }
                     val time2 = measureTimeMillis {
                         highlighter.highlight(spannable, stuff)
@@ -88,9 +92,12 @@ class PerformanceTest {
     @Test
     fun performance() {
         val markdownRuleBook = MarkdownRuleBook()
-        val text = InstrumentationRegistry.getTargetContext().resources.openRawResource(R.raw.markdown_sample).bufferedReader().readText()
+        val text = InstrumentationRegistry.getInstrumentation().targetContext.resources.openRawResource(R.raw.markdown_sample).bufferedReader().readText()
         val longText = text.repeat(10)
-        val highlighter = SpannableHighlighter(markdownRuleBook)
+        val highlighter = SpannableHighlighter(
+            markdownRuleBook,
+            de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgroundColorScheme()
+        )
 
         runBlocking(Dispatchers.IO) {
 //            delay(15000)
