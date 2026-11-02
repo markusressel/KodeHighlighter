@@ -28,6 +28,13 @@ import de.markusressel.kodehighlighter.language.kotlin.KotlinRuleBook
 import de.markusressel.kodehighlighter.language.markdown.MarkdownRuleBook
 import de.markusressel.kodehighlighter.language.ocaml.OCamlRuleBook
 import de.markusressel.kodehighlighter.language.python.PythonRuleBook
+import de.markusressel.kodehighlighter.language.dart.DartRuleBook
+import de.markusressel.kodehighlighter.language.swift.SwiftRuleBook
+import de.markusressel.kodehighlighter.language.rust.RustRuleBook
+import de.markusressel.kodehighlighter.language.go.GoRuleBook
+import de.markusressel.kodehighlighter.language.csharp.CSharpRuleBook
+import de.markusressel.kodehighlighter.language.cpp.CppRuleBook
+import de.markusressel.kodehighlighter.language.c.CRuleBook
 import de.markusressel.kodehighlighter.language.diff.DiffRuleBook
 import de.markusressel.kodehighlighter.language.properties.PropertiesRuleBook
 import de.markusressel.kodehighlighter.language.toml.TomlRuleBook
@@ -206,6 +213,13 @@ class MainActivityCompose : ComponentActivity() {
                         javaExample -> JavaRuleBook()
                         pythonExample -> PythonRuleBook()
                         ocamlExample -> OCamlRuleBook()
+                        dartExample -> DartRuleBook()
+                        swiftExample -> SwiftRuleBook()
+                        rustExample -> RustRuleBook()
+                        goExample -> GoRuleBook()
+                        csharpExample -> CSharpRuleBook()
+                        cppExample -> CppRuleBook()
+                        cExample -> CRuleBook()
                         diffExample -> DiffRuleBook()
                         propertiesExample -> PropertiesRuleBook()
                         tomlExample -> TomlRuleBook()
@@ -223,6 +237,13 @@ class MainActivityCompose : ComponentActivity() {
                         javaExample -> de.markusressel.kodehighlighter.language.java.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
                         pythonExample -> de.markusressel.kodehighlighter.language.python.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
                         ocamlExample -> de.markusressel.kodehighlighter.language.ocaml.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
+                        dartExample -> GitHubDarkTheme.spanStyleColorScheme
+                        swiftExample -> GitHubDarkTheme.spanStyleColorScheme
+                        rustExample -> GitHubDarkTheme.spanStyleColorScheme
+                        goExample -> GitHubDarkTheme.spanStyleColorScheme
+                        csharpExample -> GitHubDarkTheme.spanStyleColorScheme
+                        cppExample -> GitHubDarkTheme.spanStyleColorScheme
+                        cExample -> GitHubDarkTheme.spanStyleColorScheme
                         diffExample -> GitHubDarkTheme.spanStyleColorScheme
                         propertiesExample -> GitHubDarkTheme.spanStyleColorScheme
                         tomlExample -> GitHubDarkTheme.spanStyleColorScheme

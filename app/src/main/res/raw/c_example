@@ -1,0 +1,16 @@
+/* C sample */
+#include <stdio.h>
+#define MAX 0xFFu
+
+typedef struct {
+    const char *name; // not owned
+    size_t length;
+} item_t;
+
+static int count(const item_t *item) {
+    if (item == NULL) {
+        return -1;
+    }
+    printf("%s has %zu chars // not a comment\n", item->name, item->length);
+    return item->name[0] == '\n' ? 0 : 1.5f;
+}

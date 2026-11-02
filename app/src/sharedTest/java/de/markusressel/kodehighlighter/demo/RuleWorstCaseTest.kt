@@ -9,6 +9,13 @@ import de.markusressel.kodehighlighter.language.markdown.MarkdownRuleBook
 import de.markusressel.kodehighlighter.language.ocaml.OCamlRuleBook
 import de.markusressel.kodehighlighter.language.properties.PropertiesRuleBook
 import de.markusressel.kodehighlighter.language.python.PythonRuleBook
+import de.markusressel.kodehighlighter.language.dart.DartRuleBook
+import de.markusressel.kodehighlighter.language.swift.SwiftRuleBook
+import de.markusressel.kodehighlighter.language.rust.RustRuleBook
+import de.markusressel.kodehighlighter.language.go.GoRuleBook
+import de.markusressel.kodehighlighter.language.csharp.CSharpRuleBook
+import de.markusressel.kodehighlighter.language.cpp.CppRuleBook
+import de.markusressel.kodehighlighter.language.c.CRuleBook
 import de.markusressel.kodehighlighter.language.toml.TomlRuleBook
 import de.markusressel.kodehighlighter.language.xml.XmlRuleBook
 import de.markusressel.kodehighlighter.language.yaml.YamlRuleBook
@@ -72,6 +79,13 @@ class RuleWorstCaseTest {
             TomlRuleBook(),
             PropertiesRuleBook(),
             DiffRuleBook(),
+            CRuleBook(),
+            CppRuleBook(),
+            CSharpRuleBook(),
+            GoRuleBook(),
+            RustRuleBook(),
+            SwiftRuleBook(),
+            DartRuleBook(),
             PythonRuleBook(),
         )
         val inputs = listOf(

@@ -1,0 +1,18 @@
+// Swift sample
+/* block comments /* can be nested */ */
+import Foundation
+
+@MainActor
+open class Repository {
+    private let retries = 3
+    var items: [String: Int] = [:]
+
+    func load(id: Int) async throws -> String? {
+        guard id != 0x10 else { return nil }
+        if #available(iOS 17, *) {
+            try await Task.sleep(nanoseconds: 1_000)
+        }
+        let raw = #"raw "string" // not a comment"#
+        return "item \(id) \(raw)"
+    }
+}

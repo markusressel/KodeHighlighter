@@ -1,0 +1,19 @@
+// C++ sample
+#include <string>
+
+namespace demo {
+
+template <typename T>
+class Box final {
+public:
+    explicit Box(T value) noexcept : value_(value) {}
+    T get() const override;
+
+private:
+    T value_;
+};
+
+constexpr auto PATTERN = R"x(raw "string" with \ )x";
+constexpr int MILLION = 1'000'000;
+
+} // namespace demo
