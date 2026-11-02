@@ -43,9 +43,9 @@ open class SpannableHighlighter(
     /**
      * Apply a set of styleFactories to a specific part of an spannable
      *
-     * @param spannable the spannable to highlighting
+     * @param spannable the spannable to highlight
      * @param start the starting position
-     * @param end the endIndex position (inclusive)
+     * @param end the end position (exclusive)
      * @param styleFactories a set of the style factories to apply
      */
     open fun highlight(spannable: Spannable, start: Int, end: Int, styleFactories: Set<StyleFactory<CharacterStyle>>) {

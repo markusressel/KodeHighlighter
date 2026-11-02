@@ -4,10 +4,10 @@ KodeHighlighter is an Android syntax highlighting library. It is published throu
 
 ## Layout
 
-- `core`: package `de.markusressel.kodehighlighter.core`. `LanguageRuleBook` (list of rules, `createHighlighting`), `rule` (`LanguageRule`, `RuleMatch`, `RuleHelper.findRegexMatches`), `colorscheme` (`ColorScheme<Style>`, `TokenTheme`, GitHub themes), `region` (`RegionScanner`, `RegionRuleBook`), `util` (highlighters for `Spannable`, `EditText` and `AnnotatedString`) and `ui` (Compose `KodeText`, `KodeTextField`, `KodeTextFieldColors`).
-- One module per language: `java`, `json`, `kotlin`, `markdown`, `ocaml`, `python`. Package `de.markusressel.kodehighlighter.language.<language>` with a `<Language>RuleBook`, a `rule` package and a `colorscheme` package.
+- `core`: package `de.markusressel.kodehighlighter.core`. `LanguageRuleBook` (list of rules, `createHighlighting`), `rule` (`LanguageRule`, `RuleMatch`, `TokenType`, `RuleHelper.findRegexMatches`, `RuleHelper.findRegexGroupMatches`), `colorscheme` (`ColorScheme<Style>`, `TokenTheme`, GitHub themes), `region` (`RegionScanner`, `RegionRuleBook`), `util` (highlighters for `Spannable`, `EditText` and `AnnotatedString`) and `ui` (Compose `KodeText`, `KodeTextField`, `KodeTextFieldColors`).
+- One module per language: `c`, `cpp`, `csharp`, `dart`, `diff`, `go`, `java`, `json`, `kotlin`, `markdown`, `ocaml`, `properties`, `python`, `rust`, `swift`, `toml`, `xml`, `yaml`. Package `de.markusressel.kodehighlighter.language.<language>` with a `<Language>RuleBook` and a `rule` package. Only `java`, `json`, `kotlin`, `markdown`, `ocaml` and `python` have a `colorscheme` package, the others use a `TokenTheme`.
 - Rules are `object`s implementing `LanguageRule`, with the regex in a `private val PATTERN` at the end of the object.
-- Rules set `override val tokenType` so that a `TokenTheme` can style them. Comments and strings are found by a `RegionScanner` in `<Language>Regions`, the rule book extends `RegionRuleBook`.
+- Rules set `override val tokenType` so that a `TokenTheme` can style them. Comments and strings are found by a `RegionScanner` in `<Language>Regions`, the rule book extends `RegionRuleBook`. `properties` and `diff` have no regions and use a plain `LanguageRuleBook`.
 - `app`: demo app, package `de.markusressel.kodehighlighter.demo`.
 - `test-support`: unpublished test helpers (`assertHighlighting`) for use as `testImplementation`.
 - `build-logic`: Gradle convention plugins. Versions live in `gradle/libs.versions.toml`.
@@ -15,7 +15,8 @@ KodeHighlighter is an Android syntax highlighting library. It is published throu
 ## Build
 
 - CI (`.github/workflows`) runs `make test` and `make apk` (`./gradlew app:assembleDebug`) and `make unittest` (`./gradlew testDebugUnitTest`, all modules) with JDK 21. JitPack also uses JDK 21.
-- Unit tests exist in `core` and `markdown` (JUnit 4). Instrumented tests are in `app/src/androidTest` and are not run by CI.
+- Unit tests exist in `core`, `test-support` and every language module (JUnit 4). Instrumented tests are in `app/src/androidTest` and are not run by CI. Tests in `app/src/sharedTest` run on both the JVM and a device, because their regex engines differ. Add new rule books to the lists in `RuleWorstCaseTest` and `TokenTypeCoverageTest`.
+- Patterns must stay linear on long input. Prefer possessive quantifiers for group loops, since the JVM recurses on them, and let an unterminated construct end at the end of the text.
 
 ## Code style
 
