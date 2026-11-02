@@ -5,8 +5,10 @@ import android.text.style.CharacterStyle
 import android.text.style.ForegroundColorSpan
 import de.markusressel.kodehighlighter.core.StyleFactory
 import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
+import de.markusressel.kodehighlighter.language.json.rule.CommentRule
 import de.markusressel.kodehighlighter.language.json.rule.KeywordRule
 import de.markusressel.kodehighlighter.language.json.rule.NumericRule
+import de.markusressel.kodehighlighter.language.json.rule.PropertyRule
 import de.markusressel.kodehighlighter.language.json.rule.StringRule
 import java.util.Collections.emptySet
 
@@ -25,6 +27,12 @@ class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
             }
             is KeywordRule -> {
                 setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }
+            }
+            is PropertyRule -> {
+                setOf { ForegroundColorSpan(Color.parseColor("#0091EA")) }
+            }
+            is CommentRule -> {
+                setOf { ForegroundColorSpan(Color.parseColor("#86858B")) }
             }
             else -> emptySet()
         }

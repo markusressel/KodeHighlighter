@@ -10,6 +10,6 @@ object DefKeyword : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "(def)\\s+(\\w+)(?=\\()".toRegex()
+    private val PATTERN = "\\bdef\\b(?:\\s+\\w+(?=\\s*\\())?".toRegex()
 
 }

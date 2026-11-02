@@ -10,6 +10,6 @@ object MagicRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "__(\\w+)__".toRegex()
+    private val PATTERN = "\\b__\\w+__\\b".toRegex()
 
 }

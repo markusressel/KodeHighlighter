@@ -1,0 +1,42 @@
+/*
+ * Sample for the KodeHighlighter demo.
+ * /* Block comments can be nested. */
+ */
+@file:Suppress("unused")
+
+package de.markusressel.example
+
+import kotlinx.coroutines.delay
+
+/**
+ * A simple repository
+ */
+sealed interface Result<out T> {
+    data class Success<T>(val value: T) : Result<T>
+    data object Failure : Result<Nothing>
+}
+
+open class Repository(private val retries: Int = 3) {
+
+    @Volatile
+    private var attempts = 0L
+
+    suspend fun load(id: Int): Result<String> {
+        repeat(retries) {
+            attempts += 1
+            delay(0x10L * 1_000)
+            if (id >= 0 && id != 42) {
+                return Result.Success("""item "$id"""")
+            }
+        }
+        return when {
+            attempts > 3.5f -> Result.Failure
+            else -> throw IllegalStateException("gave up on id: $id // not a comment")
+        }
+    }
+
+    companion object {
+        const val SEPARATOR = '\n'
+        val empty: String? = null
+    }
+}

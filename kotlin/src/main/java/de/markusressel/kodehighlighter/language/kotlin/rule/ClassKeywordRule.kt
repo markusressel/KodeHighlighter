@@ -10,6 +10,6 @@ object ClassKeywordRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "(companion\\s+)?object(?=\\s)|(data\\s+)?class(?=\\s)".toRegex()
+    private val PATTERN = "\\b(?:(?:companion|data)\\s+)?object\\b|\\b(?:data\\s+)?class\\b".toRegex()
 
 }

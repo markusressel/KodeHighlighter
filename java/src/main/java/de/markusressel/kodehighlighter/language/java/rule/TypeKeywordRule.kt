@@ -10,6 +10,6 @@ object TypeKeywordRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "(void|boolean|int|float|double)(?=\\s)".toRegex()
+    private val PATTERN = "\\b(?:void|boolean|byte|char|short|int|long|float|double)\\b".toRegex()
 
 }

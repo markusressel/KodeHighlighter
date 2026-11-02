@@ -19,6 +19,6 @@ object NumericRule : LanguageRule {
      * (?:\.\d+)?         // optional fractional part
      * (?:[eE][+\-]?\d+)? // optional exponent part
      */
-    private val PATTERN = "\\b-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+\\-]?\\d+)?\\b".toRegex()
+    private val PATTERN = "(?<![\\w.-])-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?(?![\\w.])".toRegex()
 
 }

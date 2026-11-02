@@ -10,6 +10,6 @@ object VisibilityKeywordRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "(public|protected|private)(?=\\s)".toRegex()
+    private val PATTERN = "\\b(?:public|protected|private)\\b".toRegex()
 
 }

@@ -9,6 +9,7 @@ object AnnotationRule : LanguageRule {
     override fun findMatches(text: CharSequence): List<RuleMatch> {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
-    private val PATTERN = "@\\S+(\\(.*?\\))?".toRegex()
+
+    private val PATTERN = "(?<![\\w.@])@(?:(?:file|field|property|get|set|receiver|param|setparam|delegate):)?[A-Za-z_][\\w.]*".toRegex()
 
 }

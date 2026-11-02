@@ -10,6 +10,6 @@ object DecoratorRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "@([\\w.]+)".toRegex()
+    private val PATTERN = "(?m)^[ \\t]*@[A-Za-z_][\\w.]*".toRegex()
 
 }

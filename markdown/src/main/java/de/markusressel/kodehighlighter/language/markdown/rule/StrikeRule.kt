@@ -10,6 +10,6 @@ object StrikeRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "(~{2})([^~]+?)\\1".toRegex()
+    private val PATTERN = "~~(?=\\S)[^~]+?~~".toRegex()
 
 }

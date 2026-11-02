@@ -10,6 +10,6 @@ object ItalicRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "(?<!\\*)\\*(?!\\*).+?\\*(?!\\*)".toRegex()
+    private val PATTERN = "(?<![\\\\*\\w])\\*(?![\\s*])[^*\\n]+?(?<![\\s*])\\*(?!\\*)|(?<![\\w_])_(?![\\s_])[^_\\n]+?(?<!\\s)_(?![\\w_])".toRegex()
 
 }

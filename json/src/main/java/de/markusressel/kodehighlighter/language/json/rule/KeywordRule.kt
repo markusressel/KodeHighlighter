@@ -9,6 +9,7 @@ object KeywordRule : LanguageRule {
     override fun findMatches(text: CharSequence): List<RuleMatch> {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
-    private val PATTERN = "\\b(true|false|null)\\b".toRegex()
+
+    private val PATTERN = "\\b(?:true|false|null)\\b".toRegex()
 
 }

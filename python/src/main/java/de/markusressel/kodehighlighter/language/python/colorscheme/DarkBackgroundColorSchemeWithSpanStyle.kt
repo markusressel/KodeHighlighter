@@ -12,9 +12,11 @@ import de.markusressel.kodehighlighter.language.python.rule.DefKeyword
 import de.markusressel.kodehighlighter.language.python.rule.ExceptRule
 import de.markusressel.kodehighlighter.language.python.rule.InternalFunctionsRule
 import de.markusressel.kodehighlighter.language.python.rule.MagicRule
+import de.markusressel.kodehighlighter.language.python.rule.NumberRule
 import de.markusressel.kodehighlighter.language.python.rule.OtherKeywordsRule
 import de.markusressel.kodehighlighter.language.python.rule.ReturnKeywordRule
 import de.markusressel.kodehighlighter.language.python.rule.SelfKeywordRule
+import de.markusressel.kodehighlighter.language.python.rule.StringRule
 import de.markusressel.kodehighlighter.language.python.rule.TypeKeywordRule
 import java.util.Collections.emptySet
 
@@ -43,6 +45,12 @@ class DarkBackgroundColorSchemeWithSpanStyle : ColorScheme<SpanStyle> {
             }
             is MagicRule -> {
                 setOf { SpanStyle(Color(0xFF7C4DFF)) }
+            }
+            is NumberRule -> {
+                setOf { SpanStyle(Color(0xFF0091EA)) }
+            }
+            is StringRule -> {
+                setOf { SpanStyle(Color(0xFF6A8759)) }
             }
             else -> emptySet()
         }

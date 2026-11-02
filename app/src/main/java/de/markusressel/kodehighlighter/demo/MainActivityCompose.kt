@@ -23,6 +23,7 @@ import de.markusressel.kodehighlighter.language.java.JavaRuleBook
 import de.markusressel.kodehighlighter.language.json.JsonRuleBook
 import de.markusressel.kodehighlighter.language.kotlin.KotlinRuleBook
 import de.markusressel.kodehighlighter.language.markdown.MarkdownRuleBook
+import de.markusressel.kodehighlighter.language.ocaml.OCamlRuleBook
 import de.markusressel.kodehighlighter.language.python.PythonRuleBook
 
 
@@ -169,6 +170,7 @@ class MainActivityCompose : ComponentActivity() {
                         jsonExample -> JsonRuleBook()
                         javaExample -> JavaRuleBook()
                         pythonExample -> PythonRuleBook()
+                        ocamlExample -> OCamlRuleBook()
                         else -> KotlinRuleBook()
                     }
                 }
@@ -180,6 +182,7 @@ class MainActivityCompose : ComponentActivity() {
                         jsonExample -> de.markusressel.kodehighlighter.language.json.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
                         javaExample -> de.markusressel.kodehighlighter.language.java.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
                         pythonExample -> de.markusressel.kodehighlighter.language.python.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
+                        ocamlExample -> de.markusressel.kodehighlighter.language.ocaml.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
                         else -> de.markusressel.kodehighlighter.language.kotlin.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
                     }
                 }

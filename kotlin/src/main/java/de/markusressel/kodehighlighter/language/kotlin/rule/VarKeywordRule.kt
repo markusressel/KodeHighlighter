@@ -10,6 +10,6 @@ object VarKeywordRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "(lateinit\\s+)?var(?=\\s)|(const\\s+)?val(?=\\s)".toRegex()
+    private val PATTERN = "\\b(?:lateinit\\s+)?var\\b|\\b(?:const\\s+)?val\\b".toRegex()
 
 }

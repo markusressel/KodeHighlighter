@@ -10,6 +10,6 @@ object FunctionKeywordRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "fun(?=\\s)".toRegex()
+    private val PATTERN = "\\bfun\\b".toRegex()
 
 }

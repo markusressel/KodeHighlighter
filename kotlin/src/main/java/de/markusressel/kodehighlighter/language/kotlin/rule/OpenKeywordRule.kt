@@ -10,6 +10,6 @@ object OpenKeywordRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "open(?=\\s)".toRegex()
+    private val PATTERN = "\\bopen(?=\\s+[a-zA-Z@(])".toRegex()
 
 }
