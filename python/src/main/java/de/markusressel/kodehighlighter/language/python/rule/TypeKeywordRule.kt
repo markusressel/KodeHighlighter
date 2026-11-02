@@ -10,6 +10,6 @@ object TypeKeywordRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "None|True|False|NotImplemented|\\.\\.\\.".toRegex()
+    private val PATTERN = "\\b(?:None|True|False|NotImplemented|Ellipsis)\\b|\\.\\.\\.".toRegex()
 
 }

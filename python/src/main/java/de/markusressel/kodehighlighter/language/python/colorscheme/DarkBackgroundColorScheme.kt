@@ -7,6 +7,8 @@ import de.markusressel.kodehighlighter.core.StyleFactory
 import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.python.rule.*
+import de.markusressel.kodehighlighter.language.python.rule.NumberRule
+import de.markusressel.kodehighlighter.language.python.rule.StringRule
 import java.util.Collections.emptySet
 
 /**
@@ -34,6 +36,12 @@ class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
             }
             is MagicRule -> {
                 setOf { ForegroundColorSpan(Color.parseColor("#7C4DFF")) }
+            }
+            is NumberRule -> {
+                setOf { ForegroundColorSpan(Color.parseColor("#0091EA")) }
+            }
+            is StringRule -> {
+                setOf { ForegroundColorSpan(Color.parseColor("#6A8759")) }
             }
             else -> emptySet()
         }

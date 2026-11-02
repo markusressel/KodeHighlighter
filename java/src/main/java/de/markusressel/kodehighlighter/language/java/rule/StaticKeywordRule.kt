@@ -10,6 +10,6 @@ object StaticKeywordRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "(static)(?=\\s)".toRegex()
+    private val PATTERN = "\\bstatic\\b".toRegex()
 
 }

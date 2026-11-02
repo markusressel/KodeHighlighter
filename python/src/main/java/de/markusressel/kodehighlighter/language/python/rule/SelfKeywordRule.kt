@@ -10,6 +10,6 @@ object SelfKeywordRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "self".toRegex()
+    private val PATTERN = "\\b(?:self|cls)\\b".toRegex()
 
 }

@@ -1,6 +1,13 @@
 package de.markusressel.kodehighlighter.demo
 
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
+import de.markusressel.kodehighlighter.language.java.JavaRuleBook
+import de.markusressel.kodehighlighter.language.json.JsonRuleBook
+import de.markusressel.kodehighlighter.language.kotlin.KotlinRuleBook
+import de.markusressel.kodehighlighter.language.markdown.MarkdownRuleBook
+import de.markusressel.kodehighlighter.language.ocaml.OCamlRuleBook
+import de.markusressel.kodehighlighter.language.python.PythonRuleBook
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.fail
 import org.junit.Test
 import java.util.concurrent.Callable
@@ -43,6 +50,41 @@ class RuleWorstCaseTest {
                 result.get(BUDGET_MS, TimeUnit.MILLISECONDS)
             } catch (e: TimeoutException) {
                 fail("$name took longer than $BUDGET_MS ms")
+            }
+        }
+    }
+
+    @Test
+    fun ruleBooksStayWithinBudgetOnWorstCaseInputs() {
+        val ruleBooks = listOf(
+            JavaRuleBook(), JsonRuleBook(), KotlinRuleBook(), MarkdownRuleBook(), OCamlRuleBook(), PythonRuleBook()
+        )
+        val inputs = listOf(
+            unterminatedEscapes,
+            longString,
+            " ".repeat(50_000),
+            "\n".repeat(50_000),
+            "r".repeat(50_000),
+            "' ".repeat(25_000),
+            "\" \n".repeat(20_000),
+            "` `` ".repeat(10_000),
+            "```\n".repeat(10_000),
+            "(* ".repeat(20_000),
+            "/* ".repeat(20_000),
+            "**a ".repeat(15_000),
+            "_a ".repeat(15_000),
+        )
+        val executor = Executors.newCachedThreadPool { task ->
+            Thread(task).apply { isDaemon = true }
+        }
+        ruleBooks.forEach { ruleBook ->
+            inputs.forEach { input ->
+                val result = executor.submit(Callable { runBlocking { ruleBook.createHighlighting(input) } })
+                try {
+                    result.get(BUDGET_MS, TimeUnit.MILLISECONDS)
+                } catch (e: TimeoutException) {
+                    fail("${ruleBook::class.simpleName} took longer than $BUDGET_MS ms on ${input.take(10)}…")
+                }
             }
         }
     }

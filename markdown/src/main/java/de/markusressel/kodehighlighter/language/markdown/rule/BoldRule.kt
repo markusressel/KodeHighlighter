@@ -10,6 +10,6 @@ object BoldRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "\\*{2}(.+?)\\*{2}".toRegex()
+    private val PATTERN = "(?<![\\\\*])\\*\\*(?=\\S)[^*\\n]*+(?:\\*(?!\\*)[^*\\n]*+)*+(?<=\\S)\\*\\*(?!\\*)|(?<![\\w_])__(?=\\S)[^_\\n]*+(?:_(?!_)[^_\\n]*+)*+(?<=\\S)__(?![\\w_])".toRegex()
 
 }

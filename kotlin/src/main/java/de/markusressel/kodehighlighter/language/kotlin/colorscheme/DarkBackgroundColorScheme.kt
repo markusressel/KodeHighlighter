@@ -9,12 +9,17 @@ import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.AnnotationRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.ClassKeywordRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.CommentRule
+import de.markusressel.kodehighlighter.language.kotlin.rule.ControlFlowKeywordRule
+import de.markusressel.kodehighlighter.language.kotlin.rule.DeclarationKeywordRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.FunctionKeywordRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.ImportKeywordRule
+import de.markusressel.kodehighlighter.language.kotlin.rule.LiteralRule
+import de.markusressel.kodehighlighter.language.kotlin.rule.ModifierKeywordRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.NumberRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.OpenKeywordRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.PackageKeywordRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.ReturnKeywordRule
+import de.markusressel.kodehighlighter.language.kotlin.rule.StringRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.VarKeywordRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.VisibilityKeywordRule
 
@@ -43,6 +48,21 @@ class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
             }
             is NumberRule -> {
                 setOf { ForegroundColorSpan(Color.parseColor("#01579B")) }
+            }
+            is ControlFlowKeywordRule -> {
+                setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }
+            }
+            is DeclarationKeywordRule -> {
+                setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }
+            }
+            is ModifierKeywordRule -> {
+                setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }
+            }
+            is LiteralRule -> {
+                setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }
+            }
+            is StringRule -> {
+                setOf { ForegroundColorSpan(Color.parseColor("#6A8759")) }
             }
             else -> emptySet()
         }

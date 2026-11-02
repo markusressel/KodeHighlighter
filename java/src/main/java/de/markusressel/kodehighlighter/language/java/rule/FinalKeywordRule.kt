@@ -10,6 +10,6 @@ object FinalKeywordRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "final(?=\\s)".toRegex()
+    private val PATTERN = "\\bfinal\\b".toRegex()
 
 }

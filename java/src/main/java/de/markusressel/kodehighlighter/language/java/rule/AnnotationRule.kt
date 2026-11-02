@@ -10,6 +10,6 @@ object AnnotationRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "@\\S+(\\(.*?\\))?".toRegex()
+    private val PATTERN = "(?<![\\w.@])@[A-Za-z_][\\w.]*".toRegex()
 
 }

@@ -22,6 +22,16 @@ val pythonExample = LanguageExample(
     resource = R.raw.python_example
 )
 
+val kotlinExample = LanguageExample(
+    name = "Kotlin",
+    resource = R.raw.kotlin_example
+)
+
+val ocamlExample = LanguageExample(
+    name = "OCaml",
+    resource = R.raw.ocaml_example
+)
+
 data class UiState(
     val selectedLanguage: LanguageExample = markdownExample,
     val availableLanguages: List<LanguageExample> = listOf(
@@ -29,6 +39,8 @@ data class UiState(
         javaExample,
         jsonExample,
         pythonExample,
+        kotlinExample,
+        ocamlExample,
     ),
     val selectedViewType: ViewType = ViewType.Text
 )

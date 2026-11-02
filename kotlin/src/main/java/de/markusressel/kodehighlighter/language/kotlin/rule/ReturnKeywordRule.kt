@@ -10,6 +10,6 @@ object ReturnKeywordRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "return(?=\\s)".toRegex()
+    private val PATTERN = "\\breturn\\b".toRegex()
 
 }

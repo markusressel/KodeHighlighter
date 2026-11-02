@@ -4,8 +4,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import de.markusressel.kodehighlighter.core.StyleFactory
 import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
+import de.markusressel.kodehighlighter.language.json.rule.CommentRule
 import de.markusressel.kodehighlighter.language.json.rule.KeywordRule
 import de.markusressel.kodehighlighter.language.json.rule.NumericRule
+import de.markusressel.kodehighlighter.language.json.rule.PropertyRule
 import de.markusressel.kodehighlighter.language.json.rule.StringRule
 import java.util.Collections.emptySet
 
@@ -24,6 +26,12 @@ class DarkBackgroundColorSchemeWithSpanStyle : ColorScheme<SpanStyle> {
             }
             is KeywordRule -> {
                 setOf { SpanStyle(Color(0xFFFF6D00)) }
+            }
+            is PropertyRule -> {
+                setOf { SpanStyle(Color(0xFF0091EA)) }
+            }
+            is CommentRule -> {
+                setOf { SpanStyle(Color(0xFF86858B)) }
             }
             else -> emptySet()
         }

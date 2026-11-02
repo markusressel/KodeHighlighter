@@ -10,6 +10,6 @@ object ExceptRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "(except) (\\w+):".toRegex()
+    private val PATTERN = "\\bexcept\\b".toRegex()
 
 }

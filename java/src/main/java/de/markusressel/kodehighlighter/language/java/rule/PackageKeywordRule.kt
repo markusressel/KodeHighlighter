@@ -10,6 +10,6 @@ object PackageKeywordRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "package(?=\\s)".toRegex()
+    private val PATTERN = "\\bpackage\\b".toRegex()
 
 }

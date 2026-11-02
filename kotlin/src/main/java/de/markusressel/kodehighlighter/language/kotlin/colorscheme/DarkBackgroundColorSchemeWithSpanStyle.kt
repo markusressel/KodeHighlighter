@@ -8,12 +8,17 @@ import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.AnnotationRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.ClassKeywordRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.CommentRule
+import de.markusressel.kodehighlighter.language.kotlin.rule.ControlFlowKeywordRule
+import de.markusressel.kodehighlighter.language.kotlin.rule.DeclarationKeywordRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.FunctionKeywordRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.ImportKeywordRule
+import de.markusressel.kodehighlighter.language.kotlin.rule.LiteralRule
+import de.markusressel.kodehighlighter.language.kotlin.rule.ModifierKeywordRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.NumberRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.OpenKeywordRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.PackageKeywordRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.ReturnKeywordRule
+import de.markusressel.kodehighlighter.language.kotlin.rule.StringRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.VarKeywordRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.VisibilityKeywordRule
 
@@ -42,6 +47,21 @@ class DarkBackgroundColorSchemeWithSpanStyle : ColorScheme<SpanStyle> {
             }
             is NumberRule -> {
                 setOf { SpanStyle(Color(0xFF01579B)) }
+            }
+            is ControlFlowKeywordRule -> {
+                setOf { SpanStyle(Color(0xFFFF6D00)) }
+            }
+            is DeclarationKeywordRule -> {
+                setOf { SpanStyle(Color(0xFFFF6D00)) }
+            }
+            is ModifierKeywordRule -> {
+                setOf { SpanStyle(Color(0xFFFF6D00)) }
+            }
+            is LiteralRule -> {
+                setOf { SpanStyle(Color(0xFFFF6D00)) }
+            }
+            is StringRule -> {
+                setOf { SpanStyle(Color(0xFF6A8759)) }
             }
             else -> emptySet()
         }

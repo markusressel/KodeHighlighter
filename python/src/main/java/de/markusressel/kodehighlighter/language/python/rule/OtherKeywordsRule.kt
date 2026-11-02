@@ -10,6 +10,6 @@ object OtherKeywordsRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "\\b(pass|lambda|with|is|not|in|from|elif|raise|del)(?=\\b)".toRegex()
+    private val PATTERN = "\\b(?:and|as|assert|async|await|break|continue|del|elif|else|finally|for|from|global|if|import|in|is|lambda|nonlocal|not|or|pass|raise|try|while|with|yield)\\b".toRegex()
 
 }

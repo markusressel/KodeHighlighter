@@ -10,6 +10,6 @@ object HeadingRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "^ {0,3}#{1,6} .+".toRegex(RegexOption.MULTILINE)
+    private val PATTERN = "(?m)^ {0,3}#{1,6}(?:[ \\t]+[^\\n]*)?\$".toRegex()
 
 }

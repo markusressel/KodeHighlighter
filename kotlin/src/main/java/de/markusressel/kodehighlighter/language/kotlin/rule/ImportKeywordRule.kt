@@ -10,6 +10,6 @@ object ImportKeywordRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "import(?=\\s)".toRegex()
+    private val PATTERN = "\\bimport(?=\\s)".toRegex()
 
 }

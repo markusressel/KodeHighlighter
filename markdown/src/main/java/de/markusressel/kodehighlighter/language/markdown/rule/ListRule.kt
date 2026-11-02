@@ -10,6 +10,6 @@ object ListRule : LanguageRule {
         return RuleHelper.findRegexMatches(text, PATTERN)
     }
 
-    private val PATTERN = "^[ \\t]*(?:[*+-]|\\d+\\.)(?=[\\t ].)".toRegex(RegexOption.MULTILINE)
+    private val PATTERN = "(?m)^[ \\t]*(?:[*+-]|\\d{1,9}[.)])(?=[ \\t]+\\S)".toRegex()
 
 }
