@@ -9,6 +9,7 @@ import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -64,6 +65,7 @@ open class EditTextHighlighter(
             refreshHighlighting()
         }
 
+    private val highlightingScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private var highlightingJob: Job? = null
 
     /**
@@ -117,7 +119,7 @@ open class EditTextHighlighter(
         highlightingJob?.cancel("Requested new highlighting")
         highlightingJob = null
 
-        highlightingJob = CoroutineScope(Dispatchers.Main).launch {
+        highlightingJob = highlightingScope.launch {
             val currentText = editable.toString()
             val highlightEntities = withContext(Dispatchers.Default) {
                 statefulSyntaxHighlighter.createHighlighting(currentText)
@@ -166,10 +168,13 @@ open class EditTextHighlighter(
     }
 
     /**
-     * Stop continuous highlighting
+     * Stop continuous highlighting, including any highlighting that is pending or in progress
      */
     open fun cancel() {
         target.removeTextChangedListener(realtimeTextWatcher)
         target.removeTextChangedListener(debouncedTextWatcher)
+        debouncedTextWatcher.cancel()
+        highlightingJob?.cancel("Highlighting was stopped")
+        highlightingJob = null
     }
 }

@@ -32,6 +32,12 @@ android {
     }
 
     namespace = "de.markusressel.kodehighlighter.demo"
+
+    // tests in here run on the JVM and on a device, since their regex engines differ
+    sourceSets {
+        getByName("test").kotlin.directories.add("src/sharedTest/java")
+        getByName("androidTest").kotlin.directories.add("src/sharedTest/java")
+    }
 }
 
 dependencies {
