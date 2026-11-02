@@ -1,0 +1,20 @@
+// Rust sample
+/* block comments /* can be nested */ */
+use std::fmt;
+
+#[derive(Debug, Clone)]
+pub struct Item<'a> {
+    name: &'a str,
+    count: u32,
+}
+
+impl<'a> Item<'a> {
+    pub fn describe(&self) -> Result<String, fmt::Error> {
+        let raw = r#"raw "string" // not a comment"#;
+        let separator = '\n';
+        if self.count > 1_000u32 {
+            println!("{} {} {}", self.name, raw, separator);
+        }
+        Ok(format!("{}", 0xFF))
+    }
+}

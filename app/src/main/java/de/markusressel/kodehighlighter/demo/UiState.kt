@@ -60,6 +60,41 @@ val diffExample = LanguageExample(
     resource = R.raw.diff_example
 )
 
+val cExample = LanguageExample(
+    name = "C",
+    resource = R.raw.c_example
+)
+
+val cppExample = LanguageExample(
+    name = "C++",
+    resource = R.raw.cpp_example
+)
+
+val csharpExample = LanguageExample(
+    name = "C#",
+    resource = R.raw.csharp_example
+)
+
+val goExample = LanguageExample(
+    name = "Go",
+    resource = R.raw.go_example
+)
+
+val rustExample = LanguageExample(
+    name = "Rust",
+    resource = R.raw.rust_example
+)
+
+val swiftExample = LanguageExample(
+    name = "Swift",
+    resource = R.raw.swift_example
+)
+
+val dartExample = LanguageExample(
+    name = "Dart",
+    resource = R.raw.dart_example
+)
+
 data class UiState(
     val selectedLanguage: LanguageExample = markdownExample,
     val availableLanguages: List<LanguageExample> = listOf(
@@ -74,6 +109,13 @@ data class UiState(
         tomlExample,
         propertiesExample,
         diffExample,
+        cExample,
+        cppExample,
+        csharpExample,
+        goExample,
+        rustExample,
+        swiftExample,
+        dartExample,
     ),
     val selectedViewType: ViewType = ViewType.Text,
     val selectedTheme: DemoTheme = DemoTheme.LanguageDefault,

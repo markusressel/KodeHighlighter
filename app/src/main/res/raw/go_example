@@ -1,0 +1,21 @@
+// Go sample
+package main
+
+import "fmt"
+
+type Item struct {
+	Name  string
+	Count int64
+}
+
+func (i *Item) Describe() (string, error) {
+	if i == nil {
+		return "", fmt.Errorf("nil item // not a comment")
+	}
+	raw := `raw "string" \n
+spanning lines`
+	for n := range 0xFF {
+		defer fmt.Println(n, 1_000, 'x', raw)
+	}
+	return i.Name, nil
+}

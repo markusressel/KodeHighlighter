@@ -1,0 +1,20 @@
+// C# sample
+#region Sample
+using System;
+
+namespace Demo;
+
+public sealed record Item(string Name, decimal Price);
+
+public class Repository
+{
+    private readonly int _retries = 3;
+
+    public async Task<string?> LoadAsync(int id)
+    {
+        var path = @"C:\temp\""quoted"".txt";
+        await Task.Delay(1_000);
+        return id > 0 ? $"item {id} // not a comment" : null;
+    }
+}
+#endregion
