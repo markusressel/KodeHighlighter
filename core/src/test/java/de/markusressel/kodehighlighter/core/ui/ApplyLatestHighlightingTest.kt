@@ -29,22 +29,64 @@ class ApplyLatestHighlightingTest {
         assertSame(latest, applyLatestHighlighting("abc", latest))
     }
 
-    @Test
-    fun `grown text keeps styles`() {
-        val result = applyLatestHighlighting("abcdef", highlighted("abc", 0, 3))
-        assertEquals("abcdef", result.text)
-        assertEquals(listOf(AnnotatedString.Range(style, 0, 3)), result.spanStyles)
+    private fun assertSpans(text: String, latest: AnnotatedString, vararg expected: Pair<Int, Int>) {
+        val result = applyLatestHighlighting(text, latest)
+        assertEquals(text, result.text)
+        assertEquals(expected.map { AnnotatedString.Range(style, it.first, it.second) }, result.spanStyles)
     }
 
     @Test
-    fun `shrunk text cuts styles to the new length`() {
-        val result = applyLatestHighlighting("ab", highlighted("abcdef", 1, 5))
-        assertEquals(listOf(AnnotatedString.Range(style, 1, 2)), result.spanStyles)
+    fun `insert before a style moves it`() {
+        assertSpans("xxabc", highlighted("abc", 0, 3), 2 to 5)
     }
 
     @Test
-    fun `styles beyond the new length are dropped`() {
-        val result = applyLatestHighlighting("ab", highlighted("abcdef", 3, 5))
-        assertEquals(emptyList<AnnotatedString.Range<SpanStyle>>(), result.spanStyles)
+    fun `insert after a style keeps it`() {
+        assertSpans("abc dx", highlighted("abc d", 0, 3), 0 to 3)
+    }
+
+    @Test
+    fun `insert inside a style grows it`() {
+        assertSpans("abxc", highlighted("abc", 0, 3), 0 to 4)
+    }
+
+    @Test
+    fun `insert at the end of a style grows it`() {
+        assertSpans("abcdef", highlighted("abc", 0, 3), 0 to 6)
+    }
+
+    @Test
+    fun `delete before a style moves it`() {
+        assertSpans("cde", highlighted("abcde", 2, 5), 0 to 3)
+    }
+
+    @Test
+    fun `delete inside a style shrinks it`() {
+        assertSpans("ae", highlighted("abcde", 0, 5), 0 to 2)
+    }
+
+    @Test
+    fun `delete across the end of a style cuts it`() {
+        assertSpans("ab", highlighted("abcdef", 1, 5), 1 to 2)
+    }
+
+    @Test
+    fun `delete of a whole style drops it`() {
+        assertSpans("ab", highlighted("abcdef", 3, 5))
+    }
+
+    @Test
+    fun `replacing a whole style keeps it on the new text`() {
+        assertSpans("a xyz b", highlighted("a if b", 2, 4), 2 to 5)
+    }
+
+    @Test
+    fun `repeated characters do not overlap prefix and suffix`() {
+        assertSpans("aaa", highlighted("aa", 1, 2), 1 to 3)
+    }
+
+    @Test
+    fun `clearing the text drops all styles`() {
+        assertSpans("", highlighted("abc", 0, 3))
     }
 }

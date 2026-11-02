@@ -131,7 +131,8 @@ private class LatestHighlightingTransformation(
 
 /**
  * Applies a highlighting result to a text, which may have changed since the result was computed.
- * Until the next result arrives, the previous styles are kept at their positions, cut to the new length.
+ * Until the next result arrives, the previous styles move with the edit, so that colors do not flicker.
+ * A style that ends where text was inserted grows with it, which keeps typing at the end of a token stable.
  *
  * @param text the current text
  * @param highlightedText the latest result, null if there is none yet
@@ -141,16 +142,35 @@ internal fun applyLatestHighlighting(
     text: String,
     highlightedText: AnnotatedString?
 ): AnnotatedString {
-    return when {
-        highlightedText == null -> AnnotatedString(text)
-        highlightedText.text == text -> highlightedText
-        else -> buildAnnotatedString {
-            append(text)
-            highlightedText.spanStyles.forEach { span ->
-                val end = minOf(span.end, text.length)
-                if (span.start < end) {
-                    addStyle(span.item, span.start, end)
-                }
+    if (highlightedText == null) return AnnotatedString(text)
+    if (highlightedText.text == text) return highlightedText
+
+    // the edit replaced [editStart, oldEditEnd) of the old text with [editStart, editEnd) of the new one
+    val oldText = highlightedText.text
+    val editStart = oldText.commonPrefixWith(text).length
+    val maxSuffix = minOf(oldText.length, text.length) - editStart
+    var suffix = 0
+    while (suffix < maxSuffix && oldText[oldText.length - 1 - suffix] == text[text.length - 1 - suffix]) {
+        suffix++
+    }
+    val oldEditEnd = oldText.length - suffix
+    val delta = text.length - oldText.length
+
+    return buildAnnotatedString {
+        append(text)
+        highlightedText.spanStyles.forEach { span ->
+            val start = when {
+                span.start < editStart -> span.start
+                span.start >= oldEditEnd -> span.start + delta
+                else -> editStart
+            }
+            val end = when {
+                span.end < editStart -> span.end
+                span.end >= oldEditEnd -> span.end + delta
+                else -> editStart
+            }
+            if (start < end) {
+                addStyle(span.item, start, end)
             }
         }
     }
