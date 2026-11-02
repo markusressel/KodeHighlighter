@@ -21,9 +21,12 @@ import de.markusressel.kodehighlighter.core.StyleFactory
 import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.core.util.AnnotatedStringHighlighter
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 
 
 /**
@@ -67,14 +70,24 @@ fun KodeTextField(
     val highlighter = remember(languageRuleBook, colorScheme) {
         AnnotatedStringHighlighter(languageRuleBook, colorScheme)
     }
-    var highlightedText by remember(highlighter) {
+    var latestResult by remember(highlighter) {
         mutableStateOf<AnnotatedString?>(null)
     }
-    LaunchedEffect(value.text, highlighter) {
-        highlightedText = withContext(Dispatchers.Default) {
-            highlighter.highlight(value.text)
-        }
+    val scope = rememberCoroutineScope()
+    val highlightingJob = remember(value.text, highlighter) {
+        HighlightingJob(scope) { highlighter.highlight(value.text) }
     }
+    // a result that is ready within the budget appears in the same frame as the edit
+    val immediateResult = remember(highlightingJob) {
+        highlightingJob.awaitWithin(SAME_FRAME_BUDGET_MS)
+    }
+    LaunchedEffect(highlightingJob) {
+        latestResult = highlightingJob.await()
+    }
+    DisposableEffect(highlightingJob) {
+        onDispose { highlightingJob.cancel() }
+    }
+    val highlightedText = immediateResult ?: latestResult
     val visualTransformation = remember(highlightedText) {
         LatestHighlightingTransformation(highlightedText)
     }
@@ -91,6 +104,50 @@ fun KodeTextField(
         onTextLayout = onTextLayout,
         decorationBox = decorationBox,
     )
+}
+
+/**
+ * How long an edit may block the main thread to wait for its highlighting result
+ */
+private const val SAME_FRAME_BUDGET_MS = 8L
+
+/**
+ * A highlighting run in the background, which can also be awaited for a limited time on the calling thread.
+ *
+ * @param scope the scope to run in
+ * @param dispatcher the dispatcher to run on
+ * @param highlight computes the result
+ */
+internal class HighlightingJob(
+    scope: CoroutineScope,
+    dispatcher: CoroutineDispatcher = Dispatchers.Default,
+    highlight: suspend () -> AnnotatedString,
+) {
+    private val result = scope.async(dispatcher) { highlight() }
+
+    /**
+     * Blocks the calling thread until the result is available or the budget is used up.
+     *
+     * @param budgetMs the maximum time to wait in milliseconds
+     * @return the result, null if it is not available yet
+     */
+    fun awaitWithin(budgetMs: Long): AnnotatedString? {
+        return runBlocking {
+            withTimeoutOrNull(budgetMs) { result.await() }
+        }
+    }
+
+    /**
+     * Suspends until the result is available.
+     *
+     * @return the result
+     */
+    suspend fun await(): AnnotatedString = result.await()
+
+    /**
+     * Discards the result. A running regex can not be interrupted and finishes in the background.
+     */
+    fun cancel() = result.cancel()
 }
 
 /**
@@ -131,7 +188,8 @@ private class LatestHighlightingTransformation(
 
 /**
  * Applies a highlighting result to a text, which may have changed since the result was computed.
- * Until the next result arrives, the previous styles are kept at their positions, cut to the new length.
+ * Until the next result arrives, the previous styles move with the edit, so that colors do not flicker.
+ * A style that ends where text was inserted grows with it, which keeps typing at the end of a token stable.
  *
  * @param text the current text
  * @param highlightedText the latest result, null if there is none yet
@@ -141,16 +199,35 @@ internal fun applyLatestHighlighting(
     text: String,
     highlightedText: AnnotatedString?
 ): AnnotatedString {
-    return when {
-        highlightedText == null -> AnnotatedString(text)
-        highlightedText.text == text -> highlightedText
-        else -> buildAnnotatedString {
-            append(text)
-            highlightedText.spanStyles.forEach { span ->
-                val end = minOf(span.end, text.length)
-                if (span.start < end) {
-                    addStyle(span.item, span.start, end)
-                }
+    if (highlightedText == null) return AnnotatedString(text)
+    if (highlightedText.text == text) return highlightedText
+
+    // the edit replaced [editStart, oldEditEnd) of the old text with [editStart, editEnd) of the new one
+    val oldText = highlightedText.text
+    val editStart = oldText.commonPrefixWith(text).length
+    val maxSuffix = minOf(oldText.length, text.length) - editStart
+    var suffix = 0
+    while (suffix < maxSuffix && oldText[oldText.length - 1 - suffix] == text[text.length - 1 - suffix]) {
+        suffix++
+    }
+    val oldEditEnd = oldText.length - suffix
+    val delta = text.length - oldText.length
+
+    return buildAnnotatedString {
+        append(text)
+        highlightedText.spanStyles.forEach { span ->
+            val start = when {
+                span.start < editStart -> span.start
+                span.start >= oldEditEnd -> span.start + delta
+                else -> editStart
+            }
+            val end = when {
+                span.end < editStart -> span.end
+                span.end >= oldEditEnd -> span.end + delta
+                else -> editStart
+            }
+            if (start < end) {
+                addStyle(span.item, start, end)
             }
         }
     }

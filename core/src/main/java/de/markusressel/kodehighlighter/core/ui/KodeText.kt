@@ -22,7 +22,7 @@ import kotlinx.coroutines.withContext
 
 /**
  * A text with support for code highlighting. Highlighting runs off the main thread,
- * the text is shown without it until the result is available.
+ * the previous result stays visible until the next one is available.
  *
  * @param modifier the modifier to apply to this component
  * @param text the text value of this component
@@ -71,14 +71,17 @@ fun KodeText(
         )
     }
 
-    var annotatedText by remember(text) {
-        mutableStateOf(AnnotatedString(text = text))
+    var latestResult by remember(composeHighlighter) {
+        mutableStateOf<AnnotatedString?>(null)
     }
 
     LaunchedEffect(text, composeHighlighter) {
-        annotatedText = withContext(Dispatchers.Default) {
+        latestResult = withContext(Dispatchers.Default) {
             composeHighlighter.highlight(text)
         }
+    }
+    val annotatedText = remember(text, latestResult) {
+        applyLatestHighlighting(text, latestResult)
     }
 
     Text(
