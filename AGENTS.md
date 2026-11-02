@@ -4,9 +4,10 @@ KodeHighlighter is an Android syntax highlighting library. It is published throu
 
 ## Layout
 
-- `core`: package `de.markusressel.kodehighlighter.core`. `LanguageRuleBook` (list of rules, `createHighlighting`), `rule` (`LanguageRule`, `RuleMatch`, `RuleHelper.findRegexMatches`), `colorscheme` (`ColorScheme<Style>`), `util` (highlighters for `Spannable`, `EditText` and `AnnotatedString`) and `ui` (Compose `KodeText`, `KodeTextField`, `KodeTextFieldColors`).
+- `core`: package `de.markusressel.kodehighlighter.core`. `LanguageRuleBook` (list of rules, `createHighlighting`), `rule` (`LanguageRule`, `RuleMatch`, `RuleHelper.findRegexMatches`), `colorscheme` (`ColorScheme<Style>`, `TokenTheme`, GitHub themes), `region` (`RegionScanner`, `RegionRuleBook`), `util` (highlighters for `Spannable`, `EditText` and `AnnotatedString`) and `ui` (Compose `KodeText`, `KodeTextField`, `KodeTextFieldColors`).
 - One module per language: `java`, `json`, `kotlin`, `markdown`, `ocaml`, `python`. Package `de.markusressel.kodehighlighter.language.<language>` with a `<Language>RuleBook`, a `rule` package and a `colorscheme` package.
 - Rules are `object`s implementing `LanguageRule`, with the regex in a `private val PATTERN` at the end of the object.
+- Rules set `override val tokenType` so that a `TokenTheme` can style them. Comments and strings are found by a `RegionScanner` in `<Language>Regions`, the rule book extends `RegionRuleBook`.
 - `app`: demo app, package `de.markusressel.kodehighlighter.demo`.
 - `test-support`: unpublished test helpers (`assertHighlighting`) for use as `testImplementation`.
 - `build-logic`: Gradle convention plugins. Versions live in `gradle/libs.versions.toml`.

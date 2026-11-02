@@ -41,10 +41,10 @@ class DarkBackgroundColorSchemeWithSpanStyle : ColorScheme<SpanStyle> {
                 setOf { SpanStyle(Color(0xFFFBC02D)) }
             }
             is CommentRule -> {
-                setOf { SpanStyle(Color(0xFF33691E)) }
+                setOf { SpanStyle(Color(0xFF6A9955)) }
             }
             is MagicRule -> {
-                setOf { SpanStyle(Color(0xFF7C4DFF)) }
+                setOf { SpanStyle(Color(0xFFB388FF)) }
             }
             is NumberRule -> {
                 setOf { SpanStyle(Color(0xFF0091EA)) }

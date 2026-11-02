@@ -9,6 +9,13 @@ package de.markusressel.kodehighlighter.core.rule
 interface LanguageRule {
 
     /**
+     * The meaning of the text this rule matches, used by a [TokenTheme]. Null if there is none,
+     * in which case a [TokenTheme] does not style the matches.
+     */
+    val tokenType: TokenType?
+        get() = null
+
+    /**
      * Find segments in the text that are affected by this rule
      *
      * @param text the text

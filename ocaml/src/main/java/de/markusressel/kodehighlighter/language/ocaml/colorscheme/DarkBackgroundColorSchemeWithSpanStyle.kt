@@ -21,13 +21,13 @@ class DarkBackgroundColorSchemeWithSpanStyle : ColorScheme<SpanStyle> {
             }
             is BooleanRule,
             is KeywordRule -> {
-                setOf { SpanStyle(Color(0xFFAF38EE)) }
+                setOf { SpanStyle(Color(0xFFCE93D8)) }
             }
             is ModuleRule -> {
-                setOf { SpanStyle(Color(0xFF4B40E0)) }
+                setOf { SpanStyle(Color(0xFF8C9EFF)) }
             }
             is NumberRule -> {
-                setOf { SpanStyle(Color(0xFF106BFF)) }
+                setOf { SpanStyle(Color(0xFF448AFF)) }
             }
             is StringRule -> {
                 setOf { SpanStyle(Color(0xFFFD8D0E)) }

@@ -22,7 +22,7 @@ class DarkBackgroundColorSchemeWithSpanStyle : ColorScheme<SpanStyle> {
                 setOf { SpanStyle(Color(0xFF6A8759)) }
             }
             is NumericRule -> {
-                setOf { SpanStyle(Color(0xFF7C4DFF)) }
+                setOf { SpanStyle(Color(0xFFB388FF)) }
             }
             is KeywordRule -> {
                 setOf { SpanStyle(Color(0xFFFF6D00)) }

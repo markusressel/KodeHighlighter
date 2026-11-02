@@ -32,10 +32,10 @@ class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
                 setOf { ForegroundColorSpan(Color.parseColor("#FBC02D")) }
             }
             is CommentRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#33691E")) }
+                setOf { ForegroundColorSpan(Color.parseColor("#6A9955")) }
             }
             is MagicRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#7C4DFF")) }
+                setOf { ForegroundColorSpan(Color.parseColor("#B388FF")) }
             }
             is NumberRule -> {
                 setOf { ForegroundColorSpan(Color.parseColor("#0091EA")) }

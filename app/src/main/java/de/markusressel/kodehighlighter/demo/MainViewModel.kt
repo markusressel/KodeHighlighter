@@ -19,6 +19,11 @@ class MainViewModel : ViewModel() {
                     selectedLanguage = event.languageExample
                 )
             }
+            is UiEvent.ThemeSelected -> {
+                uiState.value = uiState.value.copy(
+                    selectedTheme = event.theme
+                )
+            }
         }
     }
 

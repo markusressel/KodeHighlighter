@@ -44,10 +44,10 @@ class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
                 setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }
             }
             is CommentRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#33691E")) }
+                setOf { ForegroundColorSpan(Color.parseColor("#6A9955")) }
             }
             is NumberRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#01579B")) }
+                setOf { ForegroundColorSpan(Color.parseColor("#0091EA")) }
             }
             is ControlFlowKeywordRule -> {
                 setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }
