@@ -1,4 +1,4 @@
-# KodeHighlighter  [![Master](https://travis-ci.org/markusressel/KodeHighlighter.svg?branch=master)](https://travis-ci.org/markusressel/KodeHighlighter/branches) [![codebeat badge](https://codebeat.co/badges/e533d507-9e49-4010-9c02-7fb3e638bb0d)](https://codebeat.co/projects/github-com-markusressel-kodehighlighter-master)
+# KodeHighlighter  [![Build](https://github.com/markusressel/KodeHighlighter/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/markusressel/KodeHighlighter/actions/workflows/build.yml)
 Simple, extendable code highlighting for Spannables on Android.
 
 # Features
@@ -7,6 +7,9 @@ Simple, extendable code highlighting for Spannables on Android.
 * [x] View (Legacy) Support (`CharacterStyle`)
 * [x] Custom Languages
 * [x] Language specific Themes
+* [x] Themes that work across languages (GitHub Dark and GitHub Light)
+* [x] Comments and strings found by a linear scanner instead of regular expressions
+* [x] Highlighting off the main thread
 
 # How to use
 
@@ -136,14 +139,27 @@ Currently there is no auto detection for the language used in a text.
 
 ### Integrated language rule books
 
-This library includes rule books for a small set of languages for you to use right away, without
+This library includes rule books for a set of languages for you to use right away, without
 spending time to think about finding the right tokens and color schemes:
 
+* c
+* cpp
+* csharp
+* dart
+* diff
+* go
 * java
 * json
 * kotlin
 * markdown
+* ocaml
+* properties
 * python
+* rust
+* swift
+* toml
+* xml
+* yaml
 
 To include one of them in your project, just pick the ones you would like to use
 and - **in addition** to the `core` module - import them as a dependency:
@@ -162,8 +178,8 @@ dependencies {
 
 ### Writing a custom rule book
 
-A `LanguageRuleBook` consists of a **default color scheme** and a **set of rules** that provide
-information on how to style different parts of the `Spannable`. Have a look at how the
+A `LanguageRuleBook` consists of a **set of rules** that find the parts of a text to style.
+Rules should set a `tokenType`, so that a `TokenTheme` can style them. Have a look at how the
 [MarkdownRuleBook](markdown/src/main/java/de/markusressel/kodehighlighter/language/markdown/MarkdownRuleBook.kt)
 is implemented to get a feel for how to implement it yourself.
 
@@ -173,6 +189,20 @@ Different highlighting styles for a given language can be achieved
 by implementing the `ColorScheme` interface and passing it to the highlighter
 (f.ex. a `SpannableHighlighter`). For more info on how to do this have a look at the
 [DarkBackgroundColorScheme from the Markdown rule book](markdown/src/main/java/de/markusressel/kodehighlighter/language/markdown/colorscheme/DarkBackgroundColorScheme.kt).
+
+`GitHubDarkTheme` and `GitHubLightTheme` style every language by its token types.
+Modules without a color scheme of their own, like `rust` or `yaml`, are used with these themes:
+
+```kotlin
+KodeText(
+    text = text,
+    languageRuleBook = RustRuleBook(),
+    colorScheme = GitHubDarkTheme.spanStyleColorScheme,
+    textColor = Color(GitHubDarkTheme.foreground),
+)
+```
+
+Use `GitHubDarkTheme.characterStyleColorScheme` with a `SpannableHighlighter` or `EditTextHighlighter`.
 
 # Contributing
 

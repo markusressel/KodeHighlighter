@@ -29,16 +29,19 @@ import kotlinx.coroutines.withContext
 /**
  * An [BasicTextField] based Text Editor composable.
  *
+ * @param modifier the modifier to apply to this component
  * @param enabled whether the text field is enabled
  * @param readOnly whether the contents of the text field can be edited by the user
- * @param value the [TextFieldValue] value of the text field.
+ * @param value the [TextFieldValue] value of the text field
  * @param languageRuleBook the language rules to use for highlighting
  * @param colorScheme the color scheme to use for highlighting
- * @param onValueChange callback for changes o the current value
+ * @param onValueChange callback for changes of the current value
  * @param colors a set of colors for different parts of the view
  * @param textStyle the styling of the text ([AnnotatedString] can override this)
+ * @param onTextLayout callback for a new text layout
+ * @param decorationBox a composable to decorate the inner text field
  *
- * @see [KodeEditText]
+ * @see [KodeText]
  */
 @Composable
 fun KodeTextField(

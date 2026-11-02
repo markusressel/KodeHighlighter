@@ -21,13 +21,27 @@ import kotlinx.coroutines.withContext
 
 
 /**
- * An text with support for code highlighting.
+ * A text with support for code highlighting. Highlighting runs off the main thread,
+ * the text is shown without it until the result is available.
  *
+ * @param modifier the modifier to apply to this component
  * @param text the text value of this component
  * @param languageRuleBook the language rules to use for highlighting
  * @param colorScheme the color scheme to use for highlighting
+ * @param textColor the color of text that is not highlighted
+ * @param fontSize the size of the text
+ * @param fontFamily the font family of the text
+ * @param letterSpacing the spacing between letters
+ * @param textDecoration the decoration of the text
+ * @param textAlign the alignment of the text
+ * @param lineHeight the height of a line
+ * @param overflow how to handle text that does not fit
+ * @param softWrap whether the text can break at soft line breaks
+ * @param maxLines the maximum number of visible lines
+ * @param minLines the minimum number of visible lines
+ * @param onTextLayout callback for a new text layout
  *
- * @see [KodeText]
+ * @see [KodeTextField]
  */
 @Composable
 fun KodeText(
