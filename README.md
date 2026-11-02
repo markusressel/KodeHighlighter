@@ -123,7 +123,7 @@ in your project build.gradle file and
 dependencies {
     ...
 
-    def codeHighlighterVersion = "5.0.0"
+    def codeHighlighterVersion = "6.0.0"
     implementation("com.github.markusressel.KodeHighlighter:core:${codeHighlighterVersion}")
 }
 ```
