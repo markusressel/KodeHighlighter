@@ -10,12 +10,14 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import de.markusressel.kodehighlighter.core.LanguageRuleBook
 import de.markusressel.kodehighlighter.core.colorscheme.ColorScheme
+import de.markusressel.kodehighlighter.core.colorscheme.TokenTheme
 import de.markusressel.kodehighlighter.core.ui.KodeText
 import de.markusressel.kodehighlighter.core.ui.KodeTextField
 import de.markusressel.kodehighlighter.demo.theme.KodeHighlighterTheme
@@ -59,11 +61,37 @@ class MainActivityCompose : ComponentActivity() {
                 }
             )
 
+            ThemeSelection(
+                currentTheme = uiState.selectedTheme,
+                onThemeSelected = {
+                    viewModel.onUiEvent(UiEvent.ThemeSelected(it))
+                }
+            )
+
             ComposeSamples(
                 selectedViewType = uiState.selectedViewType,
-                selectedLanguage = uiState.selectedLanguage
+                selectedLanguage = uiState.selectedLanguage,
+                selectedTheme = uiState.selectedTheme,
             )
         }
+    }
+
+    @Composable
+    private fun ThemeSelection(
+        currentTheme: DemoTheme,
+        onThemeSelected: (DemoTheme) -> Unit,
+    ) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    val themes = DemoTheme.entries
+                    onThemeSelected(themes[(currentTheme.ordinal + 1) % themes.size])
+                }
+                .padding(8.dp),
+            text = "Theme: ${currentTheme.title}",
+            color = MaterialTheme.colors.onSurface,
+        )
     }
 
     @Composable
@@ -155,7 +183,8 @@ class MainActivityCompose : ComponentActivity() {
     @Composable
     private fun ComposeSamples(
         selectedViewType: ViewType,
-        selectedLanguage: LanguageExample
+        selectedLanguage: LanguageExample,
+        selectedTheme: DemoTheme,
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(32.dp)
@@ -175,9 +204,9 @@ class MainActivityCompose : ComponentActivity() {
                     }
                 }
             }
-            val colorScheme by remember(selectedLanguage) {
+            val colorScheme by remember(selectedLanguage, selectedTheme) {
                 derivedStateOf {
-                    when (selectedLanguage) {
+                    selectedTheme.theme?.spanStyleColorScheme ?: when (selectedLanguage) {
                         markdownExample -> de.markusressel.kodehighlighter.language.markdown.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
                         jsonExample -> de.markusressel.kodehighlighter.language.json.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
                         javaExample -> de.markusressel.kodehighlighter.language.java.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
@@ -193,11 +222,13 @@ class MainActivityCompose : ComponentActivity() {
                     text = text,
                     ruleBook = ruleBook,
                     colorScheme = colorScheme,
+                    theme = selectedTheme.theme,
                 )
                 ViewType.Editor -> KodeTextFieldExample(
                     initialText = text,
                     ruleBook = ruleBook,
                     colorScheme = colorScheme,
+                    theme = selectedTheme.theme,
                 )
             }
         }
@@ -207,20 +238,22 @@ class MainActivityCompose : ComponentActivity() {
     private fun KodeTextExample(
         text: String,
         ruleBook: LanguageRuleBook,
-        colorScheme: ColorScheme<SpanStyle>
+        colorScheme: ColorScheme<SpanStyle>,
+        theme: TokenTheme?,
     ) {
         val borderSize = 2.dp
 
         KodeText(
             modifier = Modifier
                 .border(BorderStroke(borderSize, color = MaterialTheme.colors.primary))
+                .background(theme?.let { Color(it.background) } ?: Color.Transparent)
                 .padding(borderSize * 2)
                 .wrapContentSize()
                 .fillMaxWidth(),
             text = text,
             languageRuleBook = ruleBook,
             colorScheme = colorScheme,
-            textColor = MaterialTheme.colors.onSurface,
+            textColor = theme?.let { Color(it.foreground) } ?: MaterialTheme.colors.onSurface,
         )
     }
 
@@ -229,6 +262,7 @@ class MainActivityCompose : ComponentActivity() {
         initialText: String,
         ruleBook: LanguageRuleBook,
         colorScheme: ColorScheme<SpanStyle>,
+        theme: TokenTheme?,
     ) {
         var textFieldValue by remember(initialText) {
             mutableStateOf(
@@ -243,13 +277,16 @@ class MainActivityCompose : ComponentActivity() {
         KodeTextField(
             modifier = Modifier
                 .border(BorderStroke(borderSize, color = MaterialTheme.colors.primary))
+                .background(theme?.let { Color(it.background) } ?: Color.Transparent)
                 .padding(borderSize * 2)
                 .wrapContentSize()
                 .fillMaxWidth(),
             value = textFieldValue,
             languageRuleBook = ruleBook,
             colorScheme = colorScheme,
-            textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colors.onSurface),
+            textStyle = LocalTextStyle.current.copy(
+                color = theme?.let { Color(it.foreground) } ?: MaterialTheme.colors.onSurface
+            ),
             onValueChange = {
                 if (it != textFieldValue) {
                     textFieldValue = it

@@ -23,7 +23,7 @@ class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
                 setOf { ForegroundColorSpan(Color.parseColor("#6A8759")) }
             }
             is NumericRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#7C4DFF")) }
+                setOf { ForegroundColorSpan(Color.parseColor("#B388FF")) }
             }
             is KeywordRule -> {
                 setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }

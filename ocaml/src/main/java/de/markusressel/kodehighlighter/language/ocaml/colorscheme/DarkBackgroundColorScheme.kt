@@ -22,13 +22,13 @@ class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
             }
             is BooleanRule,
             is KeywordRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#AF38EE")) }
+                setOf { ForegroundColorSpan(Color.parseColor("#CE93D8")) }
             }
             is ModuleRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#4B40E0")) }
+                setOf { ForegroundColorSpan(Color.parseColor("#8C9EFF")) }
             }
             is NumberRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#106BFF")) }
+                setOf { ForegroundColorSpan(Color.parseColor("#448AFF")) }
             }
             is StringRule -> {
                 setOf { ForegroundColorSpan(Color.parseColor("#FD8D0E")) }

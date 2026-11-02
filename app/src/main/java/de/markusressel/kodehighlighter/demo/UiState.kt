@@ -1,6 +1,9 @@
 package de.markusressel.kodehighlighter.demo
 
 import androidx.annotation.RawRes
+import de.markusressel.kodehighlighter.core.colorscheme.GitHubDarkTheme
+import de.markusressel.kodehighlighter.core.colorscheme.GitHubLightTheme
+import de.markusressel.kodehighlighter.core.colorscheme.TokenTheme
 
 val markdownExample = LanguageExample(
     name = "Markdown",
@@ -42,7 +45,8 @@ data class UiState(
         kotlinExample,
         ocamlExample,
     ),
-    val selectedViewType: ViewType = ViewType.Text
+    val selectedViewType: ViewType = ViewType.Text,
+    val selectedTheme: DemoTheme = DemoTheme.LanguageDefault,
 )
 
 data class LanguageExample(
@@ -53,4 +57,10 @@ data class LanguageExample(
 
 enum class ViewType {
     Text, Editor
+}
+
+enum class DemoTheme(val title: String, val theme: TokenTheme?) {
+    LanguageDefault("Language default", null),
+    GitHubDark("GitHub Dark", GitHubDarkTheme),
+    GitHubLight("GitHub Light", GitHubLightTheme),
 }

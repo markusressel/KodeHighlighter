@@ -42,10 +42,10 @@ class DarkBackgroundColorSchemeWithSpanStyle : ColorScheme<SpanStyle> {
                 setOf { SpanStyle(Color(0xFFFF6D00)) }
             }
             is ImageLinkRule, is TextLinkRule -> {
-                setOf { SpanStyle(Color(0xFF7C4DFF)) }
+                setOf { SpanStyle(Color(0xFFB388FF)) }
             }
             is StrikeRule -> {
-                setOf { SpanStyle(Color(0xFF5D4037)) }
+                setOf { SpanStyle(Color(0xFFA1887F)) }
             }
             is ListRule -> {
                 setOf { SpanStyle(Color(0xFF5f84d4)) }
@@ -63,7 +63,7 @@ class DarkBackgroundColorSchemeWithSpanStyle : ColorScheme<SpanStyle> {
                 setOf { SpanStyle(Color(0xFF5f84d4)) }
             }
             is AutolinkRule -> {
-                setOf { SpanStyle(Color(0xFF7C4DFF)) }
+                setOf { SpanStyle(Color(0xFFB388FF)) }
             }
             else -> emptySet()
         }

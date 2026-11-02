@@ -36,10 +36,10 @@ class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
                 setOf { ForegroundColorSpan(Color.parseColor("#FF6D00")) }
             }
             is ImageLinkRule, is TextLinkRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#7C4DFF")) }
+                setOf { ForegroundColorSpan(Color.parseColor("#B388FF")) }
             }
             is StrikeRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#5D4037")) }
+                setOf { ForegroundColorSpan(Color.parseColor("#A1887F")) }
             }
             is ListRule -> {
                 setOf { ForegroundColorSpan(Color.parseColor("#5f84d4")) }
@@ -57,7 +57,7 @@ class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
                 setOf { ForegroundColorSpan(Color.parseColor("#5f84d4")) }
             }
             is AutolinkRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#7C4DFF")) }
+                setOf { ForegroundColorSpan(Color.parseColor("#B388FF")) }
             }
             else -> emptySet()
         }

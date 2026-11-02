@@ -43,10 +43,10 @@ class DarkBackgroundColorSchemeWithSpanStyle : ColorScheme<SpanStyle> {
                 setOf { SpanStyle(Color(0xFFFF6D00)) }
             }
             is CommentRule -> {
-                setOf { SpanStyle(Color(0xFF33691E)) }
+                setOf { SpanStyle(Color(0xFF6A9955)) }
             }
             is NumberRule -> {
-                setOf { SpanStyle(Color(0xFF01579B)) }
+                setOf { SpanStyle(Color(0xFF0091EA)) }
             }
             is ControlFlowKeywordRule -> {
                 setOf { SpanStyle(Color(0xFFFF6D00)) }
