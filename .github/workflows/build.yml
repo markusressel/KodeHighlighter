@@ -14,7 +14,7 @@ jobs:
         with:
           java-version: 21
           distribution: temurin
-          cache: 'gradle'
+      - uses: gradle/actions/setup-gradle@v6
       - name: Perform base checks
         run: make test
   ANDROID_UNIT_TESTS:
@@ -26,7 +26,7 @@ jobs:
         with:
           java-version: 21
           distribution: temurin
-          cache: 'gradle'
+      - uses: gradle/actions/setup-gradle@v6
       - name: Execute unit tests
         run: make unittest
   ANDROID_BUILD_APK:
@@ -38,7 +38,7 @@ jobs:
         with:
           java-version: 21
           distribution: temurin
-          cache: 'gradle'
+      - uses: gradle/actions/setup-gradle@v6
       - name: Setup custom keystore file
         run: |
           mkdir -p $HOME/.android
