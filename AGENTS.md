@@ -1,22 +1,24 @@
 # AGENTS.md
 
-KodeHighlighter is an Android syntax highlighting library. It is published through JitPack, one artifact per module (`com.github.markusressel.KodeHighlighter:<module>`). KodeEditor builds on it.
+KodeHighlighter is an Android syntax highlighting library. It is published through JitPack as one artifact with every language (`com.github.markusressel:KodeHighlighter`), up to 6.2.0 it was one artifact per module. KodeEditor builds on it.
 
 ## Layout
 
+Everything that is published is in the `library` module, the packages below are folders of it.
+
 - `core`: package `de.markusressel.kodehighlighter.core`. `LanguageRuleBook` (list of rules, `createHighlighting`, `language`), `language` (`Language`, `LanguageDetector`), `rule` (`LanguageRule`, `RuleMatch`, `TokenType`, `RuleHelper.findRegexMatches`, `RuleHelper.findRegexGroupMatches`), `colorscheme` (`ColorScheme<Style>`, `withFallback`, `TokenTheme`, GitHub themes), `region` (`RegionScanner`, `RegionRuleBook`, `Embedding` for content in another language), `util` (highlighters for `Spannable`, `EditText` and `AnnotatedString`) and `ui` (Compose `KodeText`, `KodeTextField`, `KodeTextFieldColors`).
-- One module per language: `c`, `cpp`, `csharp`, `dart`, `diff`, `go`, `java`, `json`, `kotlin`, `markdown`, `ocaml`, `properties`, `python`, `rust`, `swift`, `toml`, `xml`, `yaml`. Package `de.markusressel.kodehighlighter.language.<language>` with a `<Language>RuleBook`, a `<Language>Language` that the rule book returns as `language`, and a `rule` package. Only `java`, `json`, `kotlin`, `markdown`, `ocaml` and `python` have a `colorscheme` package, the others use a `TokenTheme`.
+- One package per language: `c`, `cpp`, `csharp`, `dart`, `diff`, `go`, `java`, `json`, `kotlin`, `markdown`, `ocaml`, `properties`, `python`, `rust`, `swift`, `toml`, `xml`, `yaml`. Package `de.markusressel.kodehighlighter.language.<language>` with a `<Language>RuleBook`, a `<Language>Language` that the rule book returns as `language`, and a `rule` package. Only `java`, `json`, `kotlin`, `markdown`, `ocaml` and `python` have a `colorscheme` package, the others use a `TokenTheme`.
 - Rules are `object`s implementing `LanguageRule`, with the regex in a `private val PATTERN` at the end of the object.
 - Rules set `override val tokenType` so that a `TokenTheme` can style them. Comments and strings are found by a `RegionScanner` in `<Language>Regions`, the rule book extends `RegionRuleBook`. `properties` and `diff` have no regions and use a plain `LanguageRuleBook`.
-- `languages`: depends on every language module. `KodeHighlighterLanguages` lists all languages, creates their rule books and has a `LanguageDetector` for all of them. Add new languages there.
+- `languages`: `KodeHighlighterLanguages` lists all languages, creates their rule books and has a `LanguageDetector` for all of them. Add new languages there.
 - `app`: demo app, package `de.markusressel.kodehighlighter.demo`.
-- `test-support`: unpublished test helpers (`assertHighlighting`) for use as `testImplementation`.
+- `testsupport` (in `library/src/test`): test helpers like `assertHighlighting`.
 - `build-logic`: Gradle convention plugins. Versions live in `gradle/libs.versions.toml`.
 
 ## Build
 
-- CI (`.github/workflows`) runs `make test` and `make apk` (`./gradlew app:assembleDebug`) and `make unittest` (`./gradlew testDebugUnitTest`, all modules) with JDK 21. JitPack also uses JDK 21.
-- Unit tests exist in `core`, `test-support` and every language module (JUnit 4). Instrumented tests are in `app/src/androidTest` and are not run by CI. Tests in `app/src/sharedTest` run on both the JVM and a device, because their regex engines differ. Add new rule books to the lists in `RuleWorstCaseTest` and `TokenTypeCoverageTest`.
+- CI (`.github/workflows`) runs `make test` and `make apk` (`./gradlew app:assembleDebug`) and `make unittest` (`./gradlew testDebugUnitTest`) with JDK 21. JitPack also uses JDK 21.
+- Unit tests are in `library/src/test`, for `core` and every language (JUnit 4). Instrumented tests are in `app/src/androidTest` and are not run by CI. Tests in `app/src/sharedTest` run on both the JVM and a device, because their regex engines differ. Add new rule books to the lists in `RuleWorstCaseTest` and `TokenTypeCoverageTest`.
 - Patterns must stay linear on long input. Prefer possessive quantifiers for group loops, since the JVM recurses on them, and let an unterminated construct end at the end of the text.
 
 ## Code style

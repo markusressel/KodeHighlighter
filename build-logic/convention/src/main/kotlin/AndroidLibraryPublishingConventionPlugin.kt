@@ -23,8 +23,8 @@ class AndroidLibraryPublishingConventionPlugin : Plugin<Project> {
                 configure<PublishingExtension> {
                     publications {
                         create("maven", MavenPublication::class) {
-                            groupId = "com.github.markusressel.KodeHighlighter"
-                            artifactId = target.name
+                            groupId = "com.github.markusressel"
+                            artifactId = "KodeHighlighter"
                             version = "${target.version}"
 
                             artifact("${layout.buildDirectory.asFile.get().absolutePath}/outputs/aar/${target.name}-release.aar") {
