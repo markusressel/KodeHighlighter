@@ -135,7 +135,28 @@ in your desired module ```build.gradle``` file.
 
 ### Language Autodetection
 
-Currently there is no auto detection for the language used in a text.
+Each language module has a `Language`, like `KotlinLanguage`, with a stable `id` (the one of VS Code, like `kotlin`
+or `cpp`), its file extensions, file names, MIME types, aliases, shebang interpreters and first lines. Its rule book
+returns it as `language`, so other code can pick what fits the language, for example the folding of an editor.
+
+The `languages` module contains all languages and finds the one of a file:
+
+```groovy
+implementation("com.github.markusressel.KodeHighlighter:languages:${codeHighlighterVersion}")
+```
+
+```kotlin
+// a new rule book for the most likely language, null if none fits
+val ruleBook = KodeHighlighterLanguages.detectRuleBook(fileName = "build.gradle.kts", text = text)
+
+// all languages that fit, the most likely first
+val candidates: List<Language> = KodeHighlighterLanguages.detector.detect(fileName = "vector.h", text = text)
+```
+
+A modeline in the text (`vim: ft=python`, `-*- mode: c++ -*-`) counts most, then the whole file name, its extension,
+the MIME type, a shebang like `#!/usr/bin/env python3` and the start of the first line, like `<?xml`. An extension that
+several languages share, like `h` for C and C++, gives all of them. A `LanguageDetector` also works with your own
+list of languages, without the `languages` module.
 
 ### Integrated language rule books
 
@@ -179,7 +200,8 @@ dependencies {
 ### Writing a custom rule book
 
 A `LanguageRuleBook` consists of a **set of rules** that find the parts of a text to style.
-Rules should set a `tokenType`, so that a `TokenTheme` can style them. Have a look at how the
+Rules should set a `tokenType`, so that a `TokenTheme` can style them. Override `language` to tell which language it
+highlights. Have a look at how the
 [MarkdownRuleBook](markdown/src/main/java/de/markusressel/kodehighlighter/language/markdown/MarkdownRuleBook.kt)
 is implemented to get a feel for how to implement it yourself.
 

@@ -1,5 +1,6 @@
 package de.markusressel.kodehighlighter.language.markdown
 
+import de.markusressel.kodehighlighter.core.language.Language
 import de.markusressel.kodehighlighter.core.region.RegionRuleBook
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.markdown.rule.AutolinkRule
@@ -21,6 +22,8 @@ import de.markusressel.kodehighlighter.language.markdown.rule.TextLinkRule
  * Markdown language rule book
  */
 open class MarkdownRuleBook : RegionRuleBook() {
+
+    override val language: Language get() = MarkdownLanguage
 
     override val scanner = MarkdownRegions.scanner
 

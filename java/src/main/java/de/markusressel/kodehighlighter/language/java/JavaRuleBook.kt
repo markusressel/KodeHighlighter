@@ -1,5 +1,6 @@
 package de.markusressel.kodehighlighter.language.java
 
+import de.markusressel.kodehighlighter.core.language.Language
 import de.markusressel.kodehighlighter.core.region.RegionRuleBook
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.java.rule.AnnotationRule
@@ -23,6 +24,8 @@ import de.markusressel.kodehighlighter.language.java.rule.VisibilityKeywordRule
  * Java language rule book
  */
 open class JavaRuleBook : RegionRuleBook() {
+
+    override val language: Language get() = JavaLanguage
 
     override val scanner = JavaRegions.scanner
 

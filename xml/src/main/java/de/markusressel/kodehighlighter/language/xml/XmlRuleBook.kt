@@ -1,5 +1,6 @@
 package de.markusressel.kodehighlighter.language.xml
 
+import de.markusressel.kodehighlighter.core.language.Language
 import de.markusressel.kodehighlighter.core.region.RegionRuleBook
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.xml.rule.AttributeRule
@@ -14,6 +15,8 @@ import de.markusressel.kodehighlighter.language.xml.rule.TagRule
  * XML and HTML rule book, without embedded languages like JavaScript
  */
 open class XmlRuleBook : RegionRuleBook() {
+
+    override val language: Language get() = XmlLanguage
 
     override val scanner = XmlRegions.scanner
 

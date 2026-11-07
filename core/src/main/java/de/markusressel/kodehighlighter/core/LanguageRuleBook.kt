@@ -3,6 +3,7 @@ package de.markusressel.kodehighlighter.core
 import android.text.Spannable
 import android.text.style.CharacterStyle
 import androidx.compose.ui.text.SpanStyle
+import de.markusressel.kodehighlighter.core.language.Language
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -17,6 +18,12 @@ typealias StyleFactory<Style> = () -> Style
  * Interface for a language rule book, providing definitions of what to highlight
  */
 interface LanguageRuleBook {
+
+    /**
+     * The language this rule book highlights, so that others like an editor can pick what fits it. Null by default,
+     * for rule books that don't tell.
+     */
+    val language: Language? get() = null
 
     /**
      * Get a set of rules for this highlighter

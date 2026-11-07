@@ -1,5 +1,6 @@
 package de.markusressel.kodehighlighter.language.kotlin
 
+import de.markusressel.kodehighlighter.core.language.Language
 import de.markusressel.kodehighlighter.core.region.RegionRuleBook
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.kotlin.rule.AnnotationRule
@@ -23,6 +24,8 @@ import de.markusressel.kodehighlighter.language.kotlin.rule.VisibilityKeywordRul
  * Kotlin language rule book
  */
 open class KotlinRuleBook : RegionRuleBook() {
+
+    override val language: Language get() = KotlinLanguage
 
     override val scanner = KotlinRegions.scanner
 

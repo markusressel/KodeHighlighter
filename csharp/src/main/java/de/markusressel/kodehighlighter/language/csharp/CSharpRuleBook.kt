@@ -1,5 +1,6 @@
 package de.markusressel.kodehighlighter.language.csharp
 
+import de.markusressel.kodehighlighter.core.language.Language
 import de.markusressel.kodehighlighter.core.region.RegionRuleBook
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.csharp.rule.CommentRule
@@ -14,6 +15,8 @@ import de.markusressel.kodehighlighter.language.csharp.rule.TypeRule
  * C# language rule book
  */
 open class CSharpRuleBook : RegionRuleBook() {
+
+    override val language: Language get() = CSharpLanguage
 
     override val scanner = CSharpRegions.scanner
 

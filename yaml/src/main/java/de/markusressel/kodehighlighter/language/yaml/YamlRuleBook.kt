@@ -1,5 +1,6 @@
 package de.markusressel.kodehighlighter.language.yaml
 
+import de.markusressel.kodehighlighter.core.language.Language
 import de.markusressel.kodehighlighter.core.region.RegionRuleBook
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.yaml.rule.AnchorRule
@@ -16,6 +17,8 @@ import de.markusressel.kodehighlighter.language.yaml.rule.StringRule
  * YAML rule book. Block scalars are highlighted like plain text
  */
 open class YamlRuleBook : RegionRuleBook() {
+
+    override val language: Language get() = YamlLanguage
 
     override val scanner = YamlRegions.scanner
 
