@@ -21,6 +21,15 @@ import de.markusressel.kodehighlighter.language.markdown.rule.ListRule
 import de.markusressel.kodehighlighter.language.markdown.rule.StrikeRule
 import de.markusressel.kodehighlighter.language.markdown.rule.TaskRule
 import de.markusressel.kodehighlighter.language.markdown.rule.TextLinkRule
+import de.markusressel.kodehighlighter.language.yaml.rule.AnchorRule as YamlAnchorRule
+import de.markusressel.kodehighlighter.language.yaml.rule.CommentRule as YamlCommentRule
+import de.markusressel.kodehighlighter.language.yaml.rule.DocumentRule as YamlDocumentRule
+import de.markusressel.kodehighlighter.language.yaml.rule.KeyRule as YamlKeyRule
+import de.markusressel.kodehighlighter.language.yaml.rule.ListRule as YamlListRule
+import de.markusressel.kodehighlighter.language.yaml.rule.LiteralRule as YamlLiteralRule
+import de.markusressel.kodehighlighter.language.yaml.rule.NumberRule as YamlNumberRule
+import de.markusressel.kodehighlighter.language.yaml.rule.QuotedKeyRule as YamlQuotedKeyRule
+import de.markusressel.kodehighlighter.language.yaml.rule.StringRule as YamlStringRule
 
 /**
  * A dark color scheme for markdown to be used for compose
@@ -64,6 +73,22 @@ class DarkBackgroundColorSchemeWithSpanStyle : ColorScheme<SpanStyle> {
             }
             is AutolinkRule -> {
                 setOf { SpanStyle(Color(0xFFB388FF)) }
+            }
+            // YAML front matter
+            is YamlKeyRule, is YamlQuotedKeyRule -> {
+                setOf { SpanStyle(Color(0xFFFF9E80)) }
+            }
+            is YamlStringRule -> {
+                setOf { SpanStyle(Color(0xFF00C853)) }
+            }
+            is YamlNumberRule, is YamlLiteralRule -> {
+                setOf { SpanStyle(Color(0xFF40C4FF)) }
+            }
+            is YamlAnchorRule -> {
+                setOf { SpanStyle(Color(0xFFB388FF)) }
+            }
+            is YamlCommentRule, is YamlDocumentRule, is YamlListRule -> {
+                setOf { SpanStyle(Color(0xFF86858B)) }
             }
             else -> emptySet()
         }
