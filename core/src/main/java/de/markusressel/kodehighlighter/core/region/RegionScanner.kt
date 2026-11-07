@@ -1,5 +1,6 @@
 package de.markusressel.kodehighlighter.core.region
 
+import de.markusressel.kodehighlighter.core.LanguageRuleBook
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.core.rule.RuleMatch
 import java.util.regex.Matcher
@@ -10,8 +11,25 @@ import java.util.regex.Matcher
  * @param rule the rule of the region
  * @param startIndex the start of the region
  * @param endIndex the end of the region (exclusive)
+ * @param embedded the content of the region in another language, null if there is none
  */
-data class Region(val rule: LanguageRule, val startIndex: Int, val endIndex: Int)
+data class Region(
+    val rule: LanguageRule,
+    val startIndex: Int,
+    val endIndex: Int,
+    val embedded: EmbeddedContent? = null,
+) {
+    constructor(rule: LanguageRule, startIndex: Int, endIndex: Int) : this(rule, startIndex, endIndex, null)
+}
+
+/**
+ * Content of a [Region] in another language, see [Embedding]
+ *
+ * @param startIndex the start of the content
+ * @param endIndex the end of the content (exclusive)
+ * @param ruleBook the rule book of the language of the content
+ */
+data class EmbeddedContent(val startIndex: Int, val endIndex: Int, val ruleBook: LanguageRuleBook)
 
 /**
  * Finds regions like comments and strings in a single pass from start to end, so that the start of a
@@ -106,11 +124,16 @@ class RegionScanner(definitions: List<RegionDefinition>) {
                 .useTransparentBounds(true)
         }
         matcher.region(start, text.length)
-        return if (matcher.lookingAt() && matcher.end() > start) {
-            Region(definition.rule, start, matcher.end())
-        } else {
-            null
-        }
+        if (!matcher.lookingAt() || matcher.end() <= start) return null
+        return Region(definition.rule, start, matcher.end(), definition.embedding?.let { embedded(it, matcher) })
+    }
+
+    private fun embedded(embedding: Embedding, matcher: Matcher): EmbeddedContent? {
+        val contentStart = matcher.start(embedding.contentGroup)
+        if (contentStart < 0) return null
+        val groups = (0..matcher.groupCount()).map { matcher.group(it) }
+        val ruleBook = embedding.ruleBook(groups) ?: return null
+        return EmbeddedContent(contentStart, matcher.end(embedding.contentGroup), ruleBook)
     }
 
     private fun matchDelimited(definition: DelimitedRegion, text: String, start: Int): Region? {
