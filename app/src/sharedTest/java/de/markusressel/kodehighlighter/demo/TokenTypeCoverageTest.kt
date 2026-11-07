@@ -18,6 +18,10 @@ import de.markusressel.kodehighlighter.language.c.CRuleBook
 import de.markusressel.kodehighlighter.language.toml.TomlRuleBook
 import de.markusressel.kodehighlighter.language.xml.XmlRuleBook
 import de.markusressel.kodehighlighter.language.yaml.YamlRuleBook
+import de.markusressel.kodehighlighter.language.css.CssRuleBook
+import de.markusressel.kodehighlighter.language.generic.GenericRuleBook
+import de.markusressel.kodehighlighter.language.html.HtmlRuleBook
+import de.markusressel.kodehighlighter.language.javascript.JavaScriptRuleBook
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -44,6 +48,10 @@ class TokenTypeCoverageTest {
             SwiftRuleBook(),
             DartRuleBook(),
             PythonRuleBook(),
+            JavaScriptRuleBook(),
+            CssRuleBook(),
+            HtmlRuleBook(),
+            GenericRuleBook(),
         ).flatMap { it.getRules() }
             .filter { it.tokenType == null }
             .map { it::class.java.name }

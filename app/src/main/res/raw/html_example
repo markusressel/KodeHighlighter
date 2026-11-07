@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>HTML sample &amp; more</title>
+    <!-- styles in CSS -->
+    <style>
+        body { color: #c9d1d9; margin: 0; }
+        .note::before { content: "<b>not a tag</b>"; }
+    </style>
+</head>
+<body>
+    <h1 class="title">Hello <em>World</em>!</h1>
+    <button id="greet" disabled>Greet</button>
+    <script type="module">
+        const button = document.getElementById("greet");
+        button.addEventListener("click", () => alert(`<p>${1 + 2}</p>`));
+        if (1 < 2 && /<\/?p>/.test("<p>")) console.log(true);
+    </script>
+</body>
+</html>

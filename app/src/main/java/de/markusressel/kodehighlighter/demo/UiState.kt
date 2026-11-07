@@ -95,6 +95,26 @@ val dartExample = LanguageExample(
     resource = R.raw.dart_example
 )
 
+val javascriptExample = LanguageExample(
+    name = "JavaScript",
+    resource = R.raw.javascript_example
+)
+
+val cssExample = LanguageExample(
+    name = "CSS",
+    resource = R.raw.css_example
+)
+
+val htmlExample = LanguageExample(
+    name = "HTML",
+    resource = R.raw.html_example
+)
+
+val genericExample = LanguageExample(
+    name = "Generic",
+    resource = R.raw.generic_example
+)
+
 data class UiState(
     val selectedLanguage: LanguageExample = markdownExample,
     val availableLanguages: List<LanguageExample> = listOf(
@@ -116,6 +136,10 @@ data class UiState(
         rustExample,
         swiftExample,
         dartExample,
+        javascriptExample,
+        cssExample,
+        htmlExample,
+        genericExample,
     ),
     val selectedViewType: ViewType = ViewType.Text,
     val selectedTheme: DemoTheme = DemoTheme.LanguageDefault,

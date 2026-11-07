@@ -1,0 +1,9 @@
+# Generic sample, for languages without a rule book of their own
+function greet(name) {
+    // say hello
+    if (name == null) return false;
+    print("Hello, " + name + "!");   /* a block comment */
+    var count = 0x1F + 3.5e2;
+    while (count > 0) { count = count - 1; }
+    return true;
+}

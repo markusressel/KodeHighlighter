@@ -2,7 +2,11 @@ package de.markusressel.kodehighlighter.languages
 
 import de.markusressel.kodehighlighter.language.c.CLanguage
 import de.markusressel.kodehighlighter.language.cpp.CppLanguage
+import de.markusressel.kodehighlighter.language.css.CssLanguage
 import de.markusressel.kodehighlighter.language.diff.DiffLanguage
+import de.markusressel.kodehighlighter.language.html.HtmlLanguage
+import de.markusressel.kodehighlighter.language.javascript.JavaScriptLanguage
+import de.markusressel.kodehighlighter.language.javascript.JavaScriptRuleBook
 import de.markusressel.kodehighlighter.language.json.JsonLanguage
 import de.markusressel.kodehighlighter.language.kotlin.KotlinLanguage
 import de.markusressel.kodehighlighter.language.kotlin.KotlinRuleBook
@@ -50,6 +54,19 @@ class KodeHighlighterLanguagesTest {
         assertNull(detector.detectOne("Makefile"))
         assertNull(detector.detectOne(".kt"))
         assertNull(detector.detectOne("archive."))
+    }
+
+    @Test
+    fun webLanguages() {
+        assertEquals(HtmlLanguage, detector.detectOne("index.html"))
+        assertEquals(HtmlLanguage, detector.detectOne(text = "<!DOCTYPE html>\n<html>"))
+        assertEquals(HtmlLanguage, detector.detectOne(mimeType = "text/html"))
+        assertEquals(CssLanguage, detector.detectOne("style.css"))
+        assertEquals(JavaScriptLanguage, detector.detectOne("app.mjs"))
+        assertEquals(JavaScriptLanguage, detector.detectOne(text = "#!/usr/bin/env node\n"))
+        assertTrue(KodeHighlighterLanguages.ruleBookForName("js") is JavaScriptRuleBook)
+        assertEquals(CssLanguage, KodeHighlighterLanguages.ruleBookForName("css")?.language)
+        assertEquals(HtmlLanguage, KodeHighlighterLanguages.ruleBookForName("html")?.language)
     }
 
     @Test

@@ -12,7 +12,7 @@ import de.markusressel.kodehighlighter.language.xml.rule.EntityRule
 import de.markusressel.kodehighlighter.language.xml.rule.TagRule
 
 /**
- * XML and HTML rule book, without embedded languages like JavaScript
+ * XML rule book. [de.markusressel.kodehighlighter.language.html.HtmlRuleBook] highlights HTML, with its JavaScript and CSS
  */
 open class XmlRuleBook : RegionRuleBook() {
 
