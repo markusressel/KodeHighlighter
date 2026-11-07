@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId = "de.markusressel.kodehighlighter.demo"
         versionCode = 1
-        versionName = "6.2.0"
+        versionName = "7.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -41,25 +41,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
-    implementation(project(":java"))
-    implementation(project(":kotlin"))
-    implementation(project(":markdown"))
-    implementation(project(":python"))
-    implementation(project(":json"))
-    implementation(project(":ocaml"))
-    implementation(project(":dart"))
-    implementation(project(":swift"))
-    implementation(project(":rust"))
-    implementation(project(":go"))
-    implementation(project(":csharp"))
-    implementation(project(":cpp"))
-    implementation(project(":c"))
-    implementation(project(":diff"))
-    implementation(project(":properties"))
-    implementation(project(":toml"))
-    implementation(project(":yaml"))
-    implementation(project(":xml"))
+    implementation(project(":library"))
 
     implementation(libs.kotlin.stdlib.jdk8)
     implementation(libs.kotlinx.coroutines.core)

@@ -123,27 +123,26 @@ in your project build.gradle file and
 dependencies {
     ...
 
-    def codeHighlighterVersion = "6.2.0"
-    implementation("com.github.markusressel.KodeHighlighter:core:${codeHighlighterVersion}")
+    implementation("com.github.markusressel:KodeHighlighter:7.0.0")
 }
 ```
 
-in your desired module ```build.gradle``` file.
+in your desired module ```build.gradle``` file. This one artifact contains every language. R8 removes the languages
+that your app does not use.
+
+Up to 6.2.0, there was one artifact per language, like `com.github.markusressel.KodeHighlighter:markdown`. Replace all
+of them with the one above, the packages and classes are the same.
 
 
 ## Syntax highlighting
 
 ### Language Autodetection
 
-Each language module has a `Language`, like `KotlinLanguage`, with a stable `id` (the one of VS Code, like `kotlin`
+Each language has a `Language`, like `KotlinLanguage`, with a stable `id` (the one of VS Code, like `kotlin`
 or `cpp`), its file extensions, file names, MIME types, aliases, shebang interpreters and first lines. Its rule book
 returns it as `language`, so other code can pick what fits the language, for example the folding of an editor.
 
-The `languages` module contains all languages and finds the one of a file:
-
-```groovy
-implementation("com.github.markusressel.KodeHighlighter:languages:${codeHighlighterVersion}")
-```
+`KodeHighlighterLanguages` contains all languages and finds the one of a file:
 
 ```kotlin
 // a new rule book for the most likely language, null if none fits
@@ -156,7 +155,7 @@ val candidates: List<Language> = KodeHighlighterLanguages.detector.detect(fileNa
 A modeline in the text (`vim: ft=python`, `-*- mode: c++ -*-`) counts most, then the whole file name, its extension,
 the MIME type, a shebang like `#!/usr/bin/env python3` and the start of the first line, like `<?xml`. An extension that
 several languages share, like `h` for C and C++, gives all of them. A `LanguageDetector` also works with your own
-list of languages, without the `languages` module.
+list of languages.
 
 ### Integrated language rule books
 
@@ -182,40 +181,31 @@ spending time to think about finding the right tokens and color schemes:
 * xml
 * yaml
 
-To include one of them in your project, just pick the ones you would like to use
-and - **in addition** to the `core` module - import them as a dependency:
-
-```groovy
-dependencies {
-    ...
-
-    implementation("com.github.markusressel.KodeHighlighter:java:${codeHighlighterVersion}")
-    implementation("com.github.markusressel.KodeHighlighter:json:${codeHighlighterVersion}")
-    implementation("com.github.markusressel.KodeHighlighter:kotlin:${codeHighlighterVersion}")
-    implementation("com.github.markusressel.KodeHighlighter:markdown:${codeHighlighterVersion}")
-    implementation("com.github.markusressel.KodeHighlighter:python:${codeHighlighterVersion}")
-    [etc.]
-```
+All of them are in the artifact, use their rule books like `KotlinRuleBook()` directly.
 
 ### Languages in other languages
 
-Markdown highlights YAML front matter as YAML. Fenced code blocks are highlighted in their language when you tell
-`MarkdownRuleBook` how to find a rule book by the name in the info string, like `kotlin` in ```` ```kotlin ````. The
-rule books of the `languages` module do that already:
+Markdown highlights YAML front matter as YAML, and fenced code blocks in their language, by the name in the info
+string, like `kotlin` in ```` ```kotlin ````. Blocks without a language, or with an unknown one, stay one code block.
+You can choose the rule books yourself:
 
 ```kotlin
 val markdown = MarkdownRuleBook { name -> if (name == "kotlin") KotlinRuleBook() else null }
-// or, for all languages
-val markdown = MarkdownRuleBook(KodeHighlighterLanguages::ruleBookForName)
+// no code blocks in their language
+val plain = MarkdownRuleBook { null }
 ```
+
+Blocks that did not change since the last highlighting are not highlighted again, so a long text with many code blocks
+stays fast while typing.
 
 Your own `RegionRuleBook` can embed other languages the same way: an `Embedding` on a `PatternRegion` names the group
 of its regex that holds the content and returns the rule book for it. The rest of the region, like its delimiters,
 keeps the rule of the region.
 
-Rules of embedded languages need colors too. A `TokenTheme` like `GitHubDarkTheme` styles every rule with a token type,
-and `colorScheme.withFallback(GitHubDarkTheme.spanStyleColorScheme)` adds it to a color scheme of one language. The
-Markdown color schemes fall back to `GitHubDarkTheme` already.
+Rules of embedded languages need colors too. A `TokenTheme` like `GitHubDarkTheme` or `GitHubLightTheme` styles every
+rule with a token type, and `colorScheme.withFallback(GitHubDarkTheme.spanStyleColorScheme)` adds it to a color scheme
+of one language, like the Markdown color schemes, which only style Markdown. KodeEditor does that by itself, with the
+theme that fits the brightness of its background.
 
 ### Writing a custom rule book
 
