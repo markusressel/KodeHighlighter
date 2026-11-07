@@ -1,5 +1,6 @@
 package de.markusressel.kodehighlighter.language.python
 
+import de.markusressel.kodehighlighter.core.language.Language
 import de.markusressel.kodehighlighter.core.region.RegionRuleBook
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.python.rule.ClassKeywordRule
@@ -20,6 +21,8 @@ import de.markusressel.kodehighlighter.language.python.rule.TypeKeywordRule
  * Python language rule book
  */
 open class PythonRuleBook : RegionRuleBook() {
+
+    override val language: Language get() = PythonLanguage
 
     override val scanner = PythonRegions.scanner
 

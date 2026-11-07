@@ -1,5 +1,6 @@
 package de.markusressel.kodehighlighter.language.rust
 
+import de.markusressel.kodehighlighter.core.language.Language
 import de.markusressel.kodehighlighter.core.region.RegionRuleBook
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.rust.rule.AttributeRule
@@ -16,6 +17,8 @@ import de.markusressel.kodehighlighter.language.rust.rule.TypeRule
  * Rust language rule book
  */
 open class RustRuleBook : RegionRuleBook() {
+
+    override val language: Language get() = RustLanguage
 
     override val scanner = RustRegions.scanner
 

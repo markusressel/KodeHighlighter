@@ -1,5 +1,6 @@
 package de.markusressel.kodehighlighter.language.cpp
 
+import de.markusressel.kodehighlighter.core.language.Language
 import de.markusressel.kodehighlighter.core.region.RegionRuleBook
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.cpp.rule.CommentRule
@@ -14,6 +15,8 @@ import de.markusressel.kodehighlighter.language.cpp.rule.TypeRule
  * C++ language rule book
  */
 open class CppRuleBook : RegionRuleBook() {
+
+    override val language: Language get() = CppLanguage
 
     override val scanner = CppRegions.scanner
 

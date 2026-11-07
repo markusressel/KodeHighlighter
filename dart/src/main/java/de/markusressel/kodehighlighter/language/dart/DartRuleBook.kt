@@ -1,5 +1,6 @@
 package de.markusressel.kodehighlighter.language.dart
 
+import de.markusressel.kodehighlighter.core.language.Language
 import de.markusressel.kodehighlighter.core.region.RegionRuleBook
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.dart.rule.AnnotationRule
@@ -14,6 +15,8 @@ import de.markusressel.kodehighlighter.language.dart.rule.TypeRule
  * Dart language rule book
  */
 open class DartRuleBook : RegionRuleBook() {
+
+    override val language: Language get() = DartLanguage
 
     override val scanner = DartRegions.scanner
 

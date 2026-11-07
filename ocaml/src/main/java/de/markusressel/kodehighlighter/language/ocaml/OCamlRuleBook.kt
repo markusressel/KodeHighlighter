@@ -1,5 +1,6 @@
 package de.markusressel.kodehighlighter.language.ocaml
 
+import de.markusressel.kodehighlighter.core.language.Language
 import de.markusressel.kodehighlighter.core.region.RegionRuleBook
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.ocaml.rule.BooleanRule
@@ -13,6 +14,8 @@ import de.markusressel.kodehighlighter.language.ocaml.rule.StringRule
  * OCaml language rule book
  */
 open class OCamlRuleBook : RegionRuleBook() {
+
+    override val language: Language get() = OCamlLanguage
 
     override val scanner = OCamlRegions.scanner
 

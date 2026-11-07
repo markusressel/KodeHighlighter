@@ -1,5 +1,6 @@
 package de.markusressel.kodehighlighter.language.toml
 
+import de.markusressel.kodehighlighter.core.language.Language
 import de.markusressel.kodehighlighter.core.region.RegionRuleBook
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 import de.markusressel.kodehighlighter.language.toml.rule.CommentRule
@@ -15,6 +16,8 @@ import de.markusressel.kodehighlighter.language.toml.rule.TableRule
  * TOML rule book
  */
 open class TomlRuleBook : RegionRuleBook() {
+
+    override val language: Language get() = TomlLanguage
 
     override val scanner = TomlRegions.scanner
 
