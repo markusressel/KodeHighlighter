@@ -29,6 +29,10 @@ import de.markusressel.kodehighlighter.language.markdown.MarkdownRuleBook
 import de.markusressel.kodehighlighter.language.ocaml.OCamlRuleBook
 import de.markusressel.kodehighlighter.language.python.PythonRuleBook
 import de.markusressel.kodehighlighter.language.dart.DartRuleBook
+import de.markusressel.kodehighlighter.language.css.CssRuleBook
+import de.markusressel.kodehighlighter.language.generic.GenericRuleBook
+import de.markusressel.kodehighlighter.language.html.HtmlRuleBook
+import de.markusressel.kodehighlighter.language.javascript.JavaScriptRuleBook
 import de.markusressel.kodehighlighter.language.swift.SwiftRuleBook
 import de.markusressel.kodehighlighter.language.rust.RustRuleBook
 import de.markusressel.kodehighlighter.language.go.GoRuleBook
@@ -214,6 +218,10 @@ class MainActivityCompose : ComponentActivity() {
                         pythonExample -> PythonRuleBook()
                         ocamlExample -> OCamlRuleBook()
                         dartExample -> DartRuleBook()
+                        javascriptExample -> JavaScriptRuleBook()
+                        cssExample -> CssRuleBook()
+                        htmlExample -> HtmlRuleBook()
+                        genericExample -> GenericRuleBook()
                         swiftExample -> SwiftRuleBook()
                         rustExample -> RustRuleBook()
                         goExample -> GoRuleBook()
@@ -238,6 +246,7 @@ class MainActivityCompose : ComponentActivity() {
                         pythonExample -> de.markusressel.kodehighlighter.language.python.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
                         ocamlExample -> de.markusressel.kodehighlighter.language.ocaml.colorscheme.DarkBackgroundColorSchemeWithSpanStyle()
                         dartExample -> GitHubDarkTheme.spanStyleColorScheme
+                        javascriptExample, cssExample, htmlExample, genericExample -> GitHubDarkTheme.spanStyleColorScheme
                         swiftExample -> GitHubDarkTheme.spanStyleColorScheme
                         rustExample -> GitHubDarkTheme.spanStyleColorScheme
                         goExample -> GitHubDarkTheme.spanStyleColorScheme

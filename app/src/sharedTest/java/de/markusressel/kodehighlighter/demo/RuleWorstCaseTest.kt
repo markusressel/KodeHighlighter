@@ -19,6 +19,10 @@ import de.markusressel.kodehighlighter.language.c.CRuleBook
 import de.markusressel.kodehighlighter.language.toml.TomlRuleBook
 import de.markusressel.kodehighlighter.language.xml.XmlRuleBook
 import de.markusressel.kodehighlighter.language.yaml.YamlRuleBook
+import de.markusressel.kodehighlighter.language.css.CssRuleBook
+import de.markusressel.kodehighlighter.language.generic.GenericRuleBook
+import de.markusressel.kodehighlighter.language.html.HtmlRuleBook
+import de.markusressel.kodehighlighter.language.javascript.JavaScriptRuleBook
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.fail
 import org.junit.Test
@@ -87,6 +91,10 @@ class RuleWorstCaseTest {
             SwiftRuleBook(),
             DartRuleBook(),
             PythonRuleBook(),
+            JavaScriptRuleBook(),
+            CssRuleBook(),
+            HtmlRuleBook(),
+            GenericRuleBook(),
         )
         val inputs = listOf(
             unterminatedEscapes,
@@ -116,6 +124,15 @@ class RuleWorstCaseTest {
             "[a](b".repeat(10_000),
             "r##\"".repeat(12_000),
             "R\"x(".repeat(12_000),
+            "= /".repeat(15_000),
+            "/ ".repeat(25_000),
+            "<script ".repeat(6_000),
+            "<script>".repeat(6_000),
+            "url(".repeat(12_000),
+            "a,".repeat(25_000),
+            "a:b ".repeat(12_000),
+            "#fff ".repeat(10_000),
+            "f(".repeat(25_000),
         )
         val executor = Executors.newCachedThreadPool { task ->
             Thread(task).apply { isDaemon = true }

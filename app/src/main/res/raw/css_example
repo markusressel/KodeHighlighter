@@ -1,0 +1,22 @@
+/* CSS sample */
+@import url(https://example.com/base.css);
+
+:root {
+    --accent: #3fb950;
+}
+
+body, .page > main#content {
+    margin: 0 auto;
+    font: 16px/1.5 "Inter", sans-serif;
+    background: rgba(13, 17, 23, 0.9) url(img/bg.png) no-repeat;
+}
+
+a:hover::after,
+input[type="checkbox"]:checked {
+    color: var(--accent) !important;
+    transform: translateX(-2.5em) rotate(45deg);
+}
+
+@media (max-width: 600px) {
+    .page { width: 100%; }
+}

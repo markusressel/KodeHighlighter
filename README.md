@@ -165,10 +165,13 @@ spending time to think about finding the right tokens and color schemes:
 * c
 * cpp
 * csharp
+* css
 * dart
 * diff
 * go
+* html, with `script` elements highlighted as JavaScript and `style` elements as CSS
 * java
+* javascript
 * json
 * kotlin
 * markdown, with YAML front matter and fenced code blocks highlighted in their language
@@ -182,6 +185,13 @@ spending time to think about finding the right tokens and color schemes:
 * yaml
 
 All of them are in the artifact, use their rule books like `KotlinRuleBook()` directly.
+
+For other languages, `GenericRuleBook` highlights what many languages share: `//`, `#` and `/* */` comments, strings,
+numbers, function names and common keywords. It has no language, so detection never picks it, use it as a fallback:
+
+```kotlin
+val ruleBook = KodeHighlighterLanguages.detectRuleBook(fileName, text) ?: GenericRuleBook()
+```
 
 ### Languages in other languages
 

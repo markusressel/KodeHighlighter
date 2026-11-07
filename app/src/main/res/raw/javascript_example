@@ -1,0 +1,28 @@
+// JavaScript sample
+import { readFile } from "node:fs/promises";
+
+/* a class with a getter */
+export default class Inventory extends Map {
+    static #count = 0;
+
+    get total() {
+        return [...this.values()].reduce((sum, item) => sum + item.count, 0);
+    }
+
+    async load(path) {
+        const text = await readFile(path, 'utf8');
+        const lines = text.split(/\r?\n/g).filter(line => !line.startsWith("#"));
+        for (const line of lines) {
+            const [name, count = "1"] = line.split("=");
+            this.set(name, { name, count: Number(count) / 2 });
+        }
+        return `${lines.length} items // not a comment`;
+    }
+}
+
+function format(item) {
+    return item?.name ?? null;
+}
+
+const ratio = 0x1F / 1_000 + 2e-3 + 10n;
+console.log(new Inventory().total, ratio, typeof undefined, true, NaN);

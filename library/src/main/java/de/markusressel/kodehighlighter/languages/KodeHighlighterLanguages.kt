@@ -9,14 +9,20 @@ import de.markusressel.kodehighlighter.language.cpp.CppLanguage
 import de.markusressel.kodehighlighter.language.cpp.CppRuleBook
 import de.markusressel.kodehighlighter.language.csharp.CSharpLanguage
 import de.markusressel.kodehighlighter.language.csharp.CSharpRuleBook
+import de.markusressel.kodehighlighter.language.css.CssLanguage
+import de.markusressel.kodehighlighter.language.css.CssRuleBook
 import de.markusressel.kodehighlighter.language.dart.DartLanguage
 import de.markusressel.kodehighlighter.language.dart.DartRuleBook
 import de.markusressel.kodehighlighter.language.diff.DiffLanguage
 import de.markusressel.kodehighlighter.language.diff.DiffRuleBook
 import de.markusressel.kodehighlighter.language.go.GoLanguage
 import de.markusressel.kodehighlighter.language.go.GoRuleBook
+import de.markusressel.kodehighlighter.language.html.HtmlLanguage
+import de.markusressel.kodehighlighter.language.html.HtmlRuleBook
 import de.markusressel.kodehighlighter.language.java.JavaLanguage
 import de.markusressel.kodehighlighter.language.java.JavaRuleBook
+import de.markusressel.kodehighlighter.language.javascript.JavaScriptLanguage
+import de.markusressel.kodehighlighter.language.javascript.JavaScriptRuleBook
 import de.markusressel.kodehighlighter.language.json.JsonLanguage
 import de.markusressel.kodehighlighter.language.json.JsonRuleBook
 import de.markusressel.kodehighlighter.language.kotlin.KotlinLanguage
@@ -53,10 +59,13 @@ object KodeHighlighterLanguages {
         CLanguage to ::CRuleBook,
         CppLanguage to ::CppRuleBook,
         CSharpLanguage to ::CSharpRuleBook,
+        CssLanguage to ::CssRuleBook,
         DartLanguage to ::DartRuleBook,
         DiffLanguage to ::DiffRuleBook,
         GoLanguage to ::GoRuleBook,
+        HtmlLanguage to ::HtmlRuleBook,
         JavaLanguage to ::JavaRuleBook,
+        JavaScriptLanguage to ::JavaScriptRuleBook,
         JsonLanguage to ::JsonRuleBook,
         KotlinLanguage to ::KotlinRuleBook,
         MarkdownLanguage to { MarkdownRuleBook() },
