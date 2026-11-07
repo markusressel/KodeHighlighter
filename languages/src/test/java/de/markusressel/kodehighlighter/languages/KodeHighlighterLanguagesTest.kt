@@ -6,10 +6,12 @@ import de.markusressel.kodehighlighter.language.diff.DiffLanguage
 import de.markusressel.kodehighlighter.language.json.JsonLanguage
 import de.markusressel.kodehighlighter.language.kotlin.KotlinLanguage
 import de.markusressel.kodehighlighter.language.kotlin.KotlinRuleBook
+import de.markusressel.kodehighlighter.language.markdown.MarkdownLanguage
 import de.markusressel.kodehighlighter.language.python.PythonLanguage
 import de.markusressel.kodehighlighter.language.toml.TomlLanguage
 import de.markusressel.kodehighlighter.language.xml.XmlLanguage
 import de.markusressel.kodehighlighter.language.yaml.YamlLanguage
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -99,5 +101,21 @@ class KodeHighlighterLanguagesTest {
     fun ruleBooks() {
         assertTrue(KodeHighlighterLanguages.detectRuleBook("Main.kt") is KotlinRuleBook)
         assertNull(KodeHighlighterLanguages.detectRuleBook("notes.txt"))
+    }
+
+    @Test
+    fun namesOfCodeBlocks() {
+        assertTrue(KodeHighlighterLanguages.ruleBookForName("Kotlin") is KotlinRuleBook)
+        assertTrue(KodeHighlighterLanguages.ruleBookForName("kts") is KotlinRuleBook)
+        assertTrue(KodeHighlighterLanguages.ruleBookForName("yml")?.language == YamlLanguage)
+        assertNull(KodeHighlighterLanguages.ruleBookForName("cobol"))
+    }
+
+    @Test
+    fun markdownHighlightsCodeBlocksInTheirLanguage() {
+        val markdown = KodeHighlighterLanguages.ruleBookFor(MarkdownLanguage)!!
+        val text = "# A\n```kotlin\nfun main() {}\n```\n"
+        val rules = runBlocking { markdown.createHighlighting(text) }.map { it.rule }
+        assertTrue(rules.any { it::class.java.name.contains(".kotlin.") })
     }
 }

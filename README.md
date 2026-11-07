@@ -172,7 +172,7 @@ spending time to think about finding the right tokens and color schemes:
 * java
 * json
 * kotlin
-* markdown, with YAML front matter highlighted as YAML
+* markdown, with YAML front matter and fenced code blocks highlighted in their language
 * ocaml
 * properties
 * python
@@ -196,6 +196,26 @@ dependencies {
     implementation("com.github.markusressel.KodeHighlighter:python:${codeHighlighterVersion}")
     [etc.]
 ```
+
+### Languages in other languages
+
+Markdown highlights YAML front matter as YAML. Fenced code blocks are highlighted in their language when you tell
+`MarkdownRuleBook` how to find a rule book by the name in the info string, like `kotlin` in ```` ```kotlin ````. The
+rule books of the `languages` module do that already:
+
+```kotlin
+val markdown = MarkdownRuleBook { name -> if (name == "kotlin") KotlinRuleBook() else null }
+// or, for all languages
+val markdown = MarkdownRuleBook(KodeHighlighterLanguages::ruleBookForName)
+```
+
+Your own `RegionRuleBook` can embed other languages the same way: an `Embedding` on a `PatternRegion` names the group
+of its regex that holds the content and returns the rule book for it. The rest of the region, like its delimiters,
+keeps the rule of the region.
+
+Rules of embedded languages need colors too. A `TokenTheme` like `GitHubDarkTheme` styles every rule with a token type,
+and `colorScheme.withFallback(GitHubDarkTheme.spanStyleColorScheme)` adds it to a color scheme of one language. The
+Markdown color schemes fall back to `GitHubDarkTheme` already.
 
 ### Writing a custom rule book
 

@@ -46,6 +46,8 @@ import de.markusressel.kodehighlighter.language.yaml.YamlRuleBook
  * ```kotlin
  * val ruleBook = KodeHighlighterLanguages.detectRuleBook(fileName = "build.gradle.kts", text = text)
  * ```
+ *
+ * Its Markdown rule books highlight fenced code blocks in their language.
  */
 object KodeHighlighterLanguages {
     private val ruleBooks: Map<Language, () -> LanguageRuleBook> = linkedMapOf(
@@ -59,7 +61,8 @@ object KodeHighlighterLanguages {
         JavaLanguage to ::JavaRuleBook,
         JsonLanguage to ::JsonRuleBook,
         KotlinLanguage to ::KotlinRuleBook,
-        MarkdownLanguage to ::MarkdownRuleBook,
+        // code blocks of Markdown are highlighted in their language
+        MarkdownLanguage to { MarkdownRuleBook(::ruleBookForName) },
         OCamlLanguage to ::OCamlRuleBook,
         PropertiesLanguage to ::PropertiesRuleBook,
         PythonLanguage to ::PythonRuleBook,
@@ -81,6 +84,16 @@ object KodeHighlighterLanguages {
      * @return a new rule book for it, null if KodeHighlighter has none
      */
     fun ruleBookFor(language: Language): LanguageRuleBook? = ruleBooks[language]?.invoke()
+
+    /**
+     * @param name the id, an alias or a file extension of a language, ignoring case, like `kotlin`, `kt` or `py`, as
+     * in the info string of a fenced code block of Markdown
+     * @return a new rule book for that language, null if none fits
+     */
+    fun ruleBookForName(name: String): LanguageRuleBook? {
+        val language = detector.forId(name) ?: detector.detectOne(fileName = "file.${name.lowercase()}")
+        return language?.let(::ruleBookFor)
+    }
 
     /**
      * @param fileName the name of the file, a path is fine

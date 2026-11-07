@@ -30,4 +30,5 @@ dependencies {
     implementation(libs.kotlin.stdlib.jdk8)
 
     testImplementation(libs.junit4)
+    testImplementation(libs.kotlinx.coroutines.core)
 }

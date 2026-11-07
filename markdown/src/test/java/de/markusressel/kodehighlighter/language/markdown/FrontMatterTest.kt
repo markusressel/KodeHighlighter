@@ -5,7 +5,7 @@ import de.markusressel.kodehighlighter.language.markdown.rule.HeadingRule
 import de.markusressel.kodehighlighter.language.markdown.rule.HorizontalRuleRule
 import de.markusressel.kodehighlighter.language.markdown.rule.ListRule
 import de.markusressel.kodehighlighter.language.yaml.rule.CommentRule
-import de.markusressel.kodehighlighter.language.yaml.rule.DocumentRule
+import de.markusressel.kodehighlighter.language.markdown.rule.FrontMatterRule
 import de.markusressel.kodehighlighter.language.yaml.rule.KeyRule
 import de.markusressel.kodehighlighter.language.yaml.rule.LiteralRule
 import de.markusressel.kodehighlighter.language.yaml.rule.NumberRule
@@ -23,7 +23,7 @@ class FrontMatterTest {
         assertHighlighting(
             ruleBook,
             "---\ntitle: \"Home\"\nweight: 2\ndraft: false\ntags:\n  - news\n# a **comment**\n---\n# Heading\n**bold**",
-            DocumentRule to listOf("---", "---"),
+            FrontMatterRule to listOf("---\n", "---"),
             KeyRule to listOf("title", "weight", "draft", "tags"),
             StringRule to listOf("\"Home\""),
             NumberRule to listOf("2"),
@@ -40,7 +40,7 @@ class FrontMatterTest {
         assertHighlighting(
             ruleBook,
             "---\na: 1\n...\n- item",
-            DocumentRule to listOf("---", "..."),
+            FrontMatterRule to listOf("---\n", "..."),
             KeyRule to listOf("a"),
             NumberRule to listOf("1"),
             ListRule to listOf("-"),
@@ -52,7 +52,7 @@ class FrontMatterTest {
         assertHighlighting(
             ruleBook,
             "---\n# not a heading\n- not: a list\n---\n",
-            DocumentRule to listOf("---", "---"),
+            FrontMatterRule to listOf("---\n", "---"),
             CommentRule to listOf("# not a heading"),
             YamlListRule to listOf("-"),
             KeyRule to listOf("not"),
@@ -79,7 +79,7 @@ class FrontMatterTest {
         assertHighlighting(
             ruleBook,
             "---\na: b\n---\n\n---\n",
-            DocumentRule to listOf("---", "---"),
+            FrontMatterRule to listOf("---\n", "---"),
             KeyRule to listOf("a"),
             HorizontalRuleRule to listOf("---"),
         )
@@ -90,10 +90,10 @@ class FrontMatterTest {
         assertHighlighting(
             ruleBook,
             "---\r\na: 1\r\n---\r\nx",
-            DocumentRule to listOf("---", "---"),
+            FrontMatterRule to listOf("---\r\n", "---"),
             KeyRule to listOf("a"),
             NumberRule to listOf("1"),
         )
-        assertHighlighting(ruleBook, "---\n---\nx", DocumentRule to listOf("---", "---"))
+        assertHighlighting(ruleBook, "---\n---\nx", FrontMatterRule to listOf("---\n", "---"))
     }
 }

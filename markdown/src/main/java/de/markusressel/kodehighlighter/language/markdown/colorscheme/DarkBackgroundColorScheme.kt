@@ -14,18 +14,12 @@ import de.markusressel.kodehighlighter.language.markdown.rule.BlockquoteRule
 import de.markusressel.kodehighlighter.language.markdown.rule.CodeBlockRule
 import de.markusressel.kodehighlighter.language.markdown.rule.HorizontalRuleRule
 import de.markusressel.kodehighlighter.language.markdown.rule.TaskRule
-import de.markusressel.kodehighlighter.language.yaml.rule.AnchorRule as YamlAnchorRule
-import de.markusressel.kodehighlighter.language.yaml.rule.CommentRule as YamlCommentRule
-import de.markusressel.kodehighlighter.language.yaml.rule.DocumentRule as YamlDocumentRule
-import de.markusressel.kodehighlighter.language.yaml.rule.KeyRule as YamlKeyRule
-import de.markusressel.kodehighlighter.language.yaml.rule.ListRule as YamlListRule
-import de.markusressel.kodehighlighter.language.yaml.rule.LiteralRule as YamlLiteralRule
-import de.markusressel.kodehighlighter.language.yaml.rule.NumberRule as YamlNumberRule
-import de.markusressel.kodehighlighter.language.yaml.rule.QuotedKeyRule as YamlQuotedKeyRule
-import de.markusressel.kodehighlighter.language.yaml.rule.StringRule as YamlStringRule
+import de.markusressel.kodehighlighter.core.colorscheme.GitHubDarkTheme
+import de.markusressel.kodehighlighter.language.markdown.rule.FrontMatterRule
 
 /**
- * A dark color scheme for markdown
+ * A dark color scheme for markdown. Rules of other languages, like in the front matter or in code blocks, get the
+ * colors of [GitHubDarkTheme]
  */
 class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
 
@@ -68,23 +62,11 @@ class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
             is AutolinkRule -> {
                 setOf { ForegroundColorSpan(Color.parseColor("#B388FF")) }
             }
-            // YAML front matter
-            is YamlKeyRule, is YamlQuotedKeyRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#FF9E80")) }
-            }
-            is YamlStringRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#00C853")) }
-            }
-            is YamlNumberRule, is YamlLiteralRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#40C4FF")) }
-            }
-            is YamlAnchorRule -> {
-                setOf { ForegroundColorSpan(Color.parseColor("#B388FF")) }
-            }
-            is YamlCommentRule, is YamlDocumentRule, is YamlListRule -> {
+            is FrontMatterRule -> {
                 setOf { ForegroundColorSpan(Color.parseColor("#86858B")) }
             }
-            else -> emptySet()
+            // like the YAML of the front matter and languages in code blocks
+            else -> GitHubDarkTheme.characterStyleColorScheme.getStyles(type)
         }
     }
 

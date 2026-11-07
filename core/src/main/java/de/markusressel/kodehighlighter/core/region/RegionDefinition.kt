@@ -1,5 +1,6 @@
 package de.markusressel.kodehighlighter.core.region
 
+import de.markusressel.kodehighlighter.core.LanguageRuleBook
 import de.markusressel.kodehighlighter.core.rule.LanguageRule
 
 /**
@@ -61,9 +62,26 @@ class DelimitedRegion(
  * @param rule the rule that is reported for this region
  * @param triggers all ASCII characters a region of this kind can start with
  * @param regex the regex that has to match at the start of the region
+ * @param embedding content of the region in another language, null if the whole region gets the [rule]
  */
 class PatternRegion(
     override val rule: LanguageRule,
     override val triggers: String,
     val regex: Regex,
+    val embedding: Embedding? = null,
 ) : RegionDefinition
+
+/**
+ * Content of a [PatternRegion] in another language, like the YAML front matter or a fenced code block of Markdown.
+ * A [RegionRuleBook] highlights the content with the rule book of that language. The rest of the region, like its
+ * delimiters, keeps the rule of the region, and no other rule of the outer language matches anywhere in it.
+ *
+ * @param contentGroup the group of the regex that matches the content
+ * @param ruleBook the rule book for the content, from the groups of the match, where group 0 is the whole region.
+ * Null if the content is not highlighted, then the whole region gets the rule of the region. It is called for every
+ * region and every highlighting, so it should return rule books it created before
+ */
+class Embedding(
+    val contentGroup: Int,
+    val ruleBook: (groups: List<String?>) -> LanguageRuleBook?,
+)
