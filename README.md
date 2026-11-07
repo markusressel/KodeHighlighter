@@ -172,7 +172,7 @@ spending time to think about finding the right tokens and color schemes:
 * java
 * json
 * kotlin
-* markdown
+* markdown, with YAML front matter highlighted as YAML
 * ocaml
 * properties
 * python

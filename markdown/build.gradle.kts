@@ -9,6 +9,8 @@ android {
 
 dependencies {
     api(project(":core"))
+    // front matter is highlighted as YAML
+    api(project(":yaml"))
     implementation(libs.kotlin.stdlib.jdk8)
     implementation(libs.androidx.compose.ui.text)
 
