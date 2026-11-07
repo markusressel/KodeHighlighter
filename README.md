@@ -202,9 +202,10 @@ Your own `RegionRuleBook` can embed other languages the same way: an `Embedding`
 of its regex that holds the content and returns the rule book for it. The rest of the region, like its delimiters,
 keeps the rule of the region.
 
-Rules of embedded languages need colors too. A `TokenTheme` like `GitHubDarkTheme` styles every rule with a token type,
-and `colorScheme.withFallback(GitHubDarkTheme.spanStyleColorScheme)` adds it to a color scheme of one language. The
-Markdown color schemes fall back to `GitHubDarkTheme` already.
+Rules of embedded languages need colors too. A `TokenTheme` like `GitHubDarkTheme` or `GitHubLightTheme` styles every
+rule with a token type, and `colorScheme.withFallback(GitHubDarkTheme.spanStyleColorScheme)` adds it to a color scheme
+of one language, like the Markdown color schemes, which only style Markdown. KodeEditor does that by itself, with the
+theme that fits the brightness of its background.
 
 ### Writing a custom rule book
 

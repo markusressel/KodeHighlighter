@@ -14,12 +14,11 @@ import de.markusressel.kodehighlighter.language.markdown.rule.BlockquoteRule
 import de.markusressel.kodehighlighter.language.markdown.rule.CodeBlockRule
 import de.markusressel.kodehighlighter.language.markdown.rule.HorizontalRuleRule
 import de.markusressel.kodehighlighter.language.markdown.rule.TaskRule
-import de.markusressel.kodehighlighter.core.colorscheme.GitHubDarkTheme
 import de.markusressel.kodehighlighter.language.markdown.rule.FrontMatterRule
 
 /**
- * A dark color scheme for markdown. Rules of other languages, like in the front matter or in code blocks, get the
- * colors of [GitHubDarkTheme]
+ * A dark color scheme for markdown. Rules of other languages, like in the front matter or in
+ * code blocks, have no style here, `withFallback(GitHubDarkTheme.characterStyleColorScheme)` adds one
  */
 class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
 
@@ -65,8 +64,7 @@ class DarkBackgroundColorScheme : ColorScheme<CharacterStyle> {
             is FrontMatterRule -> {
                 setOf { ForegroundColorSpan(Color.parseColor("#86858B")) }
             }
-            // like the YAML of the front matter and languages in code blocks
-            else -> GitHubDarkTheme.characterStyleColorScheme.getStyles(type)
+            else -> emptySet()
         }
     }
 

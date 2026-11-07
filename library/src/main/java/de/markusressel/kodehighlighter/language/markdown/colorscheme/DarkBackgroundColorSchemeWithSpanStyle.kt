@@ -21,12 +21,11 @@ import de.markusressel.kodehighlighter.language.markdown.rule.ListRule
 import de.markusressel.kodehighlighter.language.markdown.rule.StrikeRule
 import de.markusressel.kodehighlighter.language.markdown.rule.TaskRule
 import de.markusressel.kodehighlighter.language.markdown.rule.TextLinkRule
-import de.markusressel.kodehighlighter.core.colorscheme.GitHubDarkTheme
 import de.markusressel.kodehighlighter.language.markdown.rule.FrontMatterRule
 
 /**
- * A dark color scheme for markdown to be used for compose. Rules of other languages, like in the front matter or in
- * code blocks, get the colors of [GitHubDarkTheme]
+ * A dark color scheme for markdown to be used for compose. Rules of other languages, like in the front
+ * matter or in code blocks, have no style here, `withFallback(GitHubDarkTheme.spanStyleColorScheme)` adds one
  */
 class DarkBackgroundColorSchemeWithSpanStyle : ColorScheme<SpanStyle> {
 
@@ -71,8 +70,7 @@ class DarkBackgroundColorSchemeWithSpanStyle : ColorScheme<SpanStyle> {
             is FrontMatterRule -> {
                 setOf { SpanStyle(Color(0xFF86858B)) }
             }
-            // like the YAML of the front matter and languages in code blocks
-            else -> GitHubDarkTheme.spanStyleColorScheme.getStyles(type)
+            else -> emptySet()
         }
     }
 
