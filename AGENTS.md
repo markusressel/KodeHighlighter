@@ -1,6 +1,6 @@
 # AGENTS.md
 
-KodeHighlighter is an Android syntax highlighting library. It is published through JitPack as one artifact with every language (`com.github.markusressel:KodeHighlighter`), up to 6.2.0 it was one artifact per module. KodeEditor builds on it.
+KodeHighlighter is an Android syntax highlighting library. It is published through JitPack as one artifact with every language (`com.github.markusressel:KodeHighlighter`, the module `library`). Its own publication must keep the coordinates `com.github.markusressel.KodeHighlighter:<module>` that JitPack uses too, otherwise apps get every class twice, up to 6.2.0 it was one artifact per module. KodeEditor builds on it.
 
 ## Layout
 

@@ -123,7 +123,7 @@ in your project build.gradle file and
 dependencies {
     ...
 
-    implementation("com.github.markusressel:KodeHighlighter:7.0.0")
+    implementation("com.github.markusressel:KodeHighlighter:7.0.1")
 }
 ```
 
