@@ -15,7 +15,7 @@ junit4 = "4.13.2"
 kotlin = "2.4.21"
 kotlinCoroutinesCore = "1.11.0"
 kotlinCoroutinesAndroid = "1.11.0"
-ksp = "2.3.13"
+ksp = "2.3.14"
 
 
 [libraries]
