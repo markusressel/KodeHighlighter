@@ -17,7 +17,9 @@ const val COMPILE_SDK = 37
 
 // Compose 1.13 needs the APIs of Android 17.1
 const val COMPILE_SDK_MINOR = 1
-const val MIN_SDK = 23
+
+// Compose 1.13 needs Android 7
+const val MIN_SDK = 24
 
 /**
  * Configure base Kotlin with Android options
